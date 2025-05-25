@@ -1,5 +1,4 @@
 <?php
-// processar o POST antes do HTML
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $formulario = $_POST['formulario'] ?? '';
 
@@ -13,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>CLPinturas - CONTATO e ORÇAMENTO</title>
+  <title>CLPinturas - ORÇAMENTO</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
 </head>
@@ -22,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <!-- NAVBAR -->
 <nav class="navbar navbar-expand-lg navbar-light bg-white py-3 shadow-sm">
   <div class="container">
-    <a class="navbar-brand fw-bold text-success" href="#"><i class="bi bi-brush"></i> CLPINTURAS</a>
+    <a class="navbar-brand fw-bold text-success" href="index.php"><i class="bi bi-brush"></i> CLPINTURAS</a>
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
       <span class="navbar-toggler-icon"></span>
@@ -30,12 +29,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
       <ul class="navbar-nav align-items-center">
-        <li class="nav-item"><a class="nav-link" href="#">HOME</a></li>
-        <li class="nav-item"><a class="nav-link" href="#">QUEM SOMOS</a></li>
-        <li class="nav-item"><a class="nav-link" href="#">SERVIÇOS</a></li>
+        <li class="nav-item"><a class="nav-link" href="index.php">HOME</a></li>
+        <li class="nav-item"><a class="nav-link" href="páginas/quem-somos.php">QUEM SOMOS</a></li>
+        <li class="nav-item"><a class="nav-link" href="páginas/servicos.php">SERVIÇOS</a></li>
 
         <!-- Link Contato abre modal contato -->
-        <li class="nav-item"><a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#contatoModal">CONTATO</a></li>
+        <li class="nav-item"><a class="nav-link" href="páginas/contato.php" data-bs-toggle="modal" data-bs-target="#contatoModal">CONTATO</a></li>
 
         <!-- Botão Orçamento abre modal orçamento -->
         <li class="nav-item ms-2">
@@ -57,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <!-- MODAL DE ORÇAMENTO -->
  <input type="hidden" name="formulario" value="orcamento">
-
+ 
   <div class="modal fade" id="orcamentoModal" tabindex="-1" aria-labelledby="orcamentoModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
