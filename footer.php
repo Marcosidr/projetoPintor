@@ -1,8 +1,8 @@
 <footer class="bg-paint-green-700 text-white py-10">
         <div class="container text-center">
             <p>&copy; <?= date('Y') ?> CLPINTURAS. Todos os direitos reservados.</p>
-            <p>Endereço: Sua Rua, 123 - Sua Cidade/UF</p>
-            <p>Telefone: (XX) XXXX-XXXX | Email: contato@clpinturas.com.br</p>
+            <p>Endereço: Rua Belo Horizonte, 3 - Boa Esperança/PR</p>
+            <p>Telefone: (44) 99864-0443 | Email:marcosincio556@gmail.com</p>
             </div>
     </footer>
 
