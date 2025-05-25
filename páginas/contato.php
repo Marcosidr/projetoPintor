@@ -1,3 +1,4 @@
+
 <?php
 // Inclui o cabeçalho
 include 'header.php';

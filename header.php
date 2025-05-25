@@ -67,7 +67,7 @@
         <li class="nav-item"><a class="nav-link" href="index.php">HOME</a></li>
         <li class="nav-item"><a class="nav-link" href="páginas/quem-somos.php">QUEM SOMOS</a></li>
         <li class="nav-item"><a class="nav-link" href="páginas/servicos.php">SERVIÇOS</a></li>
-        <li class="nav-item"><a class="nav-link" href="páginas/contato.php" data-bs-toggle="modal" data-bs-target="#contatoModal">CONTATO</a></li>
+        <li class="nav-item"><a class="nav-link" href="páginas/contato.php">CONTATO</a></li>
         <li class="nav-item ms-2">
           <button type="button" class="btn btn-success rounded-pill px-4 fw-bold text-white" data-bs-toggle="modal" data-bs-target="#orcamentoModal">
             ORÇAMENTO
