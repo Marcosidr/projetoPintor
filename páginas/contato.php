@@ -1,201 +1,118 @@
-<?php
-// Processar o POST do formulário de contato
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-  $formulario = $_POST['formulario'] ?? '';
-  if ($formulario === 'contato') {
-    // Aqui você pode processar os dados: salvar no banco, enviar email etc.
-  }
-}
-?>
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>CLPinturas - CONTATO</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
-</head>
-<body>
+<?php include('header.php'); ?>
 
-<!-- NAVBAR -->
-<nav class="navbar navbar-expand-lg navbar-light bg-white py-3 shadow-sm">
-  <div class="container">
-    <a class="navbar-brand fw-bold text-success" href="index.php"><i class="bi bi-brush"></i> CLPINTURAS</a>
+<!-- Hero Section -->
+<section class="relative py-20 bg-paint-cream-100">
+  <div class="max-w-7xl mx-auto px-4 text-center">
+    <h1 class="text-4xl md:text-5xl font-bold text-paint-green-700 mb-6">Entre em Contato</h1>
+    <p class="text-xl text-gray-600 max-w-3xl mx-auto">Estamos prontos para transformar seu projeto em realidade</p>
+  </div>
+</section>
 
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+<!-- Contact Info -->
+<section class="py-20 bg-white">
+  <div class="max-w-7xl mx-auto px-4">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
+      <?php
+      $contactInfo = [
+        ["icon" => "MapPin", "title" => "Endereço", "info" => "Rua das Tintas, 123\nCentro, São Paulo - SP\nCEP: 01234-567"],
+        ["icon" => "Phone", "title" => "Telefone", "info" => "(11) 99999-9999\n(11) 3333-4444"],
+        ["icon" => "Mail", "title" => "E-mail", "info" => "contato@clpinturas.com.br\norcamento@clpinturas.com.br"],
+        ["icon" => "Clock", "title" => "Horário de Atendimento", "info" => "Segunda a Sexta: 8h às 18h\nSábado: 8h às 12h\nDomingo: Fechado"]
+      ];
 
-    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-      <ul class="navbar-nav align-items-center">
-        <li class="nav-item"><a class="nav-link" href="index.php">HOME</a></li>
-        <li class="nav-item"><a class="nav-link" href="páginas/quem-somos.php">QUEM SOMOS</a></li>
-        <li class="nav-item"><a class="nav-link" href="páginas/servicos.php">SERVIÇOS</a></li>
-
-        <!-- Link Contato abre modal contato -->
-        <li class="nav-item"><a class="nav-link" href="páginas/contato.php" data-bs-toggle="modal" data-bs-target="#contatoModal">CONTATO</a></li>
-
-        <!-- Botão Orçamento abre modal orçamento -->
-        <li class="nav-item ms-2">
-          <button type="button" class="btn btn-success rounded-pill px-4 fw-bold text-white" data-bs-toggle="modal" data-bs-target="#orcamentoModal">
-            ORÇAMENTO
-          </button>
-        </li>
-      </ul>
+      foreach ($contactInfo as $item) {
+        echo '
+          <div class="text-center p-6 hover:shadow-lg transition-shadow duration-300 border rounded-2xl">
+            <div class="mb-4 flex justify-center">
+              <i class="lucide lucide-' . strtolower($item["icon"]) . ' h-8 w-8 text-paint-green-600"></i>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-3">' . $item["title"] . '</h3>
+            <p class="text-gray-600 text-sm whitespace-pre-line">' . nl2br($item["info"]) . '</p>
+          </div>
+        ';
+      }
+      ?>
     </div>
   </div>
-</nav>
+</section>
 
-<!-- CONTEÚDO DA PÁGINA CONTATO -->
-<main class="container py-5">
-  <h1 class="text-center mb-4">Fale Conosco</h1>
-  <p class="text-center mb-5">Preencha o formulário abaixo e entraremos em contato o mais breve possível.</p>
-
-  <!-- Formulário direto na página -->
-  <div class="row justify-content-center">
-    <div class="col-md-8">
-      <form method="post">
-        <input type="hidden" name="formulario" value="contato" />
+<!-- Contact Form & Map -->
+<section class="py-20 bg-paint-cream-50">
+  <div class="max-w-7xl mx-auto px-4">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+      <!-- Formulário -->
+      <div>
+        <h2 class="text-3xl font-bold text-paint-green-700 mb-6">Envie sua Mensagem</h2>
+        <p class="text-gray-600 mb-8">Preencha o formulário abaixo que entraremos em contato o mais breve possível.</p>
         
-        <div class="mb-3">
-          <label for="nomeContato" class="form-label">Nome Completo *</label>
-          <input type="text" class="form-control" name="nome" id="nomeContato" required />
-        </div>
-
-        <div class="mb-3">
-          <label for="emailContato" class="form-label">Email *</label>
-          <input type="email" class="form-control" name="email" id="emailContato" required />
-        </div>
-
-        <div class="mb-3">
-          <label for="mensagemContato" class="form-label">Mensagem *</label>
-          <textarea class="form-control" name="mensagem" id="mensagemContato" rows="4" required></textarea>
-        </div>
-
-        <div class="d-grid">
-          <button type="submit" class="btn btn-success btn-lg">Enviar Mensagem</button>
-        </div>
-      </form>
-    </div>
-  </div>
-</main>
-
-<!-- MODAL DE ORÇAMENTO -->
- <input type="hidden" name="formulario" value="orcamento">
- 
-  <div class="modal fade" id="orcamentoModal" tabindex="-1" aria-labelledby="orcamentoModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <form method="post">
-          <div class="modal-header">
-            <h5 class="modal-title" id="orcamentoModalLabel">Formulário de Orçamento</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
-          </div>
-          <div class="modal-body">
-            <div class="mb-3">
-              <label>Nome Completo *</label>
-              <input type="text" class="form-control" name="nome" required>
+        <form method="POST" action="enviar_contato.php" class="space-y-6 bg-white p-8 shadow rounded-xl">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label for="nome" class="block text-sm font-medium text-gray-700 mb-2">Nome *</label>
+              <input type="text" id="nome" name="nome" required class="w-full border rounded-lg p-3" placeholder="Seu nome completo" />
             </div>
-
-            <div class="mb-3">
-              <label>Email *</label>
-              <input type="email" class="form-control" name="email" required>
-            </div>
-
-            <div class="mb-3">
-              <label>Telefone *</label>
-              <input type="tel" class="form-control" name="telefone" required>
-            </div>
-
-            <div class="mb-3">
-              <label>Endereço da Obra *</label>
-              <input type="text" class="form-control" name="endereco" required>
-            </div>
-
-            <div class="mb-3">
-              <label>Tipo de Imóvel *</label>
-              <select class="form-select" name="tipoImovel" required>
-                <option value="">Selecione</option>
-                <option>Residencial - Casa</option>
-                <option>Residencial - Apartamento</option>
-                <option>Comercial - Escritório</option>
-                <option>Comercial - Loja</option>
-                <option>Industrial</option>
-                <option>Outro</option>
-              </select>
-            </div>
-
-            <div class="mb-3">
-              <label>Tipo de Serviço *</label>
-              <select class="form-select" name="tipoServico" required>
-                <option value="">Selecione</option>
-                <option>Pintura Interna</option>
-                <option>Pintura Externa</option>
-                <option>Pintura Interna e Externa</option>
-                <option>Impermeabilização</option>
-                <option>Textura/Grafiato</option>
-                <option>Revestimento Especial</option>
-                <option>Restauração</option>
-                <option>Manutenção</option>
-              </select>
-            </div>
-
-            <div class="mb-3">
-              <label>Área Aproximada (m²)</label>
-              <input type="number" class="form-control" name="area">
-            </div>
-
-            <div class="mb-3">
-              <label>Urgência</label>
-              <select class="form-select" name="urgencia">
-                <option value="">Selecione</option>
-                <option value="baixa">Baixa - Posso aguardar</option>
-                <option value="media">Média - Até 30 dias</option>
-                <option value="alta">Alta - Até 15 dias</option>
-                <option value="urgente">Urgente - Até 7 dias</option>
-              </select>
-            </div>
-
-            <div class="mb-3">
-              <label>Necessidades Adicionais</label><br>
-              <?php
-              $opcoes = [
-                "Preparação de superfície",
-                "Remoção de papel de parede",
-                "Correção de rachaduras",
-                "Aplicação de massa corrida",
-                "Proteção de móveis",
-                "Limpeza pós-obra",
-                "Consultoria de cores",
-                "Projeto de acabamento"
-              ];
-              foreach ($opcoes as $opt) {
-                echo "<div class='form-check'>
-                        <input class='form-check-input' type='checkbox' name='necessidades[]' value='$opt'>
-                        <label class='form-check-label'>$opt</label>
-                      </div>";
-              }
-              ?>
-            </div>
-
-            <div class="mb-3">
-              <label>Observações</label>
-              <textarea class="form-control" name="observacoes" rows="4"></textarea>
+            <div>
+              <label for="telefone" class="block text-sm font-medium text-gray-700 mb-2">Telefone *</label>
+              <input type="tel" id="telefone" name="telefone" required class="w-full border rounded-lg p-3" placeholder="(11) 99999-9999" />
             </div>
           </div>
-          <div class="modal-footer">
-            <button type="submit" class="btn btn-success">Solicitar Orçamento</button>
+
+          <div>
+            <label for="email" class="block text-sm font-medium text-gray-700 mb-2">E-mail *</label>
+            <input type="email" id="email" name="email" required class="w-full border rounded-lg p-3" placeholder="seu@email.com" />
           </div>
+
+          <div>
+            <label for="assunto" class="block text-sm font-medium text-gray-700 mb-2">Assunto</label>
+            <input type="text" id="assunto" name="assunto" class="w-full border rounded-lg p-3" placeholder="Sobre o que você gostaria de falar?" />
+          </div>
+
+          <div>
+            <label for="mensagem" class="block text-sm font-medium text-gray-700 mb-2">Mensagem *</label>
+            <textarea id="mensagem" name="mensagem" rows="6" required class="w-full border rounded-lg p-3" placeholder="Conte-nos mais sobre seu projeto..."></textarea>
+          </div>
+
+          <button type="submit" class="w-full bg-paint-green-600 hover:bg-paint-green-700 text-white py-3 rounded-lg transition-all duration-300 transform hover:scale-105 flex items-center justify-center">
+            <i class="lucide lucide-message-circle mr-2 h-5 w-5"></i> Enviar Mensagem
+          </button>
         </form>
+      </div>
+
+      <!-- Mapa e Informações -->
+      <div>
+        <h2 class="text-3xl font-bold text-paint-green-700 mb-6">Nossa Localização</h2>
+
+        <div class="mb-8 bg-gray-200 rounded-lg flex items-center justify-center h-64 shadow">
+          <div class="text-center">
+            <i class="lucide lucide-map-pin h-12 w-12 text-gray-400 mb-2"></i>
+            <p class="text-gray-500">Mapa da localização</p>
+            <p class="text-sm text-gray-400">Rua das Tintas, 123 - Centro, São Paulo</p>
+          </div>
+        </div>
+
+        <div class="bg-white shadow rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-gray-900 mb-4">Atendimento Personalizado</h3>
+          <div class="space-y-3 text-gray-600">
+            <p>• Visita técnica gratuita em toda a Grande São Paulo</p>
+            <p>• Orçamento detalhado sem compromisso</p>
+            <p>• Atendimento 24h para emergências</p>
+            <p>• Consultoria em cores e acabamentos</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
+</section>
 
+<!-- WhatsApp CTA -->
+<section class="py-16 bg-paint-green-600 text-white">
+  <div class="max-w-4xl mx-auto px-4 text-center">
+    <h2 class="text-3xl font-bold mb-4">Precisa de Atendimento Rápido?</h2>
+    <p class="text-xl mb-8 opacity-90">Fale conosco pelo WhatsApp e tenha atendimento imediato</p>
+    <a href="https://wa.me/seunumero" target="_blank" class="inline-flex items-center bg-green-500 hover:bg-green-600 text-white px-8 py-3 text-lg rounded-full transition-all duration-300 transform hover:scale-105">
+      <i class="lucide lucide-message-circle mr-2 h-5 w-5"></i> Chamar no WhatsApp
+    </a>
+  </div>
+</section>
 
-<!-- BOOTSTRAP -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
-<?php
-// Processar o POST do formulário de contato
+<?php include('footer.php'); ?>
