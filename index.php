@@ -2,12 +2,10 @@
 // Define o caminho absoluto para a raiz do seu projeto
 define('ROOT_PATH', __DIR__ . '/');
 
-// ... seu código PHP para roteamento e outras coisas
-
 // Dados para a seção de Recursos (Features)
 $features = [
     [
-        'icon' => '<i class="bi bi-check-circle-fill h-8 w-8 text-paint-green-600"></i>', // Usando Bootstrap Icons para simular lucide-react
+        'icon' => '<i class="bi bi-check-circle-fill h-8 w-8 text-paint-green-600"></i>',
         'title' => "Experiência Comprovada",
         'description' => "Mais de 25 anos transformando espaços com qualidade"
     ],
@@ -28,12 +26,13 @@ $features = [
     ]
 ];
 
+
 // Dados para a seção de Serviços
 $services = [
     [
         'title' => "Pinturas Gerais",
         'description' => "Pintura residencial e predial com acabamento perfeito",
-        'link' => "index.php?page=servicos" // Ajuste para o seu sistema de roteamento PHP
+        'link' => "index.php?page=servicos"
     ],
     [
         'title' => "Pinturas Versáteis",
@@ -61,40 +60,150 @@ $services = [
         'link' => "index.php?page=servicos"
     ]
 ];
+
+// Inclui o cabeçalho
+include 'header.php';
 ?>
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
- 
-  <link rel="stylesheet" href=" css/style.css">
-  <title>HOME</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
 </head>
 <body>
-  
+    <!-- MODAL DE ORÇAMENTO -->
+ 
+ <input type="hidden" name="formulario" value="orcamento">
+ 
+  <div class="modal fade" id="orcamentoModal" tabindex="-1" aria-labelledby="orcamentoModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <form method="post">
+          <div class="modal-header">
+            <h5 class="modal-title" id="orcamentoModalLabel">Formulário de Orçamento</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label>Nome Completo *</label>
+              <input type="text" class="form-control" name="nome" required>
+            </div>
+
+            <div class="mb-3">
+              <label>Email *</label>
+              <input type="email" class="form-control" name="email" required>
+            </div>
+
+            <div class="mb-3">
+              <label>Telefone *</label>
+              <input type="tel" class="form-control" name="telefone" required>
+            </div>
+
+            <div class="mb-3">
+              <label>Endereço da Obra *</label>
+              <input type="text" class="form-control" name="endereco" required>
+            </div>
+
+            <div class="mb-3">
+              <label>Tipo de Imóvel *</label>
+              <select class="form-select" name="tipoImovel" required>
+                <option value="">Selecione</option>
+                <option>Residencial - Casa</option>
+                <option>Residencial - Apartamento</option>
+                <option>Comercial - Escritório</option>
+                <option>Comercial - Loja</option>
+                <option>Industrial</option>
+                <option>Outro</option>
+              </select>
+            </div>
+
+            <div class="mb-3">
+              <label>Tipo de Serviço *</label>
+              <select class="form-select" name="tipoServico" required>
+                <option value="">Selecione</option>
+                <option>Pintura Interna</option>
+                <option>Pintura Externa</option>
+                <option>Pintura Interna e Externa</option>
+                <option>Impermeabilização</option>
+                <option>Textura/Grafiato</option>
+                <option>Revestimento Especial</option>
+                <option>Restauração</option>
+                <option>Manutenção</option>
+              </select>
+            </div>
+
+            <div class="mb-3">
+              <label>Área Aproximada (m²)</label>
+              <input type="number" class="form-control" name="area">
+            </div>
+
+            <div class="mb-3">
+              <label>Urgência</label>
+              <select class="form-select" name="urgencia">
+                <option value="">Selecione</option>
+                <option value="baixa">Baixa - Posso aguardar</option>
+                <option value="media">Média - Até 30 dias</option>
+                <option value="alta">Alta - Até 15 dias</option>
+                <option value="urgente">Urgente - Até 7 dias</option>
+              </select>
+            </div>
+
+            <div class="mb-3">
+              <label>Necessidades Adicionais</label><br>
+              <?php
+              $opcoes = [
+                "Preparação de superfície",
+                "Remoção de papel de parede",
+                "Correção de rachaduras",
+                "Aplicação de massa corrida",
+                "Proteção de móveis",
+                "Limpeza pós-obra",
+                "Consultoria de cores",
+                "Projeto de acabamento"
+              ];
+              foreach ($opcoes as $opt) {
+                echo "<div class='form-check'>
+                        <input class='form-check-input' type='checkbox' name='necessidades[]' value='$opt'>
+                        <label class='form-check-label'>$opt</label>
+                      </div>";
+              }
+              ?>
+            </div>
+
+            <div class="mb-3">
+              <label>Observações</label>
+              <textarea class="form-control" name="observacoes" rows="4"></textarea>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-success">Solicitar Orçamento</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+
+
+<!-- CONTEÚDO DA PÁGINA INICIA AQUI -->
+
+
 <div class="min-h-screen bg-white">
     
     <section class="relative min-h-screen flex items-center justify-center overflow-hidden">
-   <div class="absolute left-10 top-1/4 float-animation opacity-20">
-    <img
-        src="/img/lovable-uploads/9b6a64e8-ea29-457a-b23c-cbd2ed466387.png"
-        alt="Paint tools"
-        class="w-32 h-32 object-contain"
-    />
-</div>
+        <div class="absolute left-10 top-1/4 float-animation opacity-20">
+            <img src="/img/lovable-uploads/9b6a64e8-ea29-457a-b23c-cbd2ed466387.png" alt="Paint tools" class="w-32 h-32 object-contain"/>
+        </div>
 
         <div class="relative z-10 max-w-4xl mx-auto px-4 text-center">
             <div class="bg-white/90 backdrop-blur-sm rounded-2xl p-8 shadow-2xl">
-                <h1 class="text-4xl md:text-6xl font-bold text-paint-green-700 mb-4">
-                    CLPINTURAS
-                </h1>
-                <p class="text-xl md:text-2xl text-gray-600 mb-8">
-                    Transformando espaços com cores e qualidade
-                </p>
-                <a href="index.php?page=orcamento" class="btn bg-paint-green-600 hover:bg-paint-green-700 text-white px-8 py-4 text-lg rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg">
-                    FAÇA SEU ORÇAMENTO
-                    <i class="bi bi-arrow-right ml-2 h-5 w-5"></i>
+                <h1 class="text-4xl md:text-6xl font-bold text-paint-green-700 mb-4">CLPINTURAS</h1>
+                <p class="text-xl md:text-2xl text-gray-600 mb-8">Transformando espaços com cores e qualidade</p>
+                <a href="#" class="inline-flex items-center justify-center bg-paint-green-600 hover:bg-paint-green-700 text-white px-8 py-4 text-lg rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg"
+                    data-bs-toggle="modal" data-bs-target="#orcamentoModal">
+                    AÇA SEU ORÇAMENTO
+                    <i class="bi bi-arrow-right ml-2"></i>
                 </a>
             </div>
         </div>
@@ -103,9 +212,7 @@ $services = [
     <section class="py-20 bg-white">
         <div class="max-w-7xl mx-auto px-4">
             <div class="text-center mb-16">
-                <h2 class="text-3xl md:text-4xl font-bold text-paint-green-700 mb-4">
-                    Sua Escolha em Qualidade e Confiança
-                </h2>
+                <h2 class="text-3xl md:text-4xl font-bold text-paint-green-700 mb-4">Sua Escolha em Qualidade e Confiança</h2>
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -125,23 +232,16 @@ $services = [
     <section class="py-20 bg-paint-cream-50">
         <div class="max-w-7xl mx-auto px-4">
             <div class="text-center mb-16">
-                <h2 class="text-3xl md:text-4xl font-bold text-paint-green-700 mb-4">
-                    Principais Serviços
-                </h2>
+                <h2 class="text-3xl md:text-4xl font-bold text-paint-green-700 mb-4">Principais Serviços</h2>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <?php foreach ($services as $service): ?>
                     <div class="card group hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
                         <div class="card-body p-6">
-                            <h3 class="text-xl font-semibold text-gray-900 mb-3 group-hover:text-paint-green-600 transition-colors">
-                                <?= $service['title'] ?>
-                            </h3>
+                            <h3 class="text-xl font-semibold text-gray-900 mb-3 group-hover:text-paint-green-600 transition-colors"><?= $service['title'] ?></h3>
                             <p class="text-gray-600 mb-4"><?= $service['description'] ?></p>
-                            <a
-                                href="<?= $service['link'] ?>"
-                                class="text-paint-green-600 hover:text-paint-green-700 font-medium inline-flex items-center"
-                            >
+                            <a href="<?= $service['link'] ?>" class="text-paint-green-600 hover:text-paint-green-700 font-medium inline-flex items-center">
                                 Saiba mais <i class="bi bi-arrow-right ml-1 h-4 w-4"></i>
                             </a>
                         </div>
@@ -154,9 +254,7 @@ $services = [
     <section class="py-20 bg-white">
         <div class="max-w-7xl mx-auto px-4">
             <div class="text-center mb-16">
-                <h2 class="text-3xl md:text-4xl font-bold text-paint-green-700 mb-4">
-                    REPRESENTANTES
-                </h2>
+                <h2 class="text-3xl md:text-4xl font-bold text-paint-green-700 mb-4">REPRESENTANTES</h2>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -165,8 +263,11 @@ $services = [
                         <div class="w-16 h-16 bg-paint-green-600 rounded-full mx-auto mb-4 flex items-center justify-center">
                             <span class="text-white font-bold text-xl">MN</span>
                         </div>
+                        <img src="img/eu.png" alt="eu" class="w-24 h-24 rounded-full mx-auto mb-4">
                         <p class="text-gray-600 mb-4 italic">
-                            "Há 6 anos este é meu principal fornecedor. Foi sem dúvida uma das melhores escolhas que já fizemos por entregar um produto final sempre dentro das nossas expectativas."
+                            Filho de Clodoaldo, cresceu acompanhando de perto o trabalho de seu pai 
+                            e carrega consigo toda a experiência e dedicação da família. Sempre atento
+                             às tendências e necessidades dos clientes, é o responsável por manter a qualidade e confiança da marca.
                         </p>
                         <h4 class="font-semibold text-gray-900">MARCOS INÁCIO</h4>
                     </div>
@@ -177,21 +278,29 @@ $services = [
                         <div class="w-16 h-16 bg-paint-green-600 rounded-full mx-auto mb-4 flex items-center justify-center">
                             <span class="text-white font-bold text-xl">FF</span>
                         </div>
+                        <img src="img/bruno.jpg" alt="bruno" class="w-24 h-24 rounded-full mx-auto mb-4">
                         <p class="text-gray-600 mb-4 italic">
-                            "Contratei a empresa da Cidade de São Paulo que veio fazer o serviço aqui na Bahia. Desde 2022, trabalho sempre com eles. São os únicos que fazem um trabalho de excelência."
+                            Começou como ajudante de Clodoaldo e,
+                             pela dedicação e competência, tornou-se sócio desde 2024. 
+                             Bruno traz energia, inovação e compromisso para o crescimento da empresa e a satisfação dos clientes..
                         </p>
+
                         <h4 class="font-semibold text-gray-900">BRUNO TEILOR</h4>
                     </div>
                 </div>
             </div>
         </div>
     </section>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+</body>
+</html>
 </body>
 </html>
 
-    <?php
-    // Inclui o rodapé da página
-    // Você precisará criar o arquivo footer.php
-    include 'footer.php';
-    ?>
-</div>
+
+<?php
+// Inclui o rodapé
+include 'footer.php';
+?>
