@@ -16,7 +16,7 @@
 </head>
 <body>
 
-<?php include 'header.php'; ?>
+<?php include("../header.php"); ?>
 
 <div class="container my-5">
     <h1 class="mb-4">Quem Somos</h1>
@@ -33,7 +33,17 @@
         Hoje, a CLPinturas é referência no mercado, reconhecida pela qualidade dos serviços, pontualidade e profissionalismo de sua equipe.
         Transformar espaços é mais do que um trabalho — é nossa missão.
     </p>
-
+<style>
+    .card {
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+  
+    
+</style>
     <h2 class="mt-5">Nossos Valores</h2>
     <div class="row mt-4">
         <div class="col-md-4 mb-4" data-aos="fade-up">
@@ -65,7 +75,7 @@
         </div>
     </div>
 
-    <img src="img/rep 1.png" alt="imagem representativa de uma casa" class="img-fluid my-4">
+    
 
     <h2 class="mt-4">Nosso Compromisso</h2>
     <p>
@@ -83,7 +93,7 @@
     FAÇA SEU ORÇAMENTO
 </a>
 
-<?php include 'footer.php'; ?>
+<?php include ("../footer.php") ?>
 
 
 <!-- Scripts -->
