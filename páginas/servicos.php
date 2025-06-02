@@ -1,6 +1,6 @@
 <?php
 // Inclui o cabeçalho
-include 'header.php';
+include '../header.php';
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -15,5 +15,5 @@ include 'header.php';
 </html>
 <?php
 // Inclui o rodapé
-include 'footer.php';
+include '../footer.php';
 ?>
