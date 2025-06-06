@@ -16,7 +16,7 @@
 </head>
 <body>
 
-<?php include("../header.php"); // Caminho correto para subir um nível até a raiz ?>
+
 
 <div class="container my-5">
     <h1 class="mb-4">Quem Somos</h1>

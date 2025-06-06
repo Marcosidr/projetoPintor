@@ -163,7 +163,7 @@ $services = [
 </head>
 <body>
 
-<!-- NAVBAR -->
+ <!-- NAVBAR -->
 <nav class="navbar navbar-expand-lg shadow-sm py-3">
     <div class="container">
         <a class="navbar-brand fw-bold" href="./index.php">
@@ -189,84 +189,10 @@ $services = [
         </div>
     </div>
 </nav>
-
-<!-- MODAL DE ORÇAMENTO -->
-<div class="modal fade" id="orcamentoModal" tabindex="-1" aria-labelledby="orcamentoModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <form method="post" action="">
-                <input type="hidden" name="formulario" value="orcamento">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="orcamentoModalLabel">Formulário de Orçamento</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label>Nome Completo *</label>
-                        <input type="text" class="form-control" name="nome" required>
-                    </div>
-
-                    <div class="mb-3">
-                        <label>Email *</label>
-                        <input type="email" class="form-control" name="email" required>
-                    </div>
-
-                    <div class="mb-3">
-                        <label>Telefone *</label>
-                        <input type="tel" class="form-control" name="telefone" required>
-                    </div>
-
-                    <div class="mb-3">
-                        <label>Endereço da Obra *</label>
-                        <input type="text" class="form-control" name="endereco" required>
-                    </div>
-
-                    <div class="mb-3">
-                        <label>Tipo de Imóvel *</label>
-                        <select class="form-select" name="tipoImovel" required>
-                            <option value="">Selecione</option>
-                            <option>Residencial - Casa</option>
-                            <option>Residencial - Apartamento</option>
-                            <option>Comercial - Escritório</option>
-                            <option>Comercial - Loja</option>
-                            <option>Industrial</option>
-                            <option>Outro</option>
-                        </select>
-                    </div>
-
-                    <div class="mb-3">
-                        <label>Tipo de Serviço *</label>
-                        <select class="form-select" name="tipoServico" required>
-                            <option value="">Selecione</option>
-                            <option>Pintura Interna</option>
-                            <option>Pintura Externa</option>
-                            <option>Pintura Interna e Externa</option>
-                            <option>Impermeabilização</option>
-                            <option>Revestimentos e Texturas</option>
-                            <option>Outro</option>
-                        </select>
-                    </div>
-
-                    <div class="mb-3">
-                        <label>Área Aproximada (m²) *</label>
-                        <input type="number" class="form-control" name="area" min="1" required>
-                    </div>
-
-                    <div class="mb-3">
-                        <label>Observações</label>
-                        <textarea class="form-control" name="observacoes" rows="3"></textarea>
-                    </div>
-                </div>
-
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-success px-4 fw-bold">Enviar</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<!-- HERO SECTION -->
+<?php
+include 'páginas/modal-orcamento.php'; // Inclui o modal de orçamento
+?>
+<!--seção principal do site o que irá chamar atenção -->
 <section class="container my-5">
     <div class="row align-items-center">
         <div class="col-lg-6">
@@ -274,7 +200,7 @@ $services = [
             <p class="lead text-muted mb-4">
                 Profissionais especializados com mais de 25 anos de experiência, utilizando materiais de alta qualidade para garantir o melhor acabamento.
             </p>
-            <a href="#servicos" class="btn btn-success btn-lg rounded-pill px-5 fw-bold btn-shadow">Veja nossos serviços</a>
+            <a href="páginas/servicos.php" class="btn btn-success btn-lg rounded-pill px-5 fw-bold btn-shadow">Veja nossos serviços</a>
         </div>
         <div class="col-lg-6 text-center">
             <img src="img/home/paint_illustration.webp" alt="Ilustração de pintura" class="img-fluid float-animation" style="max-width: 400px;" />
@@ -282,7 +208,7 @@ $services = [
     </div>
 </section>
 
-<!-- FEATURES SECTION -->
+<!-- Seção para colocar por que escolher meu produtos -->
 <section class="container py-5 bg-paint-cream-50 rounded-4 shadow-sm my-5">
     <h2 class="text-center mb-5 text-paint-green-700 fw-bold">Por que escolher a CLPinturas?</h2>
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
