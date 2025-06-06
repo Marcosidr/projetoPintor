@@ -2,63 +2,9 @@
 // Define o caminho absoluto para a raiz do seu projeto
 define('ROOT_PATH', __DIR__ . '/');
 
-// Dados para a seção de Recursos (Features)
-$features = [
-    [
-        'icon' => '<i class="bi bi-check-circle-fill h-8 w-8 text-paint-green-600"></i>',
-        'title' => "Experiência Comprovada",
-        'description' => "Mais de 25 anos transformando espaços com qualidade"
-    ],
-    [
-        'icon' => '<i class="bi bi-star-fill h-8 w-8 text-paint-green-600"></i>',
-        'title' => "Qualidade Garantida",
-        'description' => "Utilizamos apenas tintas e materiais de primeira linha"
-    ],
-    [
-        'icon' => '<i class="bi bi-people-fill h-8 w-8 text-paint-green-600"></i>',
-        'title' => "Compromisso com o Cliente",
-        'description' => "Atendimento personalizado do orçamento à entrega"
-    ],
-    [
-        'icon' => '<i class="bi bi-award-fill h-8 w-8 text-paint-green-600"></i>',
-        'title' => "Alto Atendimento Personalizado",
-        'description' => "Equipe especializada em diversos tipos de superfície"
-    ]
-];
-
-// Dados para a seção de Serviços
-$services = [
-    [
-        'title' => "Pinturas Gerais",
-        'description' => "Pintura residencial e predial com acabamento perfeito",
-        'link' => "index.php?page=servicos"
-    ],
-    [
-        'title' => "Pinturas Versáteis",
-        'description' => "Técnicas especiais para ambientes únicos",
-        'link' => "index.php?page=servicos"
-    ],
-    [
-        'title' => "Tratamento de Superfícies",
-        'description' => "Preparação completa para maior durabilidade",
-        'link' => "index.php?page=servicos"
-    ],
-    [
-        'title' => "Pintura Comercial",
-        'description' => "Projetos corporativos com acabamento profissional",
-        'link' => "index.php?page=servicos"
-    ],
-    [
-        'title' => "Impermeabilização",
-        'description' => "Proteção definitiva contra umidade e infiltrações",
-        'link' => "index.php?page=servicos"
-    ],
-    [
-        'title' => "Revestimentos e Texturas",
-        'description' => "Acabamentos especiais para valorizar seu espaço",
-        'link' => "index.php?page=servicos"
-    ]
-];
+// Parâmetro da URL para controle de página
+$param = $_GET["param"] ?? "home";
+$pagina = "páginas/{$param}.php";
 ?>
 
 <!DOCTYPE html>
@@ -114,7 +60,6 @@ $services = [
             background-color: #27652b;
         }
 
-        /* Card styles */
         .card {
             border: none;
             background-color: #fff;
@@ -126,7 +71,6 @@ $services = [
             padding: 1rem;
         }
 
-        /* Custom text colors */
         .text-paint-green-600 {
             color: var(--paint-green-600);
         }
@@ -139,18 +83,15 @@ $services = [
             background-color: var(--paint-cream-50);
         }
 
-        /* Hover scale */
         .hover-scale:hover {
             transform: scale(1.05);
             transition: transform 0.3s ease;
         }
 
-        /* Button shadow */
         .btn-shadow {
             box-shadow: 0 4px 10px rgba(0,0,0,0.15);
         }
 
-        /* Float animation for the image */
         @keyframes float {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-15px); }
@@ -163,7 +104,7 @@ $services = [
 </head>
 <body>
 
- <!-- NAVBAR -->
+<!-- NAVBAR -->
 <nav class="navbar navbar-expand-lg shadow-sm py-3">
     <div class="container">
         <a class="navbar-brand fw-bold" href="./index.php">
@@ -176,10 +117,10 @@ $services = [
 
         <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
             <ul class="navbar-nav align-items-center">
-                <li class="nav-item"><a class="nav-link" href="./index.php">HOME</a></li>
-                <li class="nav-item"><a class="nav-link" href="páginas/quem-somos.php">QUEM SOMOS</a></li>
-                <li class="nav-item"><a class="nav-link" href="páginas/servicos.php">SERVIÇOS</a></li>
-                <li class="nav-item"><a class="nav-link" href="páginas/contato.php">CONTATO</a></li>
+                <li class="nav-item"><a class="nav-link" href="index.php">HOME</a></li>
+                <li class="nav-item"><a class="nav-link" href="index.php?param=quem-somos">QUEM SOMOS</a></li>
+                <li class="nav-item"><a class="nav-link" href="index.php?param=servicos">SERVIÇOS</a></li>
+                <li class="nav-item"><a class="nav-link" href="index.php?param=contato">CONTATO</a></li>
                 <li class="nav-item ms-2">
                     <button type="button" class="btn btn-success rounded-pill px-4 fw-bold text-white" data-bs-toggle="modal" data-bs-target="#orcamentoModal">
                         ORÇAMENTO
@@ -189,87 +130,44 @@ $services = [
         </div>
     </div>
 </nav>
-<?php
-include 'páginas/modal-orcamento.php'; // Inclui o modal de orçamento
-?>
-<!--seção principal do site o que irá chamar atenção -->
-<section class="container my-5">
-    <div class="row align-items-center">
-        <div class="col-lg-6">
-            <h1 class="display-4 fw-bold mb-4 text-paint-green-700">Transforme seu ambiente com <br />a qualidade CLPinturas</h1>
-            <p class="lead text-muted mb-4">
-                Profissionais especializados com mais de 25 anos de experiência, utilizando materiais de alta qualidade para garantir o melhor acabamento.
-            </p>
-            <a href="páginas/servicos.php" class="btn btn-success btn-lg rounded-pill px-5 fw-bold btn-shadow">Veja nossos serviços</a>
-        </div>
-        <div class="col-lg-6 text-center">
-            <img src="img/home/paint_illustration.webp" alt="Ilustração de pintura" class="img-fluid float-animation" style="max-width: 400px;" />
-        </div>
-    </div>
-</section>
 
-<!-- Seção para colocar por que escolher meu produtos -->
-<section class="container py-5 bg-paint-cream-50 rounded-4 shadow-sm my-5">
-    <h2 class="text-center mb-5 text-paint-green-700 fw-bold">Por que escolher a CLPinturas?</h2>
-    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
-        <?php foreach ($features as $feature): ?>
-            <div class="col text-center">
-                <div class="card p-4 h-100 border-0">
-                    <div class="mb-3">
-                        <?= $feature['icon'] ?>
-                    </div>
-                    <h5 class="fw-bold text-paint-green-700 mb-2"><?= $feature['title'] ?></h5>
-                    <p class="text-muted"><?= $feature['description'] ?></p>
-                </div>
-            </div>
-        <?php endforeach; ?>
-    </div>
-</section>
+<?php include 'páginas/modal-orcamento.php'; ?>
+
+<main>
+<?php
+// Inclui a página conforme o parâmetro, se existir
+if (file_exists($pagina)) {
+    include $pagina;
+} else {
+    include "páginas/erro.php";
+}
+?>
+</main>
 
 <!-- FOOTER -->
 <footer class="mt-5" style="background-color: #f5f5dc; color: #5D4037;">
   <div class="container py-4">
     <div class="row text-center text-md-start align-items-center">
-
-      <!-- Coluna 1: Nome e slogan -->
       <div class="col-md-4 mb-4 mb-md-0">
         <h5 class="fw-bold" style="color: #5D4037;">CLPinturas</h5>
         <p style="color: #2e7d32;">Transformando espaços com<br>cores e qualidade desde 1995.</p>
       </div>
 
-      <!-- Coluna 2: Links úteis -->
       <div class="col-md-4 mb-4 mb-md-0">
         <h5 class="fw-bold" style="color: #5D4037;">links úteis</h5>
         <ul class="list-unstyled">
           <li><a href="index.php" class="text-decoration-none" style="color: #2e7d32;">HOME</a></li>
-          <li><a href="páginas/contato.php" class="text-decoration-none" style="color: #2e7d32;">CONTATO</a></li>
+          <li><a href="index.php?param=contato" class="text-decoration-none" style="color: #2e7d32;">CONTATO</a></li>
           <li><a href="#" data-bs-toggle="modal" data-bs-target="#orcamentoModal" class="text-decoration-none" style="color: #2e7d32;">ORÇAMENTO</a></li>
-          <li><a href="páginas/servicos.php" class="text-decoration-none" style="color: #2e7d32;">SERVIÇOS</a></li>
+          <li><a href="index.php?param=servicos" class="text-decoration-none" style="color: #2e7d32;">SERVIÇOS</a></li>
         </ul>
       </div>
-
-      <!-- Coluna 3: Redes sociais -->
-      <div class="col-md-4">
-        <h6 class="fw-bold text-md-end mb-3 mb-md-2" style="color: #5D4037;">Perfis</h6>
-        <div class="d-flex justify-content-center justify-content-md-end gap-3">
-          <a href="#" class="text-success fs-4"><i class="bi bi-whatsapp"></i></a>
-          <a href="#" class="text-danger fs-4"><i class="bi bi-instagram"></i></a>
-          <a href="#" class="text-dark fs-4"><i class="bi bi-paint-bucket"></i></a>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- Rodapé inferior -->
-    <div class="text-center mt-4 small" style="color: #5D4037;">
-      © 2025 CL Pinturas. Todos os direitos reservados
     </div>
   </div>
 </footer>
 
-<!-- BOOTSTRAP JS -->
+<!-- Scripts Bootstrap -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>
-<?php
-// Inclui o rodapé
