@@ -1,6 +1,6 @@
 <?php
 // Inclui o cabeçalho (já deve conter DOCTYPE, html, head e início do body)
-include '../header.php';
+include '../header.php'; // Caminho correto para subir um nível até a raiz
 ?>
 
 <!-- Conteúdo da Página de Contato -->
@@ -24,9 +24,9 @@ include '../header.php';
 </div>
 
 <!-- Modal de Orçamento -->
-<?php include '../páginas/modal-orcamento.php'; ?>
+<?php include './modal-orcamento.php'; // Caminho corrigido para incluir um arquivo na mesma pasta ?>
 
 <?php
 // Inclui o rodapé (deve fechar o body e o html)
-include '../footer.php';
+include '../footer.php'; // Caminho correto para subir um nível até a raiz
 ?>

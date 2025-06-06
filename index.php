@@ -26,7 +26,6 @@ $features = [
     ]
 ];
 
-
 // Dados para a seção de Serviços
 $services = [
     [
@@ -60,247 +59,291 @@ $services = [
         'link' => "index.php?page=servicos"
     ]
 ];
-
-// Inclui o cabeçalho
-include 'header.php';
 ?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>CLPinturas - Home</title>
+
+    <!-- Bootstrap e ícones -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+
+    <!-- Estilos personalizados -->
+    <style>
+        :root {
+            --verde-clp: #2e7d32;
+            --creme-clp: #f5f5dc;
+            --marrom-clp: #5D4037;
+            --paint-green-600: #2e7d32;
+            --paint-green-700: #27652b;
+            --paint-cream-50: #f5f5dc;
+        }
+
+        body {
+            background-color: var(--creme-clp);
+        }
+
+        .navbar {
+            background-color: #fff;
+        }
+
+        .navbar .nav-link {
+            color: var(--marrom-clp);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .navbar .nav-link:hover {
+            color: var(--verde-clp);
+        }
+
+        .navbar-brand {
+            color: var(--verde-clp);
+        }
+
+        .btn-success {
+            background-color: var(--verde-clp);
+            border: none;
+        }
+
+        .btn-success:hover {
+            background-color: #27652b;
+        }
+
+        /* Card styles */
+        .card {
+            border: none;
+            background-color: #fff;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .card-body {
+            padding: 1rem;
+        }
+
+        /* Custom text colors */
+        .text-paint-green-600 {
+            color: var(--paint-green-600);
+        }
+
+        .text-paint-green-700 {
+            color: var(--paint-green-700);
+        }
+
+        .bg-paint-cream-50 {
+            background-color: var(--paint-cream-50);
+        }
+
+        /* Hover scale */
+        .hover-scale:hover {
+            transform: scale(1.05);
+            transition: transform 0.3s ease;
+        }
+
+        /* Button shadow */
+        .btn-shadow {
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        }
+
+        /* Float animation for the image */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        .float-animation {
+            animation: float 6s ease-in-out infinite;
+        }
+    </style>
 </head>
 <body>
-    <!-- MODAL DE ORÇAMENTO -->
- 
- <input type="hidden" name="formulario" value="orcamento">
- 
-  <div class="modal fade" id="orcamentoModal" tabindex="-1" aria-labelledby="orcamentoModalLabel" aria-hidden="true">
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg shadow-sm py-3">
+    <div class="container">
+        <a class="navbar-brand fw-bold" href="./index.php">
+            <i class="bi bi-brush"></i> CLPINTURAS
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+            <ul class="navbar-nav align-items-center">
+                <li class="nav-item"><a class="nav-link" href="./index.php">HOME</a></li>
+                <li class="nav-item"><a class="nav-link" href="páginas/quem-somos.php">QUEM SOMOS</a></li>
+                <li class="nav-item"><a class="nav-link" href="páginas/servicos.php">SERVIÇOS</a></li>
+                <li class="nav-item"><a class="nav-link" href="páginas/contato.php">CONTATO</a></li>
+                <li class="nav-item ms-2">
+                    <button type="button" class="btn btn-success rounded-pill px-4 fw-bold text-white" data-bs-toggle="modal" data-bs-target="#orcamentoModal">
+                        ORÇAMENTO
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- MODAL DE ORÇAMENTO -->
+<div class="modal fade" id="orcamentoModal" tabindex="-1" aria-labelledby="orcamentoModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <form method="post">
-          <div class="modal-header">
-            <h5 class="modal-title" id="orcamentoModalLabel">Formulário de Orçamento</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
-          </div>
-          <div class="modal-body">
-            <div class="mb-3">
-              <label>Nome Completo *</label>
-              <input type="text" class="form-control" name="nome" required>
-            </div>
+        <div class="modal-content">
+            <form method="post" action="">
+                <input type="hidden" name="formulario" value="orcamento">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="orcamentoModalLabel">Formulário de Orçamento</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label>Nome Completo *</label>
+                        <input type="text" class="form-control" name="nome" required>
+                    </div>
 
-            <div class="mb-3">
-              <label>Email *</label>
-              <input type="email" class="form-control" name="email" required>
-            </div>
+                    <div class="mb-3">
+                        <label>Email *</label>
+                        <input type="email" class="form-control" name="email" required>
+                    </div>
 
-            <div class="mb-3">
-              <label>Telefone *</label>
-              <input type="tel" class="form-control" name="telefone" required>
-            </div>
+                    <div class="mb-3">
+                        <label>Telefone *</label>
+                        <input type="tel" class="form-control" name="telefone" required>
+                    </div>
 
-            <div class="mb-3">
-              <label>Endereço da Obra *</label>
-              <input type="text" class="form-control" name="endereco" required>
-            </div>
+                    <div class="mb-3">
+                        <label>Endereço da Obra *</label>
+                        <input type="text" class="form-control" name="endereco" required>
+                    </div>
 
-            <div class="mb-3">
-              <label>Tipo de Imóvel *</label>
-              <select class="form-select" name="tipoImovel" required>
-                <option value="">Selecione</option>
-                <option>Residencial - Casa</option>
-                <option>Residencial - Apartamento</option>
-                <option>Comercial - Escritório</option>
-                <option>Comercial - Loja</option>
-                <option>Industrial</option>
-                <option>Outro</option>
-              </select>
-            </div>
+                    <div class="mb-3">
+                        <label>Tipo de Imóvel *</label>
+                        <select class="form-select" name="tipoImovel" required>
+                            <option value="">Selecione</option>
+                            <option>Residencial - Casa</option>
+                            <option>Residencial - Apartamento</option>
+                            <option>Comercial - Escritório</option>
+                            <option>Comercial - Loja</option>
+                            <option>Industrial</option>
+                            <option>Outro</option>
+                        </select>
+                    </div>
 
-            <div class="mb-3">
-              <label>Tipo de Serviço *</label>
-              <select class="form-select" name="tipoServico" required>
-                <option value="">Selecione</option>
-                <option>Pintura Interna</option>
-                <option>Pintura Externa</option>
-                <option>Pintura Interna e Externa</option>
-                <option>Impermeabilização</option>
-                <option>Textura/Grafiato</option>
-                <option>Revestimento Especial</option>
-                <option>Restauração</option>
-                <option>Manutenção</option>
-              </select>
-            </div>
+                    <div class="mb-3">
+                        <label>Tipo de Serviço *</label>
+                        <select class="form-select" name="tipoServico" required>
+                            <option value="">Selecione</option>
+                            <option>Pintura Interna</option>
+                            <option>Pintura Externa</option>
+                            <option>Pintura Interna e Externa</option>
+                            <option>Impermeabilização</option>
+                            <option>Revestimentos e Texturas</option>
+                            <option>Outro</option>
+                        </select>
+                    </div>
 
-            <div class="mb-3">
-              <label>Área Aproximada (m²)</label>
-              <input type="number" class="form-control" name="area">
-            </div>
+                    <div class="mb-3">
+                        <label>Área Aproximada (m²) *</label>
+                        <input type="number" class="form-control" name="area" min="1" required>
+                    </div>
 
-            <div class="mb-3">
-              <label>Urgência</label>
-              <select class="form-select" name="urgencia">
-                <option value="">Selecione</option>
-                <option value="baixa">Baixa - Posso aguardar</option>
-                <option value="media">Média - Até 30 dias</option>
-                <option value="alta">Alta - Até 15 dias</option>
-                <option value="urgente">Urgente - Até 7 dias</option>
-              </select>
-            </div>
+                    <div class="mb-3">
+                        <label>Observações</label>
+                        <textarea class="form-control" name="observacoes" rows="3"></textarea>
+                    </div>
+                </div>
 
-            <div class="mb-3">
-              <label>Necessidades Adicionais</label><br>
-              <?php
-              $opcoes = [
-                "Preparação de superfície",
-                "Remoção de papel de parede",
-                "Correção de rachaduras",
-                "Aplicação de massa corrida",
-                "Proteção de móveis",
-                "Limpeza pós-obra",
-                "Consultoria de cores",
-                "Projeto de acabamento"
-              ];
-              foreach ($opcoes as $opt) {
-                echo "<div class='form-check'>
-                        <input class='form-check-input' type='checkbox' name='necessidades[]' value='$opt'>
-                        <label class='form-check-label'>$opt</label>
-                      </div>";
-              }
-              ?>
-            </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success px-4 fw-bold">Enviar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
-            <div class="mb-3">
-              <label>Observações</label>
-              <textarea class="form-control" name="observacoes" rows="4"></textarea>
+<!-- HERO SECTION -->
+<section class="container my-5">
+    <div class="row align-items-center">
+        <div class="col-lg-6">
+            <h1 class="display-4 fw-bold mb-4 text-paint-green-700">Transforme seu ambiente com <br />a qualidade CLPinturas</h1>
+            <p class="lead text-muted mb-4">
+                Profissionais especializados com mais de 25 anos de experiência, utilizando materiais de alta qualidade para garantir o melhor acabamento.
+            </p>
+            <a href="#servicos" class="btn btn-success btn-lg rounded-pill px-5 fw-bold btn-shadow">Veja nossos serviços</a>
+        </div>
+        <div class="col-lg-6 text-center">
+            <img src="img/home/paint_illustration.webp" alt="Ilustração de pintura" class="img-fluid float-animation" style="max-width: 400px;" />
+        </div>
+    </div>
+</section>
+
+<!-- FEATURES SECTION -->
+<section class="container py-5 bg-paint-cream-50 rounded-4 shadow-sm my-5">
+    <h2 class="text-center mb-5 text-paint-green-700 fw-bold">Por que escolher a CLPinturas?</h2>
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+        <?php foreach ($features as $feature): ?>
+            <div class="col text-center">
+                <div class="card p-4 h-100 border-0">
+                    <div class="mb-3">
+                        <?= $feature['icon'] ?>
+                    </div>
+                    <h5 class="fw-bold text-paint-green-700 mb-2"><?= $feature['title'] ?></h5>
+                    <p class="text-muted"><?= $feature['description'] ?></p>
+                </div>
             </div>
-          </div>
-          <div class="modal-footer">
-            <button type="submit" class="btn btn-success">Solicitar Orçamento</button>
-          </div>
-        </form>
+        <?php endforeach; ?>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="mt-5" style="background-color: #f5f5dc; color: #5D4037;">
+  <div class="container py-4">
+    <div class="row text-center text-md-start align-items-center">
+
+      <!-- Coluna 1: Nome e slogan -->
+      <div class="col-md-4 mb-4 mb-md-0">
+        <h5 class="fw-bold" style="color: #5D4037;">CLPinturas</h5>
+        <p style="color: #2e7d32;">Transformando espaços com<br>cores e qualidade desde 1995.</p>
       </div>
+
+      <!-- Coluna 2: Links úteis -->
+      <div class="col-md-4 mb-4 mb-md-0">
+        <h5 class="fw-bold" style="color: #5D4037;">links úteis</h5>
+        <ul class="list-unstyled">
+          <li><a href="index.php" class="text-decoration-none" style="color: #2e7d32;">HOME</a></li>
+          <li><a href="páginas/contato.php" class="text-decoration-none" style="color: #2e7d32;">CONTATO</a></li>
+          <li><a href="#" data-bs-toggle="modal" data-bs-target="#orcamentoModal" class="text-decoration-none" style="color: #2e7d32;">ORÇAMENTO</a></li>
+          <li><a href="páginas/servicos.php" class="text-decoration-none" style="color: #2e7d32;">SERVIÇOS</a></li>
+        </ul>
+      </div>
+
+      <!-- Coluna 3: Redes sociais -->
+      <div class="col-md-4">
+        <h6 class="fw-bold text-md-end mb-3 mb-md-2" style="color: #5D4037;">Perfis</h6>
+        <div class="d-flex justify-content-center justify-content-md-end gap-3">
+          <a href="#" class="text-success fs-4"><i class="bi bi-whatsapp"></i></a>
+          <a href="#" class="text-danger fs-4"><i class="bi bi-instagram"></i></a>
+          <a href="#" class="text-dark fs-4"><i class="bi bi-paint-bucket"></i></a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Rodapé inferior -->
+    <div class="text-center mt-4 small" style="color: #5D4037;">
+      © 2025 CL Pinturas. Todos os direitos reservados
     </div>
   </div>
+</footer>
 
-
-
-<!-- CONTEÚDO DA PÁGINA INICIA AQUI -->
-
-
-<div class="min-h-screen bg-white">
-    
-    <section class="relative min-h-screen flex items-center justify-center overflow-hidden">
-        <div class="absolute left-10 top-1/4 float-animation opacity-20">
-            <img src="/img/lovable-uploads/9b6a64e8-ea29-457a-b23c-cbd2ed466387.png" alt="Paint tools" class="w-32 h-32 object-contain"/>
-        </div>
-
-        <div class="relative z-10 max-w-4xl mx-auto px-4 text-center">
-            <div class="bg-white/90 backdrop-blur-sm rounded-2xl p-8 shadow-2xl">
-                <h1 class="text-4xl md:text-6xl font-bold text-paint-green-700 mb-4">CLPINTURAS</h1>
-                <p class="text-xl md:text-2xl text-gray-600 mb-8">Transformando espaços com cores e qualidade</p>
-                <a href="#" class="inline-flex items-center justify-center bg-paint-green-600 hover:bg-paint-green-700 text-white px-8 py-4 text-lg rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg"
-                    data-bs-toggle="modal" data-bs-target="#orcamentoModal">
-                    AÇA SEU ORÇAMENTO
-                    <i class="bi bi-arrow-right ml-2"></i>
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <section class="py-20 bg-white">
-        <div class="max-w-7xl mx-auto px-4">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl md:text-4xl font-bold text-paint-green-700 mb-4">Sua Escolha em Qualidade e Confiança</h2>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                <?php foreach ($features as $feature): ?>
-                    <div class="card text-center p-6 hover:shadow-lg transition-shadow duration-300">
-                        <div class="card-body p-0">
-                            <div class="mb-4 flex justify-center"><?= $feature['icon'] ?></div>
-                            <h3 class="text-lg font-semibold text-gray-900 mb-2"><?= $feature['title'] ?></h3>
-                            <p class="text-gray-600 text-sm"><?= $feature['description'] ?></p>
-                        </div>
-                    </div>
-                <?php endforeach; ?>
-            </div>
-        </div>
-    </section>
-
-    <section class="py-20 bg-paint-cream-50">
-        <div class="max-w-7xl mx-auto px-4">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl md:text-4xl font-bold text-paint-green-700 mb-4">Principais Serviços</h2>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <?php foreach ($services as $service): ?>
-                    <div class="card group hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
-                        <div class="card-body p-6">
-                            <h3 class="text-xl font-semibold text-gray-900 mb-3 group-hover:text-paint-green-600 transition-colors"><?= $service['title'] ?></h3>
-                            <p class="text-gray-600 mb-4"><?= $service['description'] ?></p>
-                            <a href="<?= $service['link'] ?>" class="text-paint-green-600 hover:text-paint-green-700 font-medium inline-flex items-center">
-                                Saiba mais <i class="bi bi-arrow-right ml-1 h-4 w-4"></i>
-                            </a>
-                        </div>
-                    </div>
-                <?php endforeach; ?>
-            </div>
-        </div>
-    </section>
-
-    <section class="py-20 bg-white">
-        <div class="max-w-7xl mx-auto px-4">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl md:text-4xl font-bold text-paint-green-700 mb-4">REPRESENTANTES</h2>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div class="card p-8 bg-paint-cream-50">
-                    <div class="card-body p-0 text-center">
-                        <div class="w-16 h-16 bg-paint-green-600 rounded-full mx-auto mb-4 flex items-center justify-center">
-                            <span class="text-white font-bold text-xl">MN</span>
-                        </div>
-                        <img src="img/eu.png" alt="eu" class="w-24 h-24 rounded-full mx-auto mb-4">
-                        <p class="text-gray-600 mb-4 italic">
-                            Filho de Clodoaldo, cresceu acompanhando de perto o trabalho de seu pai 
-                            e carrega consigo toda a experiência e dedicação da família. Sempre atento
-                             às tendências e necessidades dos clientes, é o responsável por manter a qualidade e confiança da marca.
-                        </p>
-                        <h4 class="font-semibold text-gray-900">MARCOS INÁCIO</h4>
-                    </div>
-                </div>
-
-                <div class="card p-8 bg-paint-cream-50">
-                    <div class="card-body p-0 text-center">
-                        <div class="w-16 h-16 bg-paint-green-600 rounded-full mx-auto mb-4 flex items-center justify-center">
-                            <span class="text-white font-bold text-xl">FF</span>
-                        </div>
-                        <img src="img/bruno.jpg" alt="bruno" class="w-24 h-24 rounded-full mx-auto mb-4">
-                        <p class="text-gray-600 mb-4 italic">
-                            Começou como ajudante de Clodoaldo e,
-                             pela dedicação e competência, tornou-se sócio desde 2024. 
-                             Bruno traz energia, inovação e compromisso para o crescimento da empresa e a satisfação dos clientes..
-                        </p>
-
-                        <h4 class="font-semibold text-gray-900">BRUNO TEILOR</h4>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-</div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-
+<!-- BOOTSTRAP JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
-</body>
-</html>
-
-
 <?php
 // Inclui o rodapé
-include 'footer.php';
-?>

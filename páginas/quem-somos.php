@@ -16,7 +16,7 @@
 </head>
 <body>
 
-<?php include("../header.php"); ?>
+<?php include("../header.php"); // Caminho correto para subir um nível até a raiz ?>
 
 <div class="container my-5">
     <h1 class="mb-4">Quem Somos</h1>
@@ -87,13 +87,13 @@
         Convidamos você a fazer parte da nossa história. Entre em contato e veja como podemos transformar seu espaço com a arte da pintura.
         Aqui, cada pincelada é feita com amor e dedicação.
     </p>
- <?php include 'modal-orcamento.php'; ?>
+ <?php include './modal-orcamento.php'; // Caminho correto para incluir um arquivo na mesma pasta ?>
 
   <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#orcamentoModal">
     FAÇA SEU ORÇAMENTO
 </a>
 
-<?php include ("../footer.php") ?>
+<?php include ("../footer.php") // Caminho correto para subir um nível até a raiz ?>
 
 
 <!-- Scripts -->
