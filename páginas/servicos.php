@@ -172,9 +172,8 @@
         <div class="col-md-4 mb-4 mb-md-0">
           <h5 class="fw-bold" style="color: var(--marrom-clp);">links úteis</h5>
           <ul class="list-unstyled">
-            <li><a href="index.php" class="text-decoration-none" style="color: var(--verde-clp);">HOME</a></li>
+            <li><a href="../index.php" class="text-decoration-none" style="color: var(--verde-clp);">HOME</a></li>
             <li><a href="páginas/contato.php" class="text-decoration-none" style="color: var(--verde-clp);">CONTATO</a></li>
-            <li><a href="#" data-bs-toggle="modal" data-bs-target="#orcamentoModal" class="text-decoration-none" style="color: var(--verde-clp);">ORÇAMENTO</a></li>
             <li><a href="páginas/servicos.php" class="text-decoration-none" style="color: var(--verde-clp);">SERVIÇOS</a></li>
           </ul>
         </div>
