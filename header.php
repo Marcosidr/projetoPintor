@@ -54,7 +54,7 @@
 <!-- NAVBAR -->
 <nav class="navbar navbar-expand-lg shadow-sm py-3">
   <div class="container">
-    <a class="navbar-brand fw-bold" href="index.php">
+    <a class="navbar-brand fw-bold" href="/index.php">
       <i class="bi bi-brush"></i> CLPINTURAS
     </a>
 
@@ -64,10 +64,10 @@
 
     <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
       <ul class="navbar-nav align-items-center">
-        <li class="nav-item"><a class="nav-link" href="index.php">HOME</a></li>
-        <li class="nav-item"><a class="nav-link" href="páginas/quem-somos.php">QUEM SOMOS</a></li>
-        <li class="nav-item"><a class="nav-link" href="páginas/servicos.php">SERVIÇOS</a></li>
-        <li class="nav-item"><a class="nav-link" href="páginas/contato.php">CONTATO</a></li>
+        <li class="nav-item"><a class="nav-link" href="/index.php">HOME</a></li>
+        <li class="nav-item"><a class="nav-link" href="/páginas/quem-somos.php">QUEM SOMOS</a></li>
+        <li class="nav-item"><a class="nav-link" href="/páginas/servicos.php">SERVIÇOS</a></li>
+        <li class="nav-item"><a class="nav-link" href="/páginas/contato.php">CONTATO</a></li>
         <li class="nav-item ms-2">
           <button type="button" class="btn btn-success rounded-pill px-4 fw-bold text-white" data-bs-toggle="modal" data-bs-target="#orcamentoModal">
             ORÇAMENTO
