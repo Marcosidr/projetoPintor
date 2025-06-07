@@ -1,38 +1,90 @@
+/* Reset básico */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+
+/* Corpo e fonte */
 body {
   background-color: #f5f5dc;
   color: #2e2e2e;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.7;
 }
 
+/* Cabeçalho igual ao modelo */
+header {
+  background-color: #2e7d32;
+  color: white;
+  padding: 20px 0;
+  text-align: center;
+}
+
+header h1 {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+header p {
+  font-size: 1rem;
+  opacity: 0.9;
+}
+
+/* Títulos */
 h1, h2 {
   color: #2e7d32;
   font-weight: bold;
 }
 
+/* Parágrafos */
 p {
   font-size: 1.1rem;
-  line-height: 1.7;
 }
 
+/* Cards */
 .card {
   transition: all 0.3s ease;
   border: none;
   border-radius: 20px;
+  background: white;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
 }
 
 .card:hover {
   transform: translateY(-8px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.1);
 }
 
+/* Botões */
 .btn-primary {
   background-color: #2e7d32;
   border: none;
   border-radius: 30px;
   padding: 10px 25px;
   font-weight: 600;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 .btn-primary:hover {
   background-color: #256428;
+}
+
+/* Responsividade */
+@media (min-width: 768px) {
+  .grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+
+  .grid .card {
+    flex: 1 1 calc(33.333% - 20px);
+  }
 }

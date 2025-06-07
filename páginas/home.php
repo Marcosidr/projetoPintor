@@ -67,10 +67,19 @@ $services = [
             <a href="?param=servicos" class="btn btn-success btn-lg rounded-pill px-5 fw-bold btn-shadow">Veja nossos serviços</a>
         </div>
         <div class="col-lg-6 text-center">
-            <img src="img/home/paint_illustration.webp" alt="Ilustração de pintura" class="img-fluid float-animation" style="max-width: 400px;" />
+            <img src="img/image.png" alt="Ilustração de pintura"  style="max-width: 400px;" />
         </div>
     </div>
 </section>
+<style>
+    img {
+    margin-left: 60px;
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+
+    }
+</style>
+
 
 <section class="container py-5 bg-paint-cream-50 rounded-4 shadow-sm my-5">
     <h2 class="text-center mb-5 text-paint-green-700 fw-bold">Por que escolher a CLPinturas?</h2>
@@ -88,3 +97,38 @@ $services = [
         <?php endforeach; ?>
     </div>
 </section>
+
+<div class="container my-5">
+    <h2 class="text-center text-paint-green-700 mb-4">Representantes</h2>
+    <div class="row g-4">
+        <!-- Representante Marcos Inácio -->
+        <div class="col-md-6 col-lg-6">
+            <div class="card hover-scale text-center">
+                <div class="card-body">
+                    <img src="img/eu.jpeg" alt="Marcos Inácio" class="rounded-circle mb-3" style="width: 150px; height: 150px; object-fit: cover;">
+                    <h5 class="fw-bold text-paint-green-600">Marcos Inácio</h5>
+                    <p class="text-muted fst-italic">
+                        Filho de Clodoaldo, cresceu acompanhando de perto o trabalho de seu pai e carrega consigo toda a experiência e dedicação da família.
+                        Sempre atento às tendências e necessidades dos clientes, é o responsável por manter a qualidade e confiança da marca.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Representante Bruno Teilor -->
+        <div class="col-md-6 col-lg-6">
+            <div class="card hover-scale text-center">
+                <div class="card-body">
+                    <img src="img/bruno.jpg" alt="Bruno Teilor" class="rounded-circle mb-3" style="width: 150px; height: 150px; object-fit: cover;">
+                    <h5 class="fw-bold text-paint-green-600">Bruno Teilor</h5>
+                    <p class="text-muted fst-italic">
+                        Começou como ajudante de Clodoaldo e, pela dedicação e competência, tornou-se sócio desde 2024.
+                        Bruno traz energia, inovação e compromisso para o crescimento da empresa e a satisfação dos clientes.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

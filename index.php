@@ -144,27 +144,93 @@ if (file_exists($pagina)) {
 ?>
 </main>
 
-<!-- FOOTER -->
-<footer class="mt-5" style="background-color: #f5f5dc; color: #5D4037;">
-  <div class="container py-4">
-    <div class="row text-center text-md-start align-items-center">
-      <div class="col-md-4 mb-4 mb-md-0">
-        <h5 class="fw-bold" style="color: #5D4037;">CLPinturas</h5>
-        <p style="color: #2e7d32;">Transformando espaços com<br>cores e qualidade desde 1995.</p>
+<!-- footer -->
+<footer class="bg-dark text-white pt-5 pb-4">
+  <div class="container text-md-left">
+    <div class="row text-md-left">
+      <!-- Coluna 1 -->
+      <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mt-3">
+        <h5 class="text-uppercase mb-4 font-weight-bold text-success">CLPinturas</h5>
+        <p>
+          Transformando ambientes com excelência em pintura há mais de 25 anos.
+        </p>
       </div>
 
-      <div class="col-md-4 mb-4 mb-md-0">
-        <h5 class="fw-bold" style="color: #5D4037;">links úteis</h5>
-        <ul class="list-unstyled">
-          <li><a href="index.php" class="text-decoration-none" style="color: #2e7d32;">HOME</a></li>
-          <li><a href="index.php?param=contato" class="text-decoration-none" style="color: #2e7d32;">CONTATO</a></li>
-          <li><a href="#" data-bs-toggle="modal" data-bs-target="#orcamentoModal" class="text-decoration-none" style="color: #2e7d32;">ORÇAMENTO</a></li>
-          <li><a href="index.php?param=servicos" class="text-decoration-none" style="color: #2e7d32;">SERVIÇOS</a></li>
-        </ul>
+      <!-- Coluna 2 -->
+      <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mt-3">
+        <h5 class="text-uppercase mb-4 font-weight-bold text-success">Links</h5>
+        <p><a href="?param=home" class="text-white text-decoration-none">Home</a></p>
+        <p><a href="?param=servicos" class="text-white text-decoration-none">Serviços</a></p>
+        <p><a href="?param=quem-somos" class="text-white text-decoration-none">Quem somos</a></p>
+        <p><a href="?param=contato" class="text-white text-decoration-none">Contato</a></p>
+      </div>
+
+      <!-- Coluna 3 -->
+      <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mt-3">
+        <h5 class="text-uppercase mb-4 font-weight-bold text-success">Redes Sociais</h5>
+        <p><a href="#" class="text-white text-decoration-none">Facebook</a></p>
+        <p><a href="#" class="text-white text-decoration-none">Instagram</a></p>
+        <p><a href="#" class="text-white text-decoration-none">WhatsApp</a></p>
+      </div>
+
+      <!-- Coluna 4 -->
+      <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mt-3">
+        <h5 class="text-uppercase mb-4 font-weight-bold text-success">Contato</h5>
+        <p><i class="fas fa-home mr-3"></i> Rua Belo horizonte, 3 -Boa esperança Paraná</p>
+        <p><i class="fas fa-envelope mr-3"></i> clpinturas@email.com</p>
+        <p><i class="fas fa-phone mr-3"></i> (44) 99800-8156</p>
+      </div>
+    </div>
+
+    <!-- Linha horizontal -->
+    <hr class="mb-4">
+
+    <!-- Parte inferior -->
+    <div class="row align-items-center">
+      <div class="col-md-7 col-lg-8">
+        <p class="text-white">
+          © 2025 CLPinturas. Todos os direitos reservados.
+        </p>
+      </div>
+
+      <div class="col-md-5 col-lg-4">
+        <div class="text-center text-md-right">
+          <a href="#" class="text-white me-4"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" class="text-white me-4"><i class="fab fa-instagram"></i></a>
+          <a href="#" class="text-white me-4"><i class="fab fa-whatsapp"></i></a>
+        </div>
       </div>
     </div>
   </div>
 </footer>
+<style>
+.footer-simples {
+  background-color: #ffffff;
+  border-top: 1px solid #ddd;
+  font-size: 0.9rem;
+  color: #5D4037; /* marrom escuro */
+}
+
+.footer-simples a {
+  color: #5D4037;
+  text-decoration: none;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  transition: color 0.3s;
+}
+
+.footer-simples a:hover {
+  color: #2e7d32; /* verde escuro no hover */
+}
+
+.footer-simples .btn-success {
+  background-color: #2e7d32;
+  border: none;
+  font-size: 0.85rem;
+}
+
+</style>
+
 
 <!-- Scripts Bootstrap -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script>

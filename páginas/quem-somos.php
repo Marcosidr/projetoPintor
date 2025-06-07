@@ -16,6 +16,8 @@ $pagina = "páginas/{$param}.php";
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
   <link rel="stylesheet" href="css/quem-somos.css">
   <title>QUEM SOMOS</title>
 </head>
@@ -42,30 +44,62 @@ $pagina = "páginas/{$param}.php";
       </p>
     </div>
 
-    <h2 class="mb-4 text-center" data-aos="fade-up">Nossos Valores</h2>
-    <div class="row text-center">
-      <div class="col-md-4 mb-4" data-aos="zoom-in">
-        <div class="card p-4 shadow-sm h-100">
-          <i class="fas fa-check-circle fa-2x text-success mb-3"></i>
-          <h5>Qualidade</h5>
-          <p>Materiais de primeira linha e técnicas modernas.</p>
+ <!-- Seção Nossos Valores -->
+<section class="bg-paint-cream-50 py-5">
+  <div class="container">
+    <h2 class="text-center text-paint-green-700 fw-bold mb-2">Nossos Valores</h2>
+    <p class="text-center text-muted mb-5">
+      Os princípios que norteiam cada projeto e nos mantêm como referência no mercado
+    </p>
+
+    <div class="row text-center g-4">
+      <!-- Qualidade -->
+      <div class="col-md-6 col-lg-3">
+        <div class="card p-4 shadow-sm h-100 rounded-4">
+          <i class="fas fa-bullseye fa-2x text-paint-green-700 mb-3"></i>
+          <h5 class="fw-bold text-dark">Qualidade</h5>
+          <p class="text-muted mb-0">
+            Compromisso com a excelência em cada projeto realizado
+          </p>
         </div>
       </div>
-      <div class="col-md-4 mb-4" data-aos="zoom-in" data-aos-delay="100">
-        <div class="card p-4 shadow-sm h-100">
-          <i class="fas fa-handshake fa-2x text-primary mb-3"></i>
-          <h5>Confiança</h5>
-          <p>Relacionamento transparente e duradouro com o cliente.</p>
+
+      <!-- Confiança -->
+      <div class="col-md-6 col-lg-3">
+        <div class="card p-4 shadow-sm h-100 rounded-4">
+          <i class="fas fa-user-friends fa-2x text-paint-green-700 mb-3"></i>
+          <h5 class="fw-bold text-dark">Confiança</h5>
+          <p class="text-muted mb-0">
+            Relacionamentos duradouros baseados na transparência
+          </p>
         </div>
       </div>
-      <div class="col-md-4 mb-4" data-aos="zoom-in" data-aos-delay="200">
-        <div class="card p-4 shadow-sm h-100">
-          <i class="fas fa-headset fa-2x text-warning mb-3"></i>
-          <h5>Excelência no Atendimento</h5>
-          <p>Atendimento personalizado, com atenção aos detalhes.</p>
+
+      <!-- Experiência -->
+      <div class="col-md-6 col-lg-3">
+        <div class="card p-4 shadow-sm h-100 rounded-4">
+          <i class="fas fa-award fa-2x text-paint-green-700 mb-3"></i>
+          <h5 class="fw-bold text-dark">Experiência</h5>
+          <p class="text-muted mb-0">
+            Mais de 25 anos de conhecimento e aperfeiçoamento
+          </p>
+        </div>
+      </div>
+
+      <!-- Pontualidade -->
+      <div class="col-md-6 col-lg-3">
+        <div class="card p-4 shadow-sm h-100 rounded-4">
+          <i class="fas fa-clock fa-2x text-paint-green-700 mb-3"></i>
+          <h5 class="fw-bold text-dark">Pontualidade</h5>
+          <p class="text-muted mb-0">
+            Cumprimento rigoroso de prazos estabelecidos
+          </p>
         </div>
       </div>
     </div>
+  </div>
+</section>
+
 
     <div class="mt-5" data-aos="fade-left">
       <h2>Nosso Compromisso</h2>
