@@ -1,29 +1,27 @@
 <?php
-// Dados para a seção de Recursos (Features)
 $features = [
     [
-        'icon' => '<i class="bi bi-check-circle-fill h-8 w-8 text-paint-green-600"></i>',
+        'icon' => '<i class="bi bi-check-circle-fill fs-1 text-paint-green-600"></i>',
         'title' => "Experiência Comprovada",
         'description' => "Mais de 25 anos transformando espaços com qualidade"
     ],
     [
-        'icon' => '<i class="bi bi-star-fill h-8 w-8 text-paint-green-600"></i>',
+        'icon' => '<i class="bi bi-star-fill fs-1 text-paint-green-600"></i>',
         'title' => "Qualidade Garantida",
         'description' => "Utilizamos apenas tintas e materiais de primeira linha"
     ],
     [
-        'icon' => '<i class="bi bi-people-fill h-8 w-8 text-paint-green-600"></i>',
+        'icon' => '<i class="bi bi-people-fill fs-1 text-paint-green-600"></i>',
         'title' => "Compromisso com o Cliente",
         'description' => "Atendimento personalizado do orçamento à entrega"
     ],
     [
-        'icon' => '<i class="bi bi-award-fill h-8 w-8 text-paint-green-600"></i>',
+        'icon' => '<i class="bi bi-award-fill fs-1 text-paint-green-600"></i>',
         'title' => "Alto Atendimento Personalizado",
         'description' => "Equipe especializada em diversos tipos de superfície"
     ]
 ];
 
-// Dados para a seção de Serviços
 $services = [
     [
         'title' => "Pinturas Gerais",
@@ -57,30 +55,24 @@ $services = [
     ]
 ];
 ?>
+
+<!-- Seção principal com imagem responsiva -->
 <section class="container my-5">
     <div class="row align-items-center">
-        <div class="col-lg-6">
+        <div class="col-12 col-lg-6 text-center text-lg-start mb-4 mb-lg-0">
             <h1 class="display-4 fw-bold mb-4 text-paint-green-700">Transforme seu ambiente com <br />a qualidade CLPinturas</h1>
             <p class="lead text-muted mb-4">
                 Profissionais especializados com mais de 25 anos de experiência, utilizando materiais de alta qualidade para garantir o melhor acabamento.
             </p>
             <a href="?param=servicos" class="btn btn-success btn-lg rounded-pill px-5 fw-bold btn-shadow">Veja nossos serviços</a>
         </div>
-        <div class="col-lg-6 text-center">
-            <img src="img/image.png" alt="Ilustração de pintura"  style="max-width: 400px;" />
+        <div class="col-12 col-lg-6 text-center">
+            <img src="img/image.png" alt="Ilustração de pintura" class="img-fluid rounded shadow" style="max-width: 400px; height: auto;" />
         </div>
     </div>
 </section>
-<style>
-    img {
-    margin-left: 60px;
-    border-radius: 20px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 
-    }
-</style>
-
-
+<!-- Seção de Features -->
 <section class="container py-5 bg-paint-cream-50 rounded-4 shadow-sm my-5">
     <h2 class="text-center mb-5 text-paint-green-700 fw-bold">Por que escolher a CLPinturas?</h2>
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
@@ -98,11 +90,12 @@ $services = [
     </div>
 </section>
 
+<!-- Seção de Representantes -->
 <div class="container my-5">
     <h2 class="text-center text-paint-green-700 mb-4">Representantes</h2>
     <div class="row g-4">
-        <!-- Representante Marcos Inácio -->
-        <div class="col-md-6 col-lg-6">
+        <!-- Marcos Inácio -->
+        <div class="col-12 col-md-6">
             <div class="card hover-scale text-center">
                 <div class="card-body">
                     <img src="img/eu.jpeg" alt="Marcos Inácio" class="rounded-circle mb-3" style="width: 150px; height: 150px; object-fit: cover;">
@@ -115,8 +108,8 @@ $services = [
             </div>
         </div>
 
-        <!-- Representante Bruno Teilor -->
-        <div class="col-md-6 col-lg-6">
+        <!-- Bruno Teilor -->
+        <div class="col-12 col-md-6">
             <div class="card hover-scale text-center">
                 <div class="card-body">
                     <img src="img/bruno.jpg" alt="Bruno Teilor" class="rounded-circle mb-3" style="width: 150px; height: 150px; object-fit: cover;">
@@ -130,5 +123,3 @@ $services = [
         </div>
     </div>
 </div>
-
-

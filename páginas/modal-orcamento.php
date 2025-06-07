@@ -5,7 +5,7 @@
       <form method="post">
         <input type="hidden" name="formulario" value="orcamento">
         <div class="modal-header">
-          <h5 class="modal-title" id="orcamentoModalLabel">Formulário de Orçamento</h5>
+          <h5 class="modal-title" id="orcamentoModalLabel">Quer um orçamento sem compromisso? </h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
         </div>
         <div class="modal-body">

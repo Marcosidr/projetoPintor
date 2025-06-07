@@ -63,7 +63,9 @@ body {
     box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
-/* Specific to Contact Page */
+h1 {
+    color: var(--verde-clp); /* Cor dos títulos */
+}
 .form-label {
     color: var(--marrom-clp); /* Cor para as labels do formulário */
 }
