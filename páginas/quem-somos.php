@@ -17,7 +17,7 @@ $pagina = "páginas/{$param}.php";
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
+   
   <link rel="stylesheet" href="css/quem-somos.css">
   <title>QUEM SOMOS</title>
 </head>
@@ -104,25 +104,31 @@ $pagina = "páginas/{$param}.php";
     <div class="mt-5" data-aos="fade-left">
       <h2>Nosso Compromisso</h2>
       <p>
-        Cada projeto é uma nova história. Estamos comprometidos em transformar sonhos em realidade,
-        oferecendo soluções de pintura que superam expectativas.
+     Estamos aqui para transformar suas ideias em realidade com pintura de qualidade, feita por profissionais experientes.
+
+Usamos materiais certificados e técnicas adequadas para garantir um acabamento duradouro e que realmente valorize seu espaço. Não prometemos milagres, mas trabalho sério, cumprimento de prazos e preço justo.
+
+Nosso compromisso é entregar o serviço bem feito, respeitando seu tempo e investimento. Se busca resultado de verdade, com transparência e sem complicação, estamos prontos para começar.
       </p>
     </div>
 
     <div class="mt-4" data-aos="fade-up">
       <h2>Venha nos conhecer!</h2>
-      <p>
-        Convidamos você a fazer parte da nossa história. Entre em contato e veja como podemos transformar seu espaço com a arte da pintura.
-        Aqui, cada pincelada é feita com amor e dedicação.
-      </p>
+      
     </div>
+<div class="text-center mt-5" data-aos="zoom-in-up">
+  <iframe 
+    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3656.1234567890!2d-46.633309!3d-23.550520!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94ce59b1e0a1f9df%3A0x9a5f7df8c6a45c9e!2sSão%20Paulo%2C%20SP!5e0!3m2!1spt-BR!2sbr!4v1686000000000!5m2!1spt-BR!2sbr" 
+    width="100%" 
+    height="400" 
+    style="border:0;" 
+    allowfullscreen="" 
+    loading="lazy" 
+    referrerpolicy="no-referrer-when-downgrade">
+  </iframe>
+</div>
 
-    <div class="text-center mt-5" data-aos="zoom-in-up">
-      <a href="#" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#orcamentoModal">
-        FAÇA SEU ORÇAMENTO
-      </a>
-    </div>
-  </div>
+   
 
  <?php include 'páginas/modal-orcamento.php'; ?>
  

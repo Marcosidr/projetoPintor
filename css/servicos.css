@@ -1,37 +1,181 @@
+ 
 :root {
-  --verde-clp: #2e7d32;
-  --creme-clp: #f5f5dc;
-  --marrom-clp: #5D4037;
+    --verde-clp: #2e7d32;
+    --creme-clp: #f5f5dc;
+    --marrom-clp: #5D4037;
+    --paint-green-600: #2e7d32;
+    --paint-green-700: #27652b;
+    --paint-cream-50: #f5f5dc;
 }
-
 
 body {
-  background-color: var(--creme-clp);
+    background-color: var(--creme-clp);
+    font-family: 'Arial', sans-serif; /* Adicionado para consistência */
+    color: #343a40; /* Cor de texto padrão para o corpo */
 }
 
+/* Header */
 .navbar {
-  background-color: #fff;
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05); /* Sombra mais sutil */
 }
 
 .navbar .nav-link {
-  color: var(--marrom-clp);
-  font-weight: 500;
-  transition: color 0.3s;
+    color: var(--marrom-clp);
+    font-weight: 500;
+    transition: color 0.3s;
 }
 
-.navbar .nav-link:hover {
-  color: var(--verde-clp);
+.navbar .nav-link:hover,
+.navbar .nav-link.active {
+    color: var(--verde-clp);
 }
 
 .navbar-brand {
-  color: var(--verde-clp);
+    color: var(--verde-clp);
+    font-size: 1.5rem; /* Ajustado para um tamanho mais comum */
+    display: flex; /* Para alinhar o ícone e o texto */
+    align-items: center;
 }
 
+.navbar-brand .bi-brush {
+    font-size: 1.8rem; /* Tamanho do ícone */
+    margin-right: 8px; /* Espaço entre ícone e texto */
+}
+
+
 .btn-success {
-  background-color: var(--verde-clp);
-  border: none;
+    background-color: var(--verde-clp);
+    border: none;
+    border-radius: 0.5rem; /* Levemente arredondado */
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .btn-success:hover {
-  background-color: #27652b;
+    background-color: var(--paint-green-700);
+    transform: translateY(-2px); /* Efeito de elevação ao passar o mouse */
+}
+
+.card {
+    border: none;
+    background-color: #fff;
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+/* Specific to Contact Page */
+.form-label {
+    color: var(--marrom-clp); /* Cor para as labels do formulário */
+}
+
+.form-control {
+    border-radius: 0.4rem; /* Arredondamento para os campos */
+    border: 1px solid #ced4da;
+    padding: 0.75rem 1rem;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: var(--verde-clp);
+    box-shadow: 0 0 0 0.25rem rgba(46, 125, 50, 0.25); /* Sombra do foco Bootstrap no seu verde */
+    outline: none;
+}
+
+.alert {
+    border-radius: 0.5rem;
+}
+
+.contact-info .card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.contact-info .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+}
+
+.btn-social {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    transition: all 0.3s ease;
+    border: 1px solid var(--verde-clp); /* Borda da cor do seu verde */
+    color: var(--verde-clp); /* Cor do ícone */
+}
+
+.btn-social:hover {
+    background-color: var(--verde-clp);
+    color: white !important;
+    transform: translateY(-2px); /* Efeito sutil ao passar o mouse */
+}
+
+/* Footer (já tem bastante estilo, mas pode adicionar mais) */
+.main-footer { 
+    background-color: var(--marrom-clp) !important; /* Cor mais escura para o footer */
+    color: #e0e0e0; /* Texto mais claro */
+}
+
+.main-footer h5 {
+    color: var(--verde-clp); /* Títulos do footer em verde */
+}
+
+.main-footer a {
+    color: #e0e0e0; /* Links do footer */
+    transition: color 0.3s ease;
+}
+
+.main-footer a:hover {
+    color: var(--verde-clp); /* Links do footer hover */
+}
+
+.main-footer .social-icons a { /* Se tiver ícones dentro de uma div com essa classe */
+    color: #e0e0e0;
+}
+
+.main-footer .social-icons a:hover {
+    color: var(--verde-clp);
+}
+
+
+/* Outros estilos globais do seu index.php */
+.text-paint-green-600 {
+    color: var(--paint-green-600);
+}
+
+.text-paint-green-700 {
+    color: var(--paint-green-700);
+}
+
+.bg-paint-cream-50 {
+    background-color: var(--paint-cream-50);
+}
+
+.hover-scale:hover {
+    transform: scale(1.03); /* Ajustado para um zoom mais suave */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Adicionado box-shadow na transição */
+    box-shadow: 0 8px 15px rgba(0,0,0,0.1); /* Sombra ao passar o mouse */
+}
+
+.btn-shadow {
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); } /* Flutuação um pouco menor */
+}
+
+.float-animation {
+    animation: float 4s ease-in-out infinite; /* Velocidade ajustada */
+}
+
+/* Ajustes para dispositivos menores */
+@media (max-width: 768px) {
+    .contact-info .card {
+        margin-bottom: 1.5rem;
+    }
 }
