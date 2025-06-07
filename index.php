@@ -298,8 +298,8 @@ if (file_exists($pagina)) {
       <div class="col-md-5 col-lg-4">
         <div class="text-center text-md-right">
           <a href="#" class="text-white me-4"><i class="fab fa-facebook-f"></i></a>
-          <a href="#" class="text-white me-4"><i class="fab fa-instagram"></i></a>
-          <a href="#" class="text-white me-4"><i class="fab fa-whatsapp"></i></a>
+          <a href="https://www.instagram.com/marcos_inacion/" class="text-white me-4"><i class="fab fa-instagram"></i></a>
+          <a href="https://api.whatsapp.com/send?phone=5544998008156" class="text-white me-4"><i class="fab fa-whatsapp"></i></a>
         </div>
       </div>
     </div>

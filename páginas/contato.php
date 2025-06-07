@@ -117,7 +117,7 @@ $pageTitle = "Contato - CLPinturas";
                     <div class="mt-4">
                         <h3 class="mb-3 text-paint-green-700">Siga-nos nas Redes Sociais:</h3>
                         <a href="#" class="btn btn-outline-success btn-social mx-2"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="btn btn-outline-success btn-social mx-2"><i class="fab fa-instagram"></i></a>
+                        <a href="https://www.instagram.com/marcos_inacion/" class="btn btn-outline-success btn-social mx-2"><i class="fab fa-instagram"></i></a>
                         <a href="https://api.whatsapp.com/send?phone=5544998008156" target="_blank" class="btn btn-outline-success btn-social mx-2"><i class="fab fa-whatsapp"></i></a>
                     </div>
                 </div>
