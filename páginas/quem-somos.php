@@ -1,92 +1,28 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CL Pinturas - Quem Somos</title>
+<?php
 
-  <!-- Bootstrap CSS -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
 
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-
-  <!-- AOS Animation -->
-  <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet" />
-
-  <style>
-    body {
-      background-color: #f5f5dc;
-      color: #2e2e2e;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-
-    h1, h2 {
-      color: #2e7d32;
-      font-weight: bold;
-    }
-
-    p {
-      font-size: 1.1rem;
-      line-height: 1.7;
-    }
-
-    .card {
-      transition: all 0.3s ease;
-      border: none;
-      border-radius: 20px;
-    }
-
-    .card:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-    }
-
-    .btn-primary {
-      background-color: #2e7d32;
-      border: none;
-      border-radius: 30px;
-      padding: 10px 25px;
-      font-weight: 600;
-    }
-
-    .btn-primary:hover {
-      background-color: #256428;
-    }
-  </style>
-</head>
-<body>
-  <!-- NAVBAR -->
-<nav class="navbar navbar-expand-lg shadow-sm py-3">
-    <div class="container">
-        <a class="navbar-brand fw-bold" href="../index.php">
-            <i class="bi bi-brush"></i> CLPINTURAS
-        </a>
-
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-            <ul class="navbar-nav align-items-center">
-                <li class="nav-item"><a class="nav-link" href="../index.php">HOME</a></li>
-                <li class="nav-item"><a class="nav-link" href="páginas/quem-somos.php">QUEM SOMOS</a></li>
-                <li class="nav-item"><a class="nav-link" href="páginas/servicos.php">SERVIÇOS</a></li>
-                <li class="nav-item"><a class="nav-link" href="páginas/contato.php">CONTATO</a></li>
-                <li class="nav-item ms-2">
-                    <button type="button" class="btn btn-success rounded-pill px-4 fw-bold text-white" data-bs-toggle="modal" data-bs-target="#orcamentoModal">
-                        ORÇAMENTO
-                    </button>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
+// Parâmetro da URL para controle de página
+$param = $_GET["param"] ?? "home";
+$pagina = "páginas/{$param}.php";
+?>
   <!-- Modal de Orçamento -->
 <?php
- include 'modal-orcamento.php';
+ include 'páginas/modal-orcamento.php';
   ?>
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css">
+  <link rel="stylesheet" href="css/quem-somos.css">
+  <title>QUEM SOMOS</title>
+</head>
+<body>
+  
+</body>
+</html>l
   <div class="container py-5">
     <h1 class="mb-4 text-center" data-aos="fade-down">Quem Somos</h1>
 
@@ -154,50 +90,9 @@
     </div>
   </div>
 
- <?php include './modal-orcamento.php'; ?>
+ <?php include 'páginas/modal-orcamento.php'; ?>
  
- <!-- FOOTER -->
-  <footer class="mt-5" style="background-color: var(--creme-clp); color: var(--marrom-clp);">
-    <div class="container py-4">
-      <div class="row text-center text-md-start align-items-center">
 
-        <!-- Coluna 1: Nome e slogan -->
-        <div class="col-md-4 mb-4 mb-md-0">
-          <h5 class="fw-bold" style="color: var(--marrom-clp);">CLPinturas</h5>
-          <p style="color: var(--verde-clp);">
-            Transformando espaços com<br>cores e qualidade desde 1995.
-          </p>
-        </div>
-
-        <!-- Coluna 2: Links úteis -->
-        <div class="col-md-4 mb-4 mb-md-0">
-          <h5 class="fw-bold" style="color: var(--marrom-clp);">links úteis</h5>
-          <ul class="list-unstyled">
-            <li><a href="index.php" class="text-decoration-none" style="color: var(--verde-clp);">HOME</a></li>
-            <li><a href="páginas/contato.php" class="text-decoration-none" style="color: var(--verde-clp);">CONTATO</a></li>
-            <li><a href="#" data-bs-toggle="modal" data-bs-target="#orcamentoModal" class="text-decoration-none" style="color: var(--verde-clp);">ORÇAMENTO</a></li>
-            <li><a href="páginas/servicos.php" class="text-decoration-none" style="color: var(--verde-clp);">SERVIÇOS</a></li>
-          </ul>
-        </div>
-
-        <!-- Coluna 3: Redes sociais -->
-        <div class="col-md-4">
-          <h6 class="fw-bold text-md-end mb-3 mb-md-2" style="color: var(--marrom-clp);">Perfis</h6>
-          <div class="d-flex justify-content-center justify-content-md-end gap-3">
-            <a href="#" class="text-success fs-4"><i class="bi bi-whatsapp"></i></a>
-            <a href="#" class="text-danger fs-4"><i class="bi bi-instagram"></i></a>
-            <a href="#" class="text-dark fs-4"><i class="bi bi-paint-bucket"></i></a>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- Rodapé inferior -->
-      <div class="text-center mt-4 small" style="color: var(--marrom-clp);">
-        © 2025 CL Pinturas. Todos os direitos reservados
-      </div>
-    </div>
-  </footer>
   <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
