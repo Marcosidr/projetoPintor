@@ -291,9 +291,9 @@ if (file_exists($pagina)) {
       <!-- Coluna 3 -->
       <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mt-3">
         <h5 class="text-uppercase mb-4 font-weight-bold text-success">Redes Sociais</h5>
-        <p><a href="#" class="text-white text-decoration-none">Facebook</a></p>
-        <p><a href="#" class="text-white text-decoration-none">Instagram</a></p>
-        <p><a href="#" class="text-white text-decoration-none">WhatsApp</a></p>
+        <p><a href="https://www.facebook.com/" class="text-white text-decoration-none">Facebook</a></p>
+        <p><a href="https://www.instagram.com/marcos_inacion/" class="text-white text-decoration-none">Instagram</a></p>
+        <p><a href="https://api.whatsapp.com/send?phone=5544998008156" class="text-white text-decoration-none">WhatsApp</a></p>
       </div>
 
       <!-- Coluna 4 -->
@@ -318,7 +318,7 @@ if (file_exists($pagina)) {
 
       <div class="col-md-5 col-lg-4">
         <div class="text-center text-md-right">
-          <a href="#" class="text-white me-4"><i class="fab fa-facebook-f"></i></a>
+          <a href="https://www.facebook.com/" class="text-white me-4"><i class="fab fa-facebook-f"></i></a>
           <a href="https://www.instagram.com/marcos_inacion/" class="text-white me-4"><i class="fab fa-instagram"></i></a>
           <a href="https://api.whatsapp.com/send?phone=5544998008156" class="text-white me-4"><i class="fab fa-whatsapp"></i></a>
         </div>

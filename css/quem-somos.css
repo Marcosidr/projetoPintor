@@ -188,8 +188,9 @@ h1, h2, h3 {
     animation: float 4s ease-in-out infinite; /* Velocidade ajustada */
 }
 
-/* Ajustes para dispositivos menores */
-@media (max-width: 450px) {
+
+/* Responsividade */
+@media (min-width: 768px) {
   .grid {
     display: flex;
     flex-wrap: wrap;
@@ -197,13 +198,6 @@ h1, h2, h3 {
   }
 
   .grid .card {
-    flex: 1 1 100%; /* ocupa a linha inteira */
+    flex: 1 1 calc(33.333% - 20px);
   }
 }
-
-@media (max-width: 768px) and (max-height: 1024px) {
-  .contact-info .card {
-    margin-bottom: 1.5rem;
-  }
-}
-
