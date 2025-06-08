@@ -24,7 +24,7 @@ $pagina = "páginas/{$param}.php";
 <body>
   
 </body>
-</html>l
+</html>
   <div class="container py-5">
     <h1 class="mb-4 text-center" data-aos="fade-down">Quem Somos</h1>
 
