@@ -97,8 +97,8 @@ switch($error_code) {
                 <h2><?php echo htmlspecialchars($error_message); ?></h2>
                 <p>Desculpe, mas a página que você está procurando não foi encontrada.</p>
                 <div class="error-actions">
-                    <a href="../index.php" class="btn-verde">Voltar para a Página Inicial</a>
-                    <a href="páginas/contato.php" class="btn-verde">Entrar em Contato</a>
+                    <a href="./index.php" class="btn-verde">Voltar para a Página Inicial</a>
+                    <a href="index.php?param=contato" class="btn-verde">Entrar em Contato</a>
                 </div>
             </div>
         </div>
