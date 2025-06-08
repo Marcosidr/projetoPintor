@@ -94,15 +94,15 @@ $services = [
 <div class="container my-5">
     <h2 class="text-center text-paint-green-700 mb-4">Representantes</h2>
     <div class="row g-4">
-        <!-- Marcos Inácio -->
+        <!-- Clodoaldo Inácio -->
         <div class="col-12 col-md-6">
-            <div class="card hover-scale text-center">
+            <div class="card hover-scale text-center border border-paint-green-600">
                 <div class="card-body">
-                    <img src="img/eu.jpeg" alt="Marcos Inácio" class="rounded-circle mb-3" style="width: 150px; height: 150px; object-fit: cover;">
-                    <h5 class="fw-bold text-paint-green-600">Marcos Inácio</h5>
+                    <img src="img/pai.jpg" alt="Clodoaldo Inácio" class="rounded-circle mb-3" style="width: 150px; height: 150px; object-fit: cover;">
+                    <h5 class="fw-bold text-paint-green-700">Clodoaldo Inácio</h5>
                     <p class="text-muted fst-italic">
-                        Filho de Clodoaldo, cresceu acompanhando de perto o trabalho de seu pai e carrega consigo toda a experiência e dedicação da família.
-                        Sempre atento às tendências e necessidades dos clientes, é o responsável por manter a qualidade e confiança da marca.
+                       Clodoaldo Inácio iniciou sua jornada na pintura aos 19 anos como ajudante, aprendendo na prática a arte e a responsabilidade do ofício.
+Aos 23, já com experiência e confiança, começou a atuar de forma independente, conquistando seus próprios clientes e moldando sua reputação com base em qualidade, seriedade e comprometimento.
                     </p>
                 </div>
             </div>

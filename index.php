@@ -12,6 +12,7 @@ $pagina = "páginas/{$param}.php";
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CLPinturas - Home</title>
 
     <!-- Bootstrap e ícones -->
@@ -196,12 +197,32 @@ body {
     animation: float 4s ease-in-out infinite; /* Velocidade ajustada */
 }
 
-/* Ajustes para dispositivos menores */
+
 @media (max-width: 768px) {
-    .contact-info .card {
-        margin-bottom: 1.5rem;
-    }
+  .navbar-brand {
+    font-size: 1.2rem;
+  }
+
+  .btn-social {
+    width: 40px;
+    height: 40px;
+    font-size: 1.2rem;
+  }
+
+  .card {
+    margin-bottom: 1rem;
+  }
+
+  .form-control {
+    padding: 0.6rem 0.8rem;
+  }
+
+  .hover-scale:hover {
+    transform: none;
+    box-shadow: none;
+  }
 }
+
     </style>
 </head>
 <body>
