@@ -54,7 +54,7 @@ $pagina = "páginas/{$param}.php";
 
     <div class="row text-center g-4">
       <!-- Qualidade -->
-      <div class="col-md-6 col-lg-3">
+      <div class="col-12 col-sm-6 col-lg-3">
         <div class="card p-4 shadow-sm h-100 rounded-4">
           <i class="fas fa-bullseye fa-2x text-paint-green-700 mb-3"></i>
           <h5 class="fw-bold text-dark">Qualidade</h5>
@@ -65,7 +65,7 @@ $pagina = "páginas/{$param}.php";
       </div>
 
       <!-- Confiança -->
-      <div class="col-md-6 col-lg-3">
+      <div class="col-12 col-sm-6 col-lg-3">
         <div class="card p-4 shadow-sm h-100 rounded-4">
           <i class="fas fa-user-friends fa-2x text-paint-green-700 mb-3"></i>
           <h5 class="fw-bold text-dark">Confiança</h5>
@@ -76,7 +76,7 @@ $pagina = "páginas/{$param}.php";
       </div>
 
       <!-- Experiência -->
-      <div class="col-md-6 col-lg-3">
+      <div class="col-12 col-sm-6 col-lg-3">
         <div class="card p-4 shadow-sm h-100 rounded-4">
           <i class="fas fa-award fa-2x text-paint-green-700 mb-3"></i>
           <h5 class="fw-bold text-dark">Experiência</h5>
@@ -87,7 +87,7 @@ $pagina = "páginas/{$param}.php";
       </div>
 
       <!-- Pontualidade -->
-      <div class="col-md-6 col-lg-3">
+      <div class="col-12 col-sm-6 col-lg-3">
         <div class="card p-4 shadow-sm h-100 rounded-4">
           <i class="fas fa-clock fa-2x text-paint-green-700 mb-3"></i>
           <h5 class="fw-bold text-dark">Pontualidade</h5>
@@ -99,7 +99,6 @@ $pagina = "páginas/{$param}.php";
     </div>
   </div>
 </section>
-
 
     <div class="mt-5" data-aos="fade-left">
       <h2>Nosso Compromisso</h2>
@@ -128,10 +127,6 @@ Nosso compromisso é entregar o serviço bem feito, respeitando seu tempo e inve
   </iframe>
 </div>
 
-   
-
- <?php include 'páginas/modal-orcamento.php'; ?>
- 
 
   <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
