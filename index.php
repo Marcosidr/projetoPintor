@@ -1,4 +1,11 @@
 <?php
+// Força o uso de HTTPS
+if (empty($_SERVER['HTTPS']) || $_SERVER['HTTPS'] === "off") {
+    $httpsURL = "https://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+    header("Location: $httpsURL");
+    exit;
+}
+
 // Define o caminho absoluto para a raiz do seu projeto
 define('ROOT_PATH', __DIR__ . '/');
 
