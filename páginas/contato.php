@@ -14,15 +14,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) { // filter_var já valida '@' e '.'
         $erro = "Por favor, insira um e-mail válido.";
     } else {
-        // Aqui você faria o envio do e-mail ou salvaria no banco de dados
-        // Exemplo: mail("seuemail@dominio.com", "Nova mensagem do site", $mensagem . "\nDe: " . $nome . " (" . $email . ")");
-        $mensagemEnviada = true;
+        // Montar o corpo do e-mail
+        $assunto = "Nova mensagem do site CLPinturas";
+        $corpo = "Você recebeu uma nova mensagem pelo formulário de contato.\n\n";
+        $corpo .= "Nome: $nome\n";
+        $corpo .= "E-mail: $email\n";
+        $corpo .= "Mensagem:\n$mensagem\n";
+
+        // Cabeçalhos do e-mail
+        $headers = "From: $nome <$email>\r\n";
+        $headers .= "Reply-To: $email\r\n";
+        $headers .= "X-Mailer: PHP/" . phpversion();
+
+        // Enviar o e-mail para seu Gmail
+        if (mail("marcosincio556@gmail.com", $assunto, $corpo, $headers)) {
+            $mensagemEnviada = true;
+        } else {
+            $erro = "Ocorreu um erro ao enviar a mensagem. Tente novamente mais tarde.";
+        }
     }
 }
 
 // Define o título da página, se necessário para o <title> no index.php
-// Se você quiser que o <title> seja dinâmico, passe essa variável para o header no index.php
-// Neste caso, seu index.php já tem um <title> fixo, então esta linha é mais para clareza
 $pageTitle = "Contato - CLPinturas";
 
 // Como o header e o footer estão no index.php, não precisamos incluí-los aqui.
