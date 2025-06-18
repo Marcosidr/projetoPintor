@@ -1,11 +1,9 @@
 <?php
-// Inclui o autoload do Composer para carregar o PHPMailer
 require 'vendor/autoload.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-// Processar envio do formulário
 $mensagemEnviada = false;
 $erro = '';
 
@@ -14,41 +12,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = trim($_POST['email'] ?? '');
     $mensagem = trim($_POST['mensagem'] ?? '');
 
-    // Validações básicas
     if (empty($nome) || empty($email) || empty($mensagem)) {
         $erro = "Por favor, preencha todos os campos.";
+    } elseif (!preg_match("/^[\p{L} ]{3,}$/u", $nome)) {
+        $erro = "O nome deve ter pelo menos 3 letras e conter apenas letras e espaços.";
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $erro = "Por favor, insira um e-mail válido.";
+    } elseif (strlen($mensagem) < 10) {
+        $erro = "A mensagem deve ter pelo menos 10 caracteres.";
     } else {
-        // Monta o corpo da mensagem
         $corpo = "Você recebeu uma nova mensagem pelo formulário de contato.\n\n";
         $corpo .= "Nome: $nome\n";
         $corpo .= "E-mail: $email\n";
         $corpo .= "Mensagem:\n$mensagem\n";
 
-        // Configura e envia com PHPMailer
         $mail = new PHPMailer(true);
         try {
-            // Configurações SMTP (exemplo Gmail)
             $mail->isSMTP();
-            $mail->Host = 'smtp.gmail.com';              // SMTP do Gmail
+            $mail->Host = 'smtp.gmail.com';
             $mail->SMTPAuth = true;
             $mail->Username = 'marcosincio556@gmail.com';
-            $mail->Password = 'zgwu wfpq ngfg nqvf'; 
-              
+            $mail->Password = 'zgwu wfpq ngfg nqvf'; // Troque por sua senha real de app
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
             $mail->Port = 587;
 
-            // Remetente e destinatário
             $mail->setFrom('marcosincio556@gmail.com', 'CLPinturas');
-            $mail->addAddress('marcosincio556@gmail.com', 'Marcos'); // Destinatário
+            $mail->addAddress('marcosincio556@gmail.com', 'Marcos');
 
-            // Conteúdo da mensagem
             $mail->isHTML(false);
             $mail->Subject = "Nova mensagem do site CLPinturas";
             $mail->Body = $corpo;
 
-            // Enviar e-mail
             $mail->send();
             $mensagemEnviada = true;
         } catch (Exception $e) {
@@ -56,8 +50,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 }
-
-// Aqui começa seu HTML do formulário e conteúdo (sem alteração)
 ?>
 
 <div class="container my-5">
@@ -119,29 +111,79 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </button>
                     </div>
                 </form>
-
-                <!-- Resto do seu HTML permanece igual -->
-
             <?php endif; ?>
         </div>
     </div>
 </div>
 
+<!-- Validação em tempo real com Bootstrap -->
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const formContato = document.getElementById('form-contato');
+document.addEventListener('DOMContentLoaded', function () {
+    const form = document.getElementById('form-contato');
+    const nome = document.getElementById('nome');
+    const email = document.getElementById('email');
+    const mensagem = document.getElementById('mensagem');
 
-    if (formContato) {
-        formContato.addEventListener('submit', function(e) {
-            const emailField = document.getElementById('email');
-            const email = emailField.value.trim();
+    const nomeValido = /^[A-Za-zÀ-ÿ\s]{3,}$/;
+    const emailValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-            if (!email.includes('@') || email.indexOf('.', email.indexOf('@')) === -1) {
-                e.preventDefault();
-                alert("Por favor, insira um e-mail válido.");
-                emailField.focus();
-            }
-        });
+    function exibirErro(campo, mensagem) {
+        campo.classList.add('is-invalid');
+        if (!campo.nextElementSibling || !campo.nextElementSibling.classList.contains('invalid-feedback')) {
+            const erro = document.createElement('div');
+            erro.className = 'invalid-feedback';
+            erro.innerText = mensagem;
+            campo.parentNode.appendChild(erro);
+        }
     }
+
+    function removerErro(campo) {
+        campo.classList.remove('is-invalid');
+        const proximo = campo.nextElementSibling;
+        if (proximo && proximo.classList.contains('invalid-feedback')) {
+            proximo.remove();
+        }
+    }
+
+    nome.addEventListener('input', function () {
+        if (!nomeValido.test(nome.value.trim())) {
+            exibirErro(nome, 'O nome deve ter pelo menos 3 letras e conter apenas letras e espaços.');
+        } else {
+            removerErro(nome);
+        }
+    });
+
+    email.addEventListener('input', function () {
+        if (!emailValido.test(email.value.trim())) {
+            exibirErro(email, 'Por favor, insira um e-mail válido.');
+        } else {
+            removerErro(email);
+        }
+    });
+
+    mensagem.addEventListener('input', function () {
+        if (mensagem.value.trim().length < 10) {
+            exibirErro(mensagem, 'A mensagem deve ter pelo menos 10 caracteres.');
+        } else {
+            removerErro(mensagem);
+        }
+    });
+
+    form.addEventListener('submit', function (e) {
+        if (!nomeValido.test(nome.value.trim())) {
+            exibirErro(nome, 'O nome deve ter pelo menos 3 letras e conter apenas letras e espaços.');
+            e.preventDefault();
+        }
+
+        if (!emailValido.test(email.value.trim())) {
+            exibirErro(email, 'Por favor, insira um e-mail válido.');
+            e.preventDefault();
+        }
+
+        if (mensagem.value.trim().length < 10) {
+            exibirErro(mensagem, 'A mensagem deve ter pelo menos 10 caracteres.');
+            e.preventDefault();
+        }
+    });
 });
 </script>

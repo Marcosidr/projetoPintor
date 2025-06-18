@@ -5,12 +5,10 @@
       <form id="formOrcamento">
         <input type="hidden" name="formulario" value="orcamento">
         <div class="modal-header">
-          <h5 class="modal-title" id="orcamentoModalLabel">Quer um orçamento sem compromisso? </h5>
+          <h5 class="modal-title" id="orcamentoModalLabel">Quer um orçamento sem compromisso?</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
         </div>
         <div class="modal-body">
-          <!-- Seus campos (igual ao que você enviou) -->
-          <!-- ... -->
           <div class="mb-3">
             <label>Nome Completo *</label>
             <input type="text" class="form-control" name="nome" required>
@@ -113,10 +111,14 @@
 <script>
 document.getElementById('formOrcamento').addEventListener('submit', function(e) {
   e.preventDefault();
-
   const form = e.target;
 
-  // Pega os valores dos campos
+  // Validação adicional de campos obrigatórios
+  if (!form.checkValidity()) {
+    form.reportValidity(); // Mostra mensagens do HTML5
+    return;
+  }
+
   const nome = form.nome.value.trim();
   const email = form.email.value.trim();
   const telefone = form.telefone.value.trim();
@@ -127,11 +129,9 @@ document.getElementById('formOrcamento').addEventListener('submit', function(e) 
   const urgencia = form.urgencia.value;
   const observacoes = form.observacoes.value.trim();
 
-  // Pega os checkbox marcados de necessidades
   const necessidadesChecked = Array.from(form.querySelectorAll('input[name="necessidades[]"]:checked'))
     .map(checkbox => checkbox.value);
 
-  // Monta a mensagem para o WhatsApp
   let mensagem = `*Pedido de Orçamento*\n\n`;
   mensagem += `*Nome:* ${nome}\n`;
   mensagem += `*Email:* ${email}\n`;
@@ -141,36 +141,31 @@ document.getElementById('formOrcamento').addEventListener('submit', function(e) 
   mensagem += `*Tipo de Serviço:* ${tipoServico}\n`;
   mensagem += `*Área Aproximada (m²):* ${area || 'Não informado'}\n`;
   mensagem += `*Urgência:* ${urgencia || 'Não informado'}\n`;
-
   if (necessidadesChecked.length > 0) {
     mensagem += `*Necessidades Adicionais:*\n- ${necessidadesChecked.join('\n- ')}\n`;
   } else {
     mensagem += `*Necessidades Adicionais:* Nenhuma\n`;
   }
-
   mensagem += `*Observações:* ${observacoes || 'Nenhuma'}\n\n`;
   mensagem += `Enviado via site CLPinturas.`;
 
-  // Codifica a mensagem para URL
   const mensagemURL = encodeURIComponent(mensagem);
-
-  // Número do WhatsApp com código do Brasil (55) + DDD + número (44 99800 8156)
   const numeroWhats = '5544998008156';
-
-  // URL do WhatsApp para envio da mensagem
   const url = `https://api.whatsapp.com/send?phone=${numeroWhats}&text=${mensagemURL}`;
 
-  // Abre o WhatsApp em nova aba/janela
+  // Envia os dados também para o back-end, se necessário
+  const dados = new FormData(form);
+  fetch('orcamento-mail.php', {
+    method: 'POST',
+    body: dados
+  }).catch(error => console.error('Erro ao enviar e-mail:', error));
+
   window.open(url, '_blank');
 
-  // Fecha o modal (Bootstrap 5)
   const modalElement = document.getElementById('orcamentoModal');
   const modalInstance = bootstrap.Modal.getInstance(modalElement);
-  if (modalInstance) {
-    modalInstance.hide();
-  }
+  if (modalInstance) modalInstance.hide();
 
-  // Opcional: limpa o formulário após o envio
   form.reset();
 });
 </script>
