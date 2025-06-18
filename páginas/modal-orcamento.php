@@ -2,7 +2,7 @@
 <div class="modal fade" id="orcamentoModal" tabindex="-1" aria-labelledby="orcamentoModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
-      <form id="formOrcamento">
+      <form id="formOrcamento" novalidate>
         <input type="hidden" name="formulario" value="orcamento">
         <div class="modal-header">
           <h5 class="modal-title" id="orcamentoModalLabel">Quer um orçamento sem compromisso?</h5>
@@ -12,16 +12,19 @@
           <div class="mb-3">
             <label>Nome Completo *</label>
             <input type="text" class="form-control" name="nome" required>
+            <div class="invalid-feedback">Digite um nome com no mínimo 3 letras (somente letras).</div>
           </div>
 
           <div class="mb-3">
             <label>Email *</label>
             <input type="email" class="form-control" name="email" required>
+            <div class="invalid-feedback">Digite um e-mail válido (ex: nome@email.com).</div>
           </div>
 
           <div class="mb-3">
             <label>Telefone *</label>
-            <input type="tel" class="form-control" name="telefone" required>
+            <input type="tel" class="form-control" name="telefone" required placeholder="Ex: 44998008156">
+            <div class="invalid-feedback">Digite um telefone válido com DDD. Ex: 44998008156</div>
           </div>
 
           <div class="mb-3">
@@ -76,22 +79,22 @@
           <div class="mb-3">
             <label>Necessidades Adicionais</label><br>
             <?php
-            $opcoes = [
-              "Preparação de superfície",
-              "Remoção de papel de parede",
-              "Correção de rachaduras",
-              "Aplicação de massa corrida",
-              "Proteção de móveis",
-              "Limpeza pós-obra",
-              "Consultoria de cores",
-              "Projeto de acabamento"
-            ];
-            foreach ($opcoes as $opt) {
-              echo "<div class='form-check'>
-                      <input class='form-check-input' type='checkbox' name='necessidades[]' value='$opt'>
-                      <label class='form-check-label'>$opt</label>
-                    </div>";
-            }
+              $opcoes = [
+                "Preparação de superfície",
+                "Remoção de papel de parede",
+                "Correção de rachaduras",
+                "Aplicação de massa corrida",
+                "Proteção de móveis",
+                "Limpeza pós-obra",
+                "Consultoria de cores",
+                "Projeto de acabamento"
+              ];
+              foreach ($opcoes as $opt) {
+                echo "<div class='form-check'>
+                        <input class='form-check-input' type='checkbox' name='necessidades[]' value='$opt'>
+                        <label class='form-check-label'>$opt</label>
+                      </div>";
+              }
             ?>
           </div>
 
@@ -100,6 +103,7 @@
             <textarea class="form-control" name="observacoes" rows="4"></textarea>
           </div>
         </div>
+
         <div class="modal-footer">
           <button type="submit" class="btn btn-success">Solicitar Orçamento</button>
         </div>
@@ -113,25 +117,58 @@ document.getElementById('formOrcamento').addEventListener('submit', function(e) 
   e.preventDefault();
   const form = e.target;
 
-  // Validação adicional de campos obrigatórios
-  if (!form.checkValidity()) {
-    form.reportValidity(); // Mostra mensagens do HTML5
-    return;
+  // VALIDAÇÕES
+  const nomeInput = form.nome;
+  const emailInput = form.email;
+  const telefoneInput = form.telefone;
+
+  const nome = nomeInput.value.trim();
+  const email = emailInput.value.trim();
+  const telefone = telefoneInput.value.trim();
+
+  const regexNome = /^[A-Za-zÀ-ÿ\s]{3,}$/;
+  const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const regexTelefone = /^(\d{10,11})$/;
+
+  let valido = true;
+
+  // NOME
+  if (!regexNome.test(nome)) {
+    nomeInput.classList.add('is-invalid');
+    valido = false;
+  } else {
+    nomeInput.classList.remove('is-invalid');
   }
 
-  const nome = form.nome.value.trim();
-  const email = form.email.value.trim();
-  const telefone = form.telefone.value.trim();
+  // EMAIL
+  if (!regexEmail.test(email) || !email.includes('@') || !email.includes('.com')) {
+    emailInput.classList.add('is-invalid');
+    valido = false;
+  } else {
+    emailInput.classList.remove('is-invalid');
+  }
+
+  // TELEFONE
+  if (!regexTelefone.test(telefone)) {
+    telefoneInput.classList.add('is-invalid');
+    valido = false;
+  } else {
+    telefoneInput.classList.remove('is-invalid');
+  }
+
+  if (!valido) return;
+
+  // CAMPOS EXTRAS
   const endereco = form.endereco.value.trim();
   const tipoImovel = form.tipoImovel.value;
   const tipoServico = form.tipoServico.value;
   const area = form.area.value.trim();
   const urgencia = form.urgencia.value;
   const observacoes = form.observacoes.value.trim();
-
   const necessidadesChecked = Array.from(form.querySelectorAll('input[name="necessidades[]"]:checked'))
-    .map(checkbox => checkbox.value);
+    .map(cb => cb.value);
 
+  // MONTA MENSAGEM WHATSAPP
   let mensagem = `*Pedido de Orçamento*\n\n`;
   mensagem += `*Nome:* ${nome}\n`;
   mensagem += `*Email:* ${email}\n`;
@@ -141,27 +178,18 @@ document.getElementById('formOrcamento').addEventListener('submit', function(e) 
   mensagem += `*Tipo de Serviço:* ${tipoServico}\n`;
   mensagem += `*Área Aproximada (m²):* ${area || 'Não informado'}\n`;
   mensagem += `*Urgência:* ${urgencia || 'Não informado'}\n`;
-  if (necessidadesChecked.length > 0) {
-    mensagem += `*Necessidades Adicionais:*\n- ${necessidadesChecked.join('\n- ')}\n`;
-  } else {
-    mensagem += `*Necessidades Adicionais:* Nenhuma\n`;
-  }
+  mensagem += `*Necessidades Adicionais:* ${
+    necessidadesChecked.length > 0 ? '\n- ' + necessidadesChecked.join('\n- ') : 'Nenhuma'
+  }\n`;
   mensagem += `*Observações:* ${observacoes || 'Nenhuma'}\n\n`;
   mensagem += `Enviado via site CLPinturas.`;
 
   const mensagemURL = encodeURIComponent(mensagem);
   const numeroWhats = '5544998008156';
   const url = `https://api.whatsapp.com/send?phone=${numeroWhats}&text=${mensagemURL}`;
-
-  // Envia os dados também para o back-end, se necessário
-  const dados = new FormData(form);
-  fetch('orcamento-mail.php', {
-    method: 'POST',
-    body: dados
-  }).catch(error => console.error('Erro ao enviar e-mail:', error));
-
   window.open(url, '_blank');
 
+  // FECHAR MODAL BOOTSTRAP 5
   const modalElement = document.getElementById('orcamentoModal');
   const modalInstance = bootstrap.Modal.getInstance(modalElement);
   if (modalInstance) modalInstance.hide();
@@ -169,3 +197,14 @@ document.getElementById('formOrcamento').addEventListener('submit', function(e) 
   form.reset();
 });
 </script>
+
+<style>
+  .invalid-feedback {
+    display: none;
+    color: red;
+    font-size: 0.875em;
+  }
+  .is-invalid + .invalid-feedback {
+    display: block;
+  }
+</style>
