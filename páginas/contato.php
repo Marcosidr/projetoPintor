@@ -1,5 +1,6 @@
+
 <?php
-require 'vendor/autoload.php';
+require __DIR__ . '/../vendor/autoload.php'; // ISSO É O PRINCIPAL!
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
