@@ -31,11 +31,14 @@ $pagina = "páginas/{$param}.php";
     <h1 class="mb-4 text-center" data-aos="fade-down">Quem Somos</h1>
 
     <div class="mb-5" data-aos="fade-right">
-      <p>
-        A <strong>CLPinturas</strong> nasceu do sonho de transformar ambientes comuns em espaços únicos e cheios de vida, através da arte da pintura.
-        Fundada como uma pequena empresa familiar, trilhamos um caminho de crescimento sólido, sempre guiados por três pilares:
-        <strong>qualidade</strong>, <strong>confiança</strong> e <strong>excelência no atendimento</strong>.
-      </p>
+<p>
+  A <strong><span style="color: #27662a;">CLPinturas</span></strong> nasceu do sonho de transformar ambientes comuns em espaços únicos e cheios de vida, através da arte da pintura.
+  Fundada como uma pequena empresa familiar, trilhamos um caminho de crescimento sólido, sempre guiados por três pilares:
+  <strong><span style="color: #27662a;">qualidade</span></strong>, 
+  <strong><span style="color: #27662a;">confiança</span></strong> e 
+  <strong><span style="color: #27662a;">excelência no atendimento</span></strong>.
+</p>
+
       <p>
         Nossa história é construída com dedicação e trabalho honesto. Ao longo dos anos, realizamos milhares de projetos — de lares acolhedores
         a grandes empreendimentos comerciais — sempre com o compromisso de superar expectativas.
