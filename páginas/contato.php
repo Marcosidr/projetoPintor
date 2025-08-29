@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $mail->Host = 'smtp.gmail.com';
             $mail->SMTPAuth = true;
             $mail->Username = 'marcosincio556@gmail.com';
-            $mail->Password = 'zgwu wfpq ngfg nqvf';
+            $mail->Password = 'zgwuwfpqngfgnqvf'; // sem espaços
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
             $mail->Port = 587;
 
@@ -46,11 +46,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $mail->send();
             $mensagemEnviada = true;
-        } catch (Exception $e) {
-            $erro = "Erro ao enviar a mensagem: " . $mail->ErrorInfo;
+        } catch (\PHPMailer\PHPMailer\Exception $e) {
+            $erro = "Erro ao enviar a mensagem: " . $e->getMessage();
         }
     }
 }
+
 ?>
 
 <div class="container my-5">
