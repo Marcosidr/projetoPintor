@@ -1,31 +1,62 @@
 <?php
-require_once '../classes/ServicoManager.php';
+declare(strict_types=1);
 
-// Instancia o gerenciador
-$manager = new ServicoManager();
+namespace App\Services;
 
-// Adiciona serviços
-$manager->adicionarServico(new Servico(
-    'bi bi-house-door',
-    'Pinturas Gerais',
-    'Pintura residencial e comercial com acabamento impecável',
-    ['Pintura interna e externa', 'Preparação completa da superfície', 'Tintas de alta qualidade', 'Acabamento profissional']
-));
+/**
+ * Classe que representa um serviço oferecido pela empresa.
+ */
+class Servico
+{
+    public function __construct(
+        private string $icone,
+        private string $titulo,
+        private string $descricao,
+        private array $caracteristicas
+    ) {}
 
-$manager->adicionarServico(new Servico(
-    'bi bi-palette',
-    'Pinturas Versáteis',
-    'Técnicas especiais para ambientes únicos e personalizados',
-    ['Técnicas decorativas', 'Efeitos especiais', 'Cores personalizadas', 'Consultoria em design']
-));
+    public function getIcone(): string
+    {
+        return $this->icone;
+    }
 
-$manager->adicionarServico(new Servico(
-    'bi bi-wrench',
-    'Tratamento de Superfícies',
-    'Preparação especializada para maior durabilidade',
-    ['Lixamento e preparação', 'Correção de imperfeições', 'Aplicação de primers', 'Seladores especiais']
-));
+    public function getTitulo(): string
+    {
+        return $this->titulo;
+    }
 
-// Renderiza todos os serviços
-$manager->renderTodos();
-?>
+    public function getDescricao(): string
+    {
+        return $this->descricao;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getCaracteristicas(): array
+    {
+        return $this->caracteristicas;
+    }
+
+    /**
+     * Renderiza o serviço em HTML.
+     */
+    public function render(): string
+    {
+        $lista = '';
+        foreach ($this->caracteristicas as $item) {
+            $lista .= "<li>{$item}</li>";
+        }
+
+        return <<<HTML
+            <div class="card shadow-sm p-3 mb-4 rounded-3">
+                <div class="card-body">
+                    <i class="{$this->icone} fs-2 text-primary"></i>
+                    <h5 class="card-title mt-2">{$this->titulo}</h5>
+                    <p class="card-text">{$this->descricao}</p>
+                    <ul>{$lista}</ul>
+                </div>
+            </div>
+        HTML;
+    }
+}
