@@ -3,7 +3,7 @@
 define('ROOT_PATH', __DIR__ . '/');
 
 // Certifique-se de que o caminho abaixo esteja CORRETO para onde você salvou o arquivo seguro
-require_once __DIR__ . '/../credenciais.php'; 
+require_once __DIR__ . '/../banco/credenciais.php';
 
 $host = DB_HOST; 
 $db  = DB_NAME;
