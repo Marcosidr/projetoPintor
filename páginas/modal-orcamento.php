@@ -2,30 +2,34 @@
 <div class="modal fade" id="orcamentoModal" tabindex="-1" aria-labelledby="orcamentoModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
-      <form id="formOrcamento" novalidate method="POST" action="enviar_orcamento.php">
+      <form id="formOrcamento" method="POST" action="../banco/enviar_orcamento.php">
         <input type="hidden" name="formulario" value="orcamento">
         <div class="modal-header">
           <h5 class="modal-title" id="orcamentoModalLabel">Quer um orçamento sem compromisso?</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
         </div>
         <div class="modal-body">
-          <!-- Campos do formulário (nome, email, telefone, endereço...) -->
+
+          <!-- Área de mensagem -->
+          <div id="alertaEnvio" class="alert d-none" role="alert"></div>
+
+          <!-- Campos do formulário -->
           <div class="mb-3">
             <label>Nome Completo *</label>
             <input type="text" class="form-control" name="nome" required>
-            <div class="invalid-feedback">Digite um nome com no mínimo 3 letras (somente letras).</div>
+            <div class="invalid-feedback">Digite um nome com no mínimo 3 letras.</div>
           </div>
 
           <div class="mb-3">
             <label>Email *</label>
             <input type="email" class="form-control" name="email" required>
-            <div class="invalid-feedback">Digite um e-mail válido (ex: nome@email.com).</div>
+            <div class="invalid-feedback">Digite um e-mail válido.</div>
           </div>
 
           <div class="mb-3">
             <label>Telefone *</label>
             <input type="tel" class="form-control" name="telefone" required placeholder="Ex: 44998008156">
-            <div class="invalid-feedback">Digite um telefone válido com DDD. Ex: 44998008156</div>
+            <div class="invalid-feedback">Digite um telefone válido com DDD.</div>
           </div>
 
           <div class="mb-3">
@@ -120,6 +124,8 @@
 <script>
 document.addEventListener('DOMContentLoaded', function () {
   const form = document.getElementById('formOrcamento');
+  const alerta = document.getElementById('alertaEnvio');
+
   if (!form) return;
 
   form.addEventListener('submit', function(e) {
@@ -127,31 +133,48 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const formData = new FormData(form);
 
-    // Envia via AJAX para PHP
-    fetch('enviar_orcamento.php', {
-      method: 'POST',
-      body: formData
-    })
+    fetch('../banco/enviar_orcamento.php', {
+    method: 'POST',
+    body: formData
+})
+
     .then(res => res.json())
     .then(data => {
       if (data.success) {
-        // Envia para WhatsApp
+        // Mensagem de sucesso
+        alerta.className = "alert alert-success";
+        alerta.textContent = "✅ Enviado com sucesso! Aguarde nosso contato.";
+        alerta.classList.remove("d-none");
+
+        // Abrir WhatsApp
         const numeroWhats = '5544998008156';
         const mensagemURL = encodeURIComponent(data.mensagem);
         const url = `https://api.whatsapp.com/send?phone=${numeroWhats}&text=${mensagemURL}`;
         window.open(url, '_blank');
 
-        // Fecha modal e limpa formulário
-        const modalElement = document.getElementById('orcamentoModal');
-        if (bootstrap && bootstrap.Modal.getInstance(modalElement)) {
-          bootstrap.Modal.getInstance(modalElement).hide();
-        }
+        // Limpa formulário
         form.reset();
+
+        // Fecha modal após 3s
+        setTimeout(() => {
+          const modalElement = document.getElementById('orcamentoModal');
+          if (bootstrap && bootstrap.Modal.getInstance(modalElement)) {
+            bootstrap.Modal.getInstance(modalElement).hide();
+          }
+          alerta.classList.add("d-none");
+        }, 3000);
+
       } else {
-        alert('Erro: ' + data.error);
+        alerta.className = "alert alert-danger";
+        alerta.textContent = "❌ Erro: " + data.error;
+        alerta.classList.remove("d-none");
       }
     })
-    .catch(err => console.error(err));
+    .catch(err => {
+      alerta.className = "alert alert-danger";
+      alerta.textContent = "❌ Erro inesperado: " + err;
+      alerta.classList.remove("d-none");
+    });
   });
 });
 </script>

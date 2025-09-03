@@ -3,14 +3,17 @@ header('Content-Type: application/json');
 require 'config.php';
 
 try {
-    $nome = trim($_POST['nome'] ?? '');
-    $email = trim($_POST['email'] ?? '');
-    $telefone = trim($_POST['telefone'] ?? '');
-    $endereco = trim($_POST['endereco'] ?? '');
-    $tipoImovel = $_POST['tipoImovel'] ?? '';
+    // 🔎 Debug - salva os dados recebidos em um arquivo
+    file_put_contents(__DIR__ . "/debug.txt", print_r($_POST, true));
+
+    $nome        = trim($_POST['nome'] ?? '');
+    $email       = trim($_POST['email'] ?? '');
+    $telefone    = trim($_POST['telefone'] ?? '');
+    $endereco    = trim($_POST['endereco'] ?? '');
+    $tipoImovel  = $_POST['tipoImovel'] ?? '';
     $tipoServico = $_POST['tipoServico'] ?? '';
-    $area = $_POST['area'] ?: null;
-    $urgencia = $_POST['urgencia'] ?? '';
+    $area        = isset($_POST['area']) && $_POST['area'] !== '' ? $_POST['area'] : null;
+    $urgencia    = $_POST['urgencia'] ?? '';
     $observacoes = $_POST['observacoes'] ?? '';
     $necessidades = isset($_POST['necessidades']) ? implode(', ', $_POST['necessidades']) : '';
 
@@ -33,7 +36,7 @@ try {
     ]);
 
     // Monta mensagem para WhatsApp
-    $mensagem = "*Pedido de Orçamento*\n";
+    $mensagem  = "*Pedido de Orçamento*\n";
     $mensagem .= "*Nome:* $nome\n";
     $mensagem .= "*Email:* $email\n";
     $mensagem .= "*Telefone:* $telefone\n";
@@ -49,10 +52,12 @@ try {
         'success' => true,
         'mensagem' => $mensagem
     ]);
+    exit;
 
 } catch (\PDOException $e) {
     echo json_encode([
         'success' => false,
         'error' => $e->getMessage()
     ]);
+    exit;
 }
