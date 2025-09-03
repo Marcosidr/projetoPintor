@@ -2,7 +2,8 @@
 <div class="modal fade" id="orcamentoModal" tabindex="-1" aria-labelledby="orcamentoModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
-      <form id="formOrcamento" method="POST" action="../banco/enviar_orcamento.php">
+      <!-- action atualizado -->
+      <form id="formOrcamento" method="POST" action="banco/enviar_orcamento.php">
         <input type="hidden" name="formulario" value="orcamento">
         <div class="modal-header">
           <h5 class="modal-title" id="orcamentoModalLabel">Quer um orçamento sem compromisso?</h5>
@@ -17,19 +18,16 @@
           <div class="mb-3">
             <label>Nome Completo *</label>
             <input type="text" class="form-control" name="nome" required>
-            <div class="invalid-feedback">Digite um nome com no mínimo 3 letras.</div>
           </div>
 
           <div class="mb-3">
             <label>Email *</label>
             <input type="email" class="form-control" name="email" required>
-            <div class="invalid-feedback">Digite um e-mail válido.</div>
           </div>
 
           <div class="mb-3">
             <label>Telefone *</label>
             <input type="tel" class="form-control" name="telefone" required placeholder="Ex: 44998008156">
-            <div class="invalid-feedback">Digite um telefone válido com DDD.</div>
           </div>
 
           <div class="mb-3">
@@ -133,29 +131,25 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const formData = new FormData(form);
 
-    fetch('../banco/enviar_orcamento.php', {
-    method: 'POST',
-    body: formData
-})
-
+    // caminho ajustado
+    fetch('banco/enviar_orcamento.php', {
+      method: 'POST',
+      body: formData
+    })
     .then(res => res.json())
     .then(data => {
       if (data.success) {
-        // Mensagem de sucesso
         alerta.className = "alert alert-success";
         alerta.textContent = "✅ Enviado com sucesso! Aguarde nosso contato.";
         alerta.classList.remove("d-none");
 
-        // Abrir WhatsApp
+        // Abre WhatsApp
         const numeroWhats = '5544998008156';
         const mensagemURL = encodeURIComponent(data.mensagem);
-        const url = `https://api.whatsapp.com/send?phone=${numeroWhats}&text=${mensagemURL}`;
-        window.open(url, '_blank');
+        window.open(`https://api.whatsapp.com/send?phone=${numeroWhats}&text=${mensagemURL}`, '_blank');
 
-        // Limpa formulário
         form.reset();
 
-        // Fecha modal após 3s
         setTimeout(() => {
           const modalElement = document.getElementById('orcamentoModal');
           if (bootstrap && bootstrap.Modal.getInstance(modalElement)) {
@@ -163,7 +157,6 @@ document.addEventListener('DOMContentLoaded', function () {
           }
           alerta.classList.add("d-none");
         }, 3000);
-
       } else {
         alerta.className = "alert alert-danger";
         alerta.textContent = "❌ Erro: " + data.error;
@@ -179,7 +172,6 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 </script>
 
-<!-- Estilo de validação -->
 <style>
   .invalid-feedback { display: none; color: red; font-size: 0.875em; }
   .is-invalid + .invalid-feedback { display: block; }
