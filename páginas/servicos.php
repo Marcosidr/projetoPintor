@@ -5,6 +5,7 @@ ini_set('display_errors', 1);
 require_once __DIR__ . '/../classes/ServicoManager.php';
 $servicos = ServicoManager::getServicos();
 ?>
+  
 
 <!-- Seção Serviços -->
 <section class="container py-5">
@@ -18,7 +19,16 @@ $servicos = ServicoManager::getServicos();
     <?php endforeach; ?>
   </div>
 </section>
-
+ <!-- Nova seção: Chamada para ação -->
+<section class="container text-center my-5">
+  <div class="p-5 bg-success text-white rounded-3 shadow">
+    <h2 class="fw-bold">Pronto para transformar seu ambiente?</h2>
+    <p class="lead mb-4">Solicite já um orçamento sem compromisso e descubra como podemos ajudar você!</p>
+    <button class="btn btn-light btn-lg rounded-pill px-5 fw-bold" data-bs-toggle="modal" data-bs-target="#orcamentoModal">
+      Solicitar Orçamento
+    </button>
+  </div>
+</section>
 <!-- Seção Serviços em Destaque -->
 <section class="container my-5">
   <h2 class="text-center mb-5 text-paint-green-700 fw-bold">Serviços em Destaque</h2>
@@ -30,13 +40,7 @@ $servicos = ServicoManager::getServicos();
       </div>
     <?php endforeach; ?>
   </div>
-  
-  <div class="text-center mt-4">
-    <a href="?param=servicos" class="btn btn-success btn-lg rounded-pill px-4 fw-bold shadow-sm">
-      Ver todos os serviços
-    </a>
-  </div>
-</section>
+
 
 <!-- Nova seção: Processo de Trabalho -->
 <section class="bg-light py-5">
@@ -67,13 +71,4 @@ $servicos = ServicoManager::getServicos();
   </div>
 </section>
 
-<!-- Nova seção: Chamada para ação -->
-<section class="container text-center my-5">
-  <div class="p-5 bg-success text-white rounded-3 shadow">
-    <h2 class="fw-bold">Pronto para transformar seu ambiente?</h2>
-    <p class="lead mb-4">Solicite já um orçamento sem compromisso e descubra como podemos ajudar você!</p>
-    <button class="btn btn-light btn-lg rounded-pill px-5 fw-bold" data-bs-toggle="modal" data-bs-target="#orcamentoModal">
-      Solicitar Orçamento
-    </button>
-  </div>
-</section>
+
