@@ -90,4 +90,10 @@ $features = [
       </div>
     </div>
   </div>
+  <?php
+require_once __DIR__ . '/../classes/ServicoManager.php';
+$servicos = ServicoManager::getServicos();
+?>
+
+
 </section>

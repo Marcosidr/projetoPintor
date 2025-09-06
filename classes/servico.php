@@ -1,30 +1,60 @@
 <?php
-class Servico {
-    public $icone;
-    public $titulo;
-    public $descricao;
-    public $itens; // array de strings
+declare(strict_types=1);
 
-    public function __construct($icone, $titulo, $descricao, $itens = []) {
-        $this->icone = $icone;
-        $this->titulo = $titulo;
-        $this->descricao = $descricao;
-        $this->itens = $itens;
+class Servico
+{
+    public function __construct(
+        private string $icone,
+        private string $titulo,
+        private string $descricao,
+        private array $caracteristicas
+    ) {}
+
+    public function getIcone(): string
+    {
+        return $this->icone;
     }
 
-    // Renderiza o card HTML
-    public function renderCard() {
-        echo "<div class='col'>
-                <div class='card h-100 p-4 border-0 shadow-sm'>
-                    <div class='text-success mb-3'><i class='{$this->icone}'></i></div>
-                    <h5 class='fw-bold'>{$this->titulo}</h5>
-                    <p>{$this->descricao}</p>
-                    <ul class='list-unstyled text-muted small'>";
-        foreach ($this->itens as $item) {
-            echo "<li><i class='bi bi-check-circle text-success me-2'></i>$item</li>";
+    public function getTitulo(): string
+    {
+        return $this->titulo;
+    }
+
+    public function getDescricao(): string
+    {
+        return $this->descricao;
+    }
+
+    public function getCaracteristicas(): array
+    {
+        return $this->caracteristicas;
+    }
+
+    public function render(): string
+    {
+        $lista = '';
+        foreach ($this->caracteristicas as $item) {
+            $lista .= "<li><i class='bi bi-check-circle-fill text-success me-2'></i>{$item}</li>";
         }
-        echo "</ul>
+
+
+
+        return <<<HTML
+        <div class="card shadow-sm p-3 mb-4 rounded-3 hover-scale flex-fill">
+            <div class="card-body d-flex flex-column">
+                <div class="text-center mb-3">
+                    <i class="{$this->icone} fs-1 text-success"></i>
                 </div>
-              </div>";
+                <h5 class="card-title text-center">{$this->titulo}</h5>
+                <p class="card-text text-muted text-center">{$this->descricao}</p>
+                <ul class="list-unstyled small flex-grow-1">{$lista}</ul>
+                <div class="text-center mt-3">
+                    <button class="btn btn-success rounded-pill px-4 fw-bold" data-bs-toggle="modal" data-bs-target="#orcamentoModal">
+                        Solicitar Orçamento
+                    </button>
+                </div>
+            </div>
+        </div>
+        HTML;
     }
 }
