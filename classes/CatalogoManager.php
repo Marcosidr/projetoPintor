@@ -126,7 +126,7 @@ class CatalogoManager
                     "Disponível em diversas cores"
                 ],
                 "#f5f5f5"
-            ),
+            )
         ];
     }
 }

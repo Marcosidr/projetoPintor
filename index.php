@@ -19,6 +19,7 @@ $pagina = "páginas/{$param}.php";
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -31,110 +32,137 @@ $pagina = "páginas/{$param}.php";
 
     <!-- Estilos personalizados -->
     <style>
-:root {
-    --verde-clp: #2e7d32;
-    --creme-clp: #f5f5dc;
-    --marrom-clp: #5D4037;
-    --paint-green-600: #2e7d32;
-    --paint-green-700: #27652b;
-    --paint-cream-50: #f5f5dc;
+    :root {
+        --verde-clp: #2e7d32;
+        --creme-clp: #f5f5dc;
+        --marrom-clp: #5D4037;
+        --paint-green-600: #2e7d32;
+        --paint-green-700: #27652b;
+        --paint-cream-50: #f5f5dc;
+    }
+
+    body {
+        background-color: var(--creme-clp);
+        font-family: 'Arial', sans-serif;
+        color: #343a40;
+    }
+
+    .navbar {
+        background-color: #fff;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    }
+
+    .navbar .nav-link {
+        color: var(--marrom-clp);
+        font-weight: 500;
+        transition: color 0.3s;
+    }
+
+    .navbar .nav-link:hover,
+    .navbar .nav-link.active {
+        color: var(--verde-clp);
+    }
+
+    .navbar-brand {
+        color: var(--verde-clp);
+        font-size: 1.5rem;
+        display: flex;
+        align-items: center;
+    }
+
+    .navbar-brand .bi-brush {
+        font-size: 1.8rem;
+        margin-right: 8px;
+    }
+
+    .btn-success {
+        background-color: var(--verde-clp);
+        border: none;
+        border-radius: 0.5rem;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    .btn-success:hover {
+        background-color: var(--paint-green-700);
+        transform: translateY(-2px);
+    }
+
+    .card {
+        border: none;
+        background-color: #fff;
+        border-radius: 0.75rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .text-paint-green-600 {
+        color: var(--paint-green-600);
+    }
+
+    .text-paint-green-700 {
+        color: var(--paint-green-700);
+    }
+
+    .bg-paint-cream-50 {
+        background-color: var(--paint-cream-50);
+    }
+
+    .hover-scale:hover {
+        transform: scale(1.03);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-shadow {
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    }
+
+    @media (max-width: 768px) {
+        .navbar-brand {
+            font-size: 1.2rem;
+        }
+
+        .btn-social {
+            width: 40px;
+            height: 40px;
+            font-size: 1.2rem;
+        }
+
+        .card {
+            margin-bottom: 1rem;
+        }
+
+        .form-control {
+            padding: 0.6rem 0.8rem;
+        }
+
+        .hover-scale:hover {
+            transform: none;
+            box-shadow: none;
+        }
+    }
+    .dropdown-menu {
+    min-width: 180px;
+    border-radius: 12px;
+    padding: 0.5rem 0;
+    animation: fadeIn 0.3s ease-in-out;
 }
 
-body {
-    background-color: var(--creme-clp);
-    font-family: 'Arial', sans-serif;
-    color: #343a40;
+.dropdown-item {
+    border-radius: 8px;
+    transition: background-color 0.3s, transform 0.2s;
 }
 
-.navbar {
-    background-color: #fff;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+.dropdown-item:hover {
+    background-color: #2e7d32; /* Verde CLP */
+    color: #fff !important;
+    transform: translateX(5px);
 }
 
-.navbar .nav-link {
-    color: var(--marrom-clp);
-    font-weight: 500;
-    transition: color 0.3s;
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
-.navbar .nav-link:hover,
-.navbar .nav-link.active {
-    color: var(--verde-clp);
-}
-
-.navbar-brand {
-    color: var(--verde-clp);
-    font-size: 1.5rem;
-    display: flex;
-    align-items: center;
-}
-
-.navbar-brand .bi-brush {
-    font-size: 1.8rem;
-    margin-right: 8px;
-}
-
-.btn-success {
-    background-color: var(--verde-clp);
-    border: none;
-    border-radius: 0.5rem;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-.btn-success:hover {
-    background-color: var(--paint-green-700);
-    transform: translateY(-2px);
-}
-
-.card {
-    border: none;
-    background-color: #fff;
-    border-radius: 0.75rem;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-}
-
-.text-paint-green-600 {
-    color: var(--paint-green-600);
-}
-
-.text-paint-green-700 {
-    color: var(--paint-green-700);
-}
-
-.bg-paint-cream-50 {
-    background-color: var(--paint-cream-50);
-}
-
-.hover-scale:hover {
-    transform: scale(1.03);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    box-shadow: 0 8px 15px rgba(0,0,0,0.1);
-}
-
-.btn-shadow {
-    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-}
-
-@media (max-width: 768px) {
-  .navbar-brand {
-    font-size: 1.2rem;
-  }
-  .btn-social {
-    width: 40px;
-    height: 40px;
-    font-size: 1.2rem;
-  }
-  .card {
-    margin-bottom: 1rem;
-  }
-  .form-control {
-    padding: 0.6rem 0.8rem;
-  }
-  .hover-scale:hover {
-    transform: none;
-    box-shadow: none;
-  }
-}
     </style>
 </head>
 <script>
@@ -144,9 +172,11 @@ document.addEventListener("click", function(e) {
 
     const acao = target.innerText.trim() || target.getAttribute("href") || "Ação sem nome";
 
-    fetch("./registrar_log.php", { 
+    fetch("./registrar_log.php", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+            "Content-Type": "application/json"
+        },
         body: JSON.stringify({
             acao: acao,
             pagina: window.location.pathname
@@ -158,35 +188,68 @@ document.addEventListener("click", function(e) {
 
 <body>
 
-<!-- NAVBAR -->
-<nav class="navbar navbar-expand-lg shadow-sm py-3">
-    <div class="container">
-        <a class="navbar-brand fw-bold" href="./index.php">
-            <i class="bi bi-brush"></i> CLPINTURAS
-        </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-            <ul class="navbar-nav align-items-center">
-                <li class="nav-item"><a class="nav-link" href="index.php">HOME</a></li>
-                <li class="nav-item"><a class="nav-link" href="index.php?param=quem-somos">QUEM SOMOS</a></li>
-                <li class="nav-item"><a class="nav-link" href="index.php?param=servicos">SERVIÇOS</a></li>
-                <li class="nav-item"><a class="nav-link" href="index.php?param=catalogos">CATÁLOGO</a></li>
-                <li class="nav-item ms-2">
-                    <button type="button" class="btn btn-success rounded-pill px-4 fw-bold text-white" data-bs-toggle="modal" data-bs-target="#orcamentoModal">
-                        ORÇAMENTO
-                    </button>
-                </li>
-            </ul>
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg shadow-sm py-3">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="./index.php">
+                <i class="bi bi-brush"></i> CLPINTURAS
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav align-items-center">
+                    <li class="nav-item"><a class="nav-link" href="index.php">HOME</a></li>
+                    <li class="nav-item"><a class="nav-link" href="index.php?param=quem-somos">QUEM SOMOS</a></li>
+                    <li class="nav-item"><a class="nav-link" href="index.php?param=servicos">SERVIÇOS</a></li>
+                    <li class="nav-item"><a class="nav-link" href="index.php?param=catalogos">CATÁLOGO</a></li>
+
+                    <!-- Botão Orçamento -->
+                    <li class="nav-item ms-2">
+                        <button type="button" class="btn btn-success rounded-pill px-4 fw-bold text-white"
+                            data-bs-toggle="modal" data-bs-target="#orcamentoModal">
+                            ORÇAMENTO
+                        </button>
+                    </li>
+
+                    <!-- Usuário -->
+                    <li class="nav-item dropdown ms-3">
+                        <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown"
+                            role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-person-circle fs-4 text-paint-green-700"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end shadow rounded-3 border-0 p-2 animate__animated animate__fadeIn"
+                            aria-labelledby="userDropdown">
+                            <?php if (!empty($_SESSION["usuario"])): ?>
+                            <li><a class="dropdown-item d-flex align-items-center fw-semibold"
+                                    href="painel/dashboard.php">📊 Painel</a></li>
+                            <?php if ($_SESSION["usuario"]["tipo"] === "admin"): ?>
+                            <li><a class="dropdown-item d-flex align-items-center fw-semibold"
+                                    href="admin/gerenciar.php">🛠️ Administração</a></li>
+                            <?php endif; ?>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item d-flex align-items-center text-danger fw-bold"
+                                    href="painel/logout.php">🚪 Sair</a></li>
+                            <?php else: ?>
+                            <li><a class="dropdown-item d-flex align-items-center fw-semibold"
+                                    href="painel/login.php">🔑 Entrar</a></li>
+                            <li><a class="dropdown-item d-flex align-items-center fw-semibold"
+                                    href="painel/register.php">📝 Registrar</a></li>
+                            <?php endif; ?>
+                        </ul>
+                    </li>
+
+            </div>
         </div>
-    </div>
-</nav>
+    </nav>
 
-<?php include 'páginas/modal-orcamento.php'; ?>
 
-<main>
-<?php
+    <?php include 'páginas/modal-orcamento.php'; ?>
+
+    <main>
+        <?php
 // Inclui a página conforme o parâmetro, se existir
 if (file_exists($pagina)) {
     include $pagina;
@@ -194,61 +257,66 @@ if (file_exists($pagina)) {
     include "páginas/erro.php";
 }
 ?>
-</main>
+    </main>
 
-<!-- footer -->
-<footer class="bg-dark text-white pt-5 pb-4 main-footer">
-  <div class="container text-md-left">
-    <div class="row text-md-left">
-      <!-- Coluna 1 -->
-      <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mt-3">
-        <h5 class="text-uppercase mb-4 font-weight-bold text-success">CLPinturas</h5>
-        <p>
-          Transformando ambientes com excelência em pintura há mais de 25 anos.
-        </p>
-      </div>
-      <!-- Coluna 2 -->
-      <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mt-3">
-        <h5 class="text-uppercase mb-4 font-weight-bold text-success">Links</h5>
-        <p><a href="?param=home" class="text-white text-decoration-none">Home</a></p>
-        <p><a href="?param=servicos" class="text-white text-decoration-none">Serviços</a></p>
-        <p><a href="?param=quem-somos" class="text-white text-decoration-none">Quem somos</a></p>
-        <p><a href="?param=catalogos" class="text-white text-decoration-none">Catálogo</a></p>
-      </div>
-      <!-- Coluna 3 -->
-      <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mt-3">
-        <h5 class="text-uppercase mb-4 font-weight-bold text-success">Redes Sociais</h5>
-        <p><a href="https://www.facebook.com/" class="text-white text-decoration-none">Facebook</a></p>
-        <p><a href="https://www.instagram.com/marcos_inacion/" class="text-white text-decoration-none">Instagram</a></p>
-        <p><a href="https://api.whatsapp.com/send?phone=5544998008156" class="text-white text-decoration-none">WhatsApp</a></p>
-      </div>
-      <!-- Coluna 4 -->
-      <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mt-3">
-        <h5 class="text-uppercase mb-4 font-weight-bold text-success">Contato</h5>
-        <p><i class="fas fa-home mr-3"></i> Rua Belo horizonte, 3 -Boa esperança Paraná</p>
-        <p><i class="fas fa-envelope mr-3"></i> clpinturas@email.com</p>
-        <p><i class="fas fa-phone mr-3"></i> (44) 99800-8156</p>
-      </div>
-    </div>
-    <hr class="mb-4">
-    <div class="row align-items-center">
-      <div class="col-md-7 col-lg-8">
-        <p class="text-white">
-          © 2025 CLPinturas. Todos os direitos reservados.
-        </p>
-      </div>
-      <div class="col-md-5 col-lg-4">
-        <div class="text-center text-md-right social-icons">
-          <a href="https://www.facebook.com/" class="text-white me-4"><i class="fab fa-facebook-f"></i></a>
-          <a href="https://www.instagram.com/marcos_inacion/" class="text-white me-4"><i class="fab fa-instagram"></i></a>
-          <a href="https://api.whatsapp.com/send?phone=5544998008156" class="text-white me-4"><i class="fab fa-whatsapp"></i></a>
+    <!-- footer -->
+    <footer class="bg-dark text-white pt-5 pb-4 main-footer">
+        <div class="container text-md-left">
+            <div class="row text-md-left">
+                <!-- Coluna 1 -->
+                <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mt-3">
+                    <h5 class="text-uppercase mb-4 font-weight-bold text-success">CLPinturas</h5>
+                    <p>
+                        Transformando ambientes com excelência em pintura há mais de 25 anos.
+                    </p>
+                </div>
+                <!-- Coluna 2 -->
+                <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mt-3">
+                    <h5 class="text-uppercase mb-4 font-weight-bold text-success">Links</h5>
+                    <p><a href="?param=home" class="text-white text-decoration-none">Home</a></p>
+                    <p><a href="?param=servicos" class="text-white text-decoration-none">Serviços</a></p>
+                    <p><a href="?param=quem-somos" class="text-white text-decoration-none">Quem somos</a></p>
+                    <p><a href="?param=catalogos" class="text-white text-decoration-none">Catálogo</a></p>
+                </div>
+                <!-- Coluna 3 -->
+                <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mt-3">
+                    <h5 class="text-uppercase mb-4 font-weight-bold text-success">Redes Sociais</h5>
+                    <p><a href="https://www.facebook.com/" class="text-white text-decoration-none">Facebook</a></p>
+                    <p><a href="https://www.instagram.com/marcos_inacion/"
+                            class="text-white text-decoration-none">Instagram</a></p>
+                    <p><a href="https://api.whatsapp.com/send?phone=5544998008156"
+                            class="text-white text-decoration-none">WhatsApp</a></p>
+                </div>
+                <!-- Coluna 4 -->
+                <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mt-3">
+                    <h5 class="text-uppercase mb-4 font-weight-bold text-success">Contato</h5>
+                    <p><i class="fas fa-home mr-3"></i> Rua Belo horizonte, 3 -Boa esperança Paraná</p>
+                    <p><i class="fas fa-envelope mr-3"></i> clpinturas@email.com</p>
+                    <p><i class="fas fa-phone mr-3"></i> (44) 99800-8156</p>
+                </div>
+            </div>
+            <hr class="mb-4">
+            <div class="row align-items-center">
+                <div class="col-md-7 col-lg-8">
+                    <p class="text-white">
+                        © 2025 CLPinturas. Todos os direitos reservados.
+                    </p>
+                </div>
+                <div class="col-md-5 col-lg-4">
+                    <div class="text-center text-md-right social-icons">
+                        <a href="https://www.facebook.com/" class="text-white me-4"><i
+                                class="fab fa-facebook-f"></i></a>
+                        <a href="https://www.instagram.com/marcos_inacion/" class="text-white me-4"><i
+                                class="fab fa-instagram"></i></a>
+                        <a href="https://api.whatsapp.com/send?phone=5544998008156" class="text-white me-4"><i
+                                class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  </div>
-</footer>
+    </footer>
 
 
 
-<!-- Scripts Bootstrap -->
-<script
+    <!-- Scripts Bootstrap -->
+    <script
