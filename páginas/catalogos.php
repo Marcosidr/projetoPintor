@@ -1,10 +1,11 @@
 <?php
+
 require_once __DIR__ . '/../classes/CatalogoManager.php';
 $itens = CatalogoManager::getItens();
 ?>
 
 <div class="container my-5">
-    <h1 class="text-center mb-5 display-5 fw-bold text-paint-green-700">Catálogo de Tintas e Acabamentos</h1>
+    <h1 class="text-center mb-5 display-5 fw-bold text-paint-green-700">Catálogo de Tintas </h1>
     
     <div class="row g-4">
         <?php foreach ($itens as $item): ?>
@@ -24,8 +25,10 @@ $itens = CatalogoManager::getItens();
                         Para metais e madeiras, prefira esmalte sintético. Já para pisos, azulejos ou locais que exigem alta resistência, a tinta epóxi é a mais indicada. 
                         Em caso de dúvida, consulte um profissional para garantir o melhor resultado!
                     </p>
+                    <button class="btn btn-success btn-lg rounded-pill px-5 fw-bold mt-4" data-bs-toggle="modal" data-bs-target="#orcamentoModal">
+                        Sua dúvida
+                    </button>
                 </div>
             </div>
         </div>
     </div>
-</div>

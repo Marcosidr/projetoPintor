@@ -137,6 +137,25 @@ body {
 }
     </style>
 </head>
+<script>
+document.addEventListener("click", function(e) {
+    const target = e.target.closest("button, a");
+    if (!target) return;
+
+    const acao = target.innerText.trim() || target.getAttribute("href") || "Ação sem nome";
+
+    fetch("./registrar_log.php", { 
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            acao: acao,
+            pagina: window.location.pathname
+        })
+    });
+});
+</script>
+
+
 <body>
 
 <!-- NAVBAR -->
@@ -228,6 +247,8 @@ if (file_exists($pagina)) {
     </div>
   </div>
 </footer>
+
+
 
 <!-- Scripts Bootstrap -->
 <script

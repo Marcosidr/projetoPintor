@@ -89,6 +89,44 @@ class CatalogoManager
                 ],
                 "#f9fbe7"
             ),
+            new CatalogoItem(
+                "bi bi-droplet text-info",
+                "Tinta Acrílica Premium",
+                "",
+                [
+                    "Acabamento superior e duradouro",
+                    "Resistência a manchas e sujeira",
+                    "Fácil aplicação e acabamento",
+                    "Secagem rápida",
+                    "Disponível em diversas cores"
+                ],
+                "#e1f5fe"
+            ),
+            new CatalogoItem(
+                "bi bi-shield-check text-primary",
+                "Tinta Antimofo e Antiumidade",
+                "",
+                [
+                    "Previne o aparecimento de mofo e bolor",
+                    "Resistente à umidade",
+                    "Ideal para áreas internas e externas",
+                    "Fácil aplicação e limpeza",
+                    "Disponível em diversas cores"
+                ],
+                "#e0f7fa"
+            ),
+            new CatalogoItem(
+                "bi bi-paint-bucket text-secondary",
+                "Tinta para Piso",
+                "",
+                [
+                    "Alta resistência ao tráfego",
+                    "Fácil aplicação e limpeza",
+                    "Secagem rápida",
+                    "Disponível em diversas cores"
+                ],
+                "#f5f5f5"
+            ),
         ];
     }
 }
