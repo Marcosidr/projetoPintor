@@ -1,13 +1,14 @@
 <?php
-require_once __DIR__ . '/../classes/TintaManager.php';
-$tintas = TintaManager::getTintas();
+require_once __DIR__ . '/../classes/CatalogoManager.php';
+$itens = CatalogoManager::getItens();
 ?>
 
 <div class="container my-5">
-    <h1 class="text-center mb-5 display-5 fw-bold text-paint-green-700">Tipos de Tintas e Acabamentos</h1>
+    <h1 class="text-center mb-5 display-5 fw-bold text-paint-green-700">Catálogo de Tintas e Acabamentos</h1>
+    
     <div class="row g-4">
-        <?php foreach ($tintas as $tinta): ?>
-            <?= $tinta->render(); ?>
+        <?php foreach ($itens as $item): ?>
+            <?= $item->render(); ?>
         <?php endforeach; ?>
     </div>
 

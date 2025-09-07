@@ -3,14 +3,14 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/Servico.php';
 
-class Tinta extends Servico
+class CatalogoItem extends Servico
 {
     public function __construct(
         string $icone,
         string $titulo,
         string $descricao,
         array $caracteristicas = [],
-        private string $background = '#ffffff'
+        private string $corFundo = '#ffffff'
     ) {
         parent::__construct($icone, $titulo, $descricao, $caracteristicas);
     }
@@ -24,7 +24,7 @@ class Tinta extends Servico
 
         return "
         <div class='col-12 col-md-6 col-lg-4'>
-            <div class='card h-100 shadow-sm border-0' style='background-color: {$this->background};'>
+            <div class='card h-100 shadow-sm border-0' style='background-color: {$this->corFundo};'>
                 <div class='card-body text-center'>
                     <i class='{$this->getIcone()} mb-3' style='font-size: 2.5rem;'></i>
                     <h5 class='card-title fw-bold'>{$this->getTitulo()}</h5>

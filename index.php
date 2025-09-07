@@ -153,7 +153,7 @@ body {
                 <li class="nav-item"><a class="nav-link" href="index.php">HOME</a></li>
                 <li class="nav-item"><a class="nav-link" href="index.php?param=quem-somos">QUEM SOMOS</a></li>
                 <li class="nav-item"><a class="nav-link" href="index.php?param=servicos">SERVIÇOS</a></li>
-                <li class="nav-item"><a class="nav-link" href="index.php?param=tipos">TIPOS</a></li>
+                <li class="nav-item"><a class="nav-link" href="index.php?param=catalogos">CATÁLOGO</a></li>
                 <li class="nav-item ms-2">
                     <button type="button" class="btn btn-success rounded-pill px-4 fw-bold text-white" data-bs-toggle="modal" data-bs-target="#orcamentoModal">
                         ORÇAMENTO
@@ -194,7 +194,7 @@ if (file_exists($pagina)) {
         <p><a href="?param=home" class="text-white text-decoration-none">Home</a></p>
         <p><a href="?param=servicos" class="text-white text-decoration-none">Serviços</a></p>
         <p><a href="?param=quem-somos" class="text-white text-decoration-none">Quem somos</a></p>
-        <p><a href="?param=tipos" class="text-white text-decoration-none">Tipos</a></p>
+        <p><a href="?param=catalogos" class="text-white text-decoration-none">Catálogo</a></p>
       </div>
       <!-- Coluna 3 -->
       <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mt-3">

@@ -1,17 +1,17 @@
 <?php
 declare(strict_types=1);
 
-require_once __DIR__ . '/Tinta.php';
+require_once __DIR__ . '/Catalogo.php';
 
-class TintaManager
+class CatalogoManager
 {
     /**
-     * @return Tinta[]
+     * @return CatalogoItem[]
      */
-    public static function getTintas(): array
+    public static function getItens(): array
     {
         return [
-            new Tinta(
+            new CatalogoItem(
                 "bi bi-brush text-primary",
                 "Tinta Látex (PVA)",
                 "",
@@ -24,7 +24,7 @@ class TintaManager
                 ],
                 "#e3f2fd"
             ),
-            new Tinta(
+            new CatalogoItem(
                 "bi bi-droplet-half text-success",
                 "Tinta Acrílica",
                 "",
@@ -37,7 +37,7 @@ class TintaManager
                 ],
                 "#e8f5e9"
             ),
-            new Tinta(
+            new CatalogoItem(
                 "bi bi-palette text-warning",
                 "Esmalte Sintético",
                 "",
@@ -50,7 +50,7 @@ class TintaManager
                 ],
                 "#fff3e0"
             ),
-            new Tinta(
+            new CatalogoItem(
                 "bi bi-box-seam text-secondary",
                 "Tinta Epóxi",
                 "",
@@ -63,7 +63,7 @@ class TintaManager
                 ],
                 "#eceff1"
             ),
-            new Tinta(
+            new CatalogoItem(
                 "bi bi-lightning-charge text-danger",
                 "Spray / Grafite",
                 "",
@@ -76,7 +76,7 @@ class TintaManager
                 ],
                 "#fce4ec"
             ),
-            new Tinta(
+            new CatalogoItem(
                 "bi bi-texture text-success",
                 "Texturizada",
                 "",

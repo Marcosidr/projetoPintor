@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/../classes/TintaManager.php';
+require_once __DIR__ . '/../classes/CatalogoManager.php';
 ?>
 <div class="container py-5">
     <h1 class="mb-4 text-center" style="color: #27662a;" data-aos="fade-down">Quem Somos</h1>
