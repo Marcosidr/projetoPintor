@@ -194,7 +194,7 @@ if (file_exists($pagina)) {
         <p><a href="?param=home" class="text-white text-decoration-none">Home</a></p>
         <p><a href="?param=servicos" class="text-white text-decoration-none">Serviços</a></p>
         <p><a href="?param=quem-somos" class="text-white text-decoration-none">Quem somos</a></p>
-        <p><a href="?param=tipos-de-tintas" class="text-white text-decoration-none">Tipos de Tintas</a></p>
+        <p><a href="?param=tipos" class="text-white text-decoration-none">Tipos</a></p>
       </div>
       <!-- Coluna 3 -->
       <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mt-3">
