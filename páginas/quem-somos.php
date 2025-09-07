@@ -3,7 +3,7 @@ require_once __DIR__ . '/../classes/CatalogoManager.php';
 $itens = CatalogoManager::getItens();
 ?>
 <div class="container py-5">
-    <h1 class="mb-4 text-center" data-aos="fade-down">Quem Somos</h1>
+    <h1 class="mb-4 text-center" data-aos="fade-down" style="color: #27662a;">Quem Somos</h1>
 
     <div class="mb-5" data-aos="fade-right">
         <p>
@@ -26,7 +26,7 @@ $itens = CatalogoManager::getItens();
     <!-- Seção Nossos Valores -->
     <section class="bg-paint-cream-50 py-5">
         <div class="container">
-            <h2 class="text-center text-paint-green-700 fw-bold mb-2">Nossos Valores</h2>
+            <h2 class="text-center text-paint-green-700 fw-bold mb-2 "style="color: #27662a;">Nossos Valores</h2>
             <p class="text-center text-muted mb-5">
                 Os princípios que norteiam cada projeto e nos mantêm como referência no mercado
             </p>
@@ -77,7 +77,7 @@ $itens = CatalogoManager::getItens();
     </section>
 
     <div class="mt-5" data-aos="fade-left">
-        <h2>Nosso Compromisso</h2>
+        <h2 style="color: #27662a;">Nosso Compromisso</h2>
         <p>
             Estamos aqui para transformar suas ideias em realidade com pintura de qualidade, feita por profissionais experientes.
             Usamos materiais certificados e técnicas adequadas para garantir um acabamento duradouro e que realmente valorize seu espaço. Não prometemos milagres, mas trabalho sério, cumprimento de prazos e preço justo.
@@ -86,7 +86,7 @@ $itens = CatalogoManager::getItens();
     </div>
 
     <div class="mt-4" data-aos="fade-up">
-        <h2>Venha nos conhecer!</h2>
+        <h2 style="color: #27662a;">Venha nos conhecer!</h2>
     </div>
 
     <div class="text-center mt-5" data-aos="zoom-in-up">

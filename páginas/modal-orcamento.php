@@ -145,7 +145,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const formData = new FormData(form);
 
-    fetch('banco/enviar_orcamento.php', {
+    fetch('bin/enviar_orcamento.php', {
       method: 'POST',
       body: formData
     })
@@ -188,10 +188,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
 <!-- CSS exclusivo do modal -->
 <style>
+
 /* Botão com animação de carregamento */
 .btn-loading {
   position: relative;
   color: transparent !important;
+  background-color: #198754 !important; 
 }
 .btn-loading::after {
   content: '...';
@@ -199,12 +201,13 @@ document.addEventListener('DOMContentLoaded', function () {
   left: 50%;
   transform: translateX(-50%);
   animation: blink 1s infinite;
-  color: white;
+  color: white; /* pontinhos em branco */
 }
 @keyframes blink {
   0%, 50%, 100% { opacity: 1; }
   25%, 75% { opacity: 0; }
 }
+
 
 /* Tela de sucesso (overlay) */
 #sucessoOverlay {

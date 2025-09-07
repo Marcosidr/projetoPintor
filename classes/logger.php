@@ -1,6 +1,6 @@
 <?php
 class Logger {
-    public static function registrar(string $mensagem, string $arquivo = 'orcamentos.log'): void {
+    public static function registrar(string $mensagem, string $arquivo = 'sistema.log'): void {
         $logDir = __DIR__ . '/../logs/';
         $file = $logDir . $arquivo;
 
