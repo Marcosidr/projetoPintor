@@ -5,14 +5,21 @@ error_reporting(E_ALL);
 
 session_start();
 require_once __DIR__ . "/../bin/config.php";
+require_once __DIR__ . "/../classes/Logger.php";
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $nome  = trim($_POST["nome"] ?? "");
-    $email = trim($_POST["email"] ?? "");
+    $email = strtolower(trim($_POST["email"] ?? ""));
     $senha = $_POST["senha"] ?? "";
 
     if (empty($nome) || empty($email) || empty($senha)) {
         $_SESSION["erro"] = "Preencha todos os campos.";
+        header("Location: register.php");
+        exit;
+    }
+
+    if (strlen($senha) < 6) {
+        $_SESSION["erro"] = "A senha deve ter pelo menos 6 caracteres.";
         header("Location: register.php");
         exit;
     }
@@ -24,6 +31,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         if ($check->rowCount() > 0) {
             $_SESSION["erro"] = "Este e-mail já está registrado.";
+            Logger::registrar("REGISTRO FALHOU (E-MAIL EXISTE): {$email}", "register.php", "WARNING");
             header("Location: register.php");
             exit;
         }
@@ -40,12 +48,17 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             "senha" => $senhaHash
         ]);
 
+        Logger::registrar("REGISTRO OK: {$email}", "register.php", "INFO");
+        Logger::registrar("REGISTRO FALHOU: {$email}", "register.php", "WARNING");
+        Logger::registrar("ERRO REGISTRO: {$e->getMessage()}", "register.php", "ERRO");
+
         $_SESSION["sucesso"] = "Usuário registrado com sucesso!";
         header("Location: login.php");
         exit;
 
     } catch (Exception $e) {
         $_SESSION["erro"] = "Erro: " . $e->getMessage();
+        Logger::registrar("REGISTRO ERRO: {$email} - {$e->getMessage()}", "register.php", "ERROR");
         header("Location: register.php");
         exit;
     }

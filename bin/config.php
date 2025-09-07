@@ -1,4 +1,7 @@
 <?php
+require_once __DIR__ . "/../classes/Logger.php";
+Logger::init($pdo);
+
 $host = "localhost";   // ou 127.0.0.1
 $db   = "CLPinturas";      // nome do banco que você criou
 $user = "root";        // usuário do MySQL
