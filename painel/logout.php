@@ -1,11 +1,11 @@
 <?php
 session_start();
-require_once __DIR__ . "/../classes/Logger.php";
+require_once __DIR__ . "/../classes/logger.php";
 
 if (!empty($_SESSION["usuario"])) {
     $nome  = $_SESSION["usuario"]["nome"];
     $email = $_SESSION["usuario"]["email"];
-    Logger::registrar("LOGOUT OK: {$email} ({$nome})", "logout.php");
+    Logger::registrar("Logout realizado por: $email ($nome)", "INFO", "logout.php");
 }
 
 session_destroy();
