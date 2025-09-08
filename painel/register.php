@@ -50,7 +50,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         Logger::registrar("REGISTRO OK: {$email}", "register.php", "INFO");
         Logger::registrar("REGISTRO FALHOU: {$email}", "register.php", "WARNING");
-        Logger::registrar("ERRO REGISTRO: {$e->getMessage()}", "register.php", "ERRO");
+        Logger::registrar("ERRO REGISTRO: {$email}->getMessage()}", "register.php", "ERRO");
 
         $_SESSION["sucesso"] = "Usuário registrado com sucesso!";
         header("Location: login.php");
