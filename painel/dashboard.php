@@ -52,7 +52,6 @@ $usuarios = $pdo->query("SELECT id, nome, email, tipo FROM usuarios ORDER BY id 
         display: flex;
         font-family: Arial, sans-serif;
     }
-
     .sidebar {
         width: 240px;
         background: #2e7d32;
@@ -65,12 +64,10 @@ $usuarios = $pdo->query("SELECT id, nome, email, tipo FROM usuarios ORDER BY id 
         flex-direction: column;
         padding: 20px 0;
     }
-
     .sidebar h2 {
         text-align: center;
         margin-bottom: 30px;
     }
-
     .sidebar a {
         display: flex;
         gap: 10px;
@@ -80,36 +77,25 @@ $usuarios = $pdo->query("SELECT id, nome, email, tipo FROM usuarios ORDER BY id 
         text-decoration: none;
         cursor: pointer;
     }
-
     .sidebar a:hover {
         background: rgba(255, 255, 255, .15);
     }
-
     .sidebar .bottom {
         margin-top: auto;
     }
-
     .content {
         margin-left: 240px;
         flex: 1;
         padding: 20px;
         min-height: 100vh;
     }
-
-    .tab-content {
-        display: none;
-    }
-
-    .tab-content.active {
-        display: block;
-    }
-
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
     .dashboard {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
         gap: 20px;
     }
-
     .dashboard-card {
         background: #fff;
         border-radius: 12px;
@@ -117,19 +103,16 @@ $usuarios = $pdo->query("SELECT id, nome, email, tipo FROM usuarios ORDER BY id 
         text-align: center;
         box-shadow: 0 2px 6px rgba(0, 0, 0, .1);
     }
-
     .dashboard-card i {
         font-size: 32px;
         color: #2e7d32;
         margin-bottom: 10px;
     }
-
     .dashboard-card div {
         font-size: 26px;
         font-weight: bold;
         margin-bottom: 5px;
     }
-
     .grafico-container {
         background: #fff;
         border-radius: 12px;
@@ -137,7 +120,6 @@ $usuarios = $pdo->query("SELECT id, nome, email, tipo FROM usuarios ORDER BY id 
         margin: 20px 0;
         box-shadow: 0 2px 6px rgba(0, 0, 0, .1);
     }
-
     table {
         width: 100%;
         border-collapse: collapse;
@@ -146,27 +128,18 @@ $usuarios = $pdo->query("SELECT id, nome, email, tipo FROM usuarios ORDER BY id 
         overflow: hidden;
         box-shadow: 0 2px 6px rgba(0, 0, 0, .1);
     }
-
-    th,
-    td {
+    th, td {
         padding: 12px 15px;
         border-bottom: 1px solid #ddd;
         text-align: left;
     }
-
     th {
         background: #2e7d32;
         color: #fff;
     }
-
-    tr:hover {
-        background: #f9f9f9;
-    }
-
-    /* Overlay sucesso */
+    tr:hover { background: #f9f9f9; }
     #sucessoOverlay {
-        display: none; /* Inicialmente oculto antes estava flex o 
-        que fiz foi colocar none agora so ira funcionar quando o javascript ativar */
+        display: none;
         position: fixed;
         inset: 0;
         background: rgba(0, 0, 0, .7);
@@ -177,27 +150,15 @@ $usuarios = $pdo->query("SELECT id, nome, email, tipo FROM usuarios ORDER BY id 
         color: #fff;
         text-align: center;
     }
-
-    .checkmark {
-        animation: pop .25s ease-out;
-    }
-
+    .checkmark { animation: pop .25s ease-out; }
     @keyframes pop {
-        from {
-            transform: scale(.8);
-            opacity: 0
-        }
-
-        to {
-            transform: scale(1);
-            opacity: 1
-        }
+        from { transform: scale(.8); opacity: 0 }
+        to   { transform: scale(1); opacity: 1 }
     }
     </style>
 </head>
 
 <body>
-
     <!-- Sidebar -->
     <div class="sidebar">
         <h2>CLPinturas</h2>
@@ -210,6 +171,13 @@ $usuarios = $pdo->query("SELECT id, nome, email, tipo FROM usuarios ORDER BY id 
 
     <!-- Conteúdo -->
     <div class="content">
+        <!-- Botão canto superior direito -->
+        <div class="d-flex justify-content-end mb-3">
+            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalAdicionar">
+                <i class="bi bi-person-plus"></i> Adicionar Usuário
+            </button>
+        </div>
+
         <!-- DASHBOARD -->
         <div id="dashboard" class="tab-content active">
             <div class="dashboard">
@@ -234,11 +202,7 @@ $usuarios = $pdo->query("SELECT id, nome, email, tipo FROM usuarios ORDER BY id 
 
         <!-- GERENCIAR USUÁRIOS -->
         <div id="usuarios" class="tab-content">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <h3 class="mb-0">Gerenciar Usuários</h3>
-                <small class="text-muted">Clique em editar para alterar dados ou em resetar para definir a senha
-                    padrão.</small>
-            </div>
+            <h3 class="mb-3">Gerenciar Usuários</h3>
             <table>
                 <thead>
                     <tr>
@@ -273,38 +237,70 @@ $usuarios = $pdo->query("SELECT id, nome, email, tipo FROM usuarios ORDER BY id 
 
     <!-- Modal Editar Usuário -->
     <div class="modal fade" id="modalEditar" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <form id="formEditar">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Editar Usuário</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
-                    </div>
-                    <div class="modal-body">
-                        <input type="hidden" name="id" id="editId">
-                        <div class="mb-3">
-                            <label class="form-label">Nome</label>
-                            <input type="text" class="form-control" name="nome" id="editNome" required>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Email</label>
-                            <input type="email" class="form-control" name="email" id="editEmail" required>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Tipo</label>
-                            <select class="form-select" name="tipo" id="editTipo">
-                                <option value="cliente">Cliente</option>
-                                <option value="admin">Admin</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button class="btn btn-success" type="submit">Salvar</button>
-                        <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Cancelar</button>
-                    </div>
-                </form>
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="border-radius:12px;">
+          <form id="formEditar">
+            <div class="modal-header" style="background:#2e7d32;color:#fff;">
+              <h5 class="modal-title"><i class="bi bi-pencil-square"></i> Editar Usuário</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
             </div>
+            <div class="modal-body">
+              <input type="hidden" name="id" id="editId">
+              <div class="mb-3"><label class="form-label">Nome</label>
+                <input type="text" class="form-control" name="nome" id="editNome" required>
+              </div>
+              <div class="mb-3"><label class="form-label">Email</label>
+                <input type="email" class="form-control" name="email" id="editEmail" required>
+              </div>
+              <div class="mb-3"><label class="form-label">Tipo</label>
+                <select class="form-select" name="tipo" id="editTipo">
+                  <option value="cliente">Cliente</option>
+                  <option value="admin">Admin</option>
+                </select>
+              </div>
+            </div>
+            <div class="modal-footer" style="border-top:1px solid #e0e0e0;">
+              <button class="btn btn-success" type="submit"><i class="bi bi-check-circle"></i> Salvar</button>
+              <button class="btn btn-outline-secondary" type="button" data-bs-dismiss="modal">Cancelar</button>
+            </div>
+          </form>
         </div>
+      </div>
+    </div>
+
+    <!-- Modal Adicionar Usuário -->
+    <div class="modal fade" id="modalAdicionar" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="border-radius:12px;">
+          <form id="formAdicionar">
+            <div class="modal-header" style="background:#2e7d32;color:#fff;">
+              <h5 class="modal-title"><i class="bi bi-person-plus"></i> Adicionar Usuário</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body">
+              <div class="mb-3"><label class="form-label">Nome</label>
+                <input type="text" class="form-control" name="nome" required>
+              </div>
+              <div class="mb-3"><label class="form-label">Email</label>
+                <input type="email" class="form-control" name="email" required>
+              </div>
+              <div class="mb-3"><label class="form-label">Tipo</label>
+                <select class="form-select" name="tipo">
+                  <option value="cliente">Cliente</option>
+                  <option value="admin">Admin</option>
+                </select>
+              </div>
+              <div class="mb-3"><label class="form-label">Senha</label>
+                <input type="password" class="form-control" name="senha" required>
+              </div>
+            </div>
+            <div class="modal-footer" style="border-top:1px solid #e0e0e0;">
+              <button class="btn btn-success" type="submit"><i class="bi bi-check-circle"></i> Salvar</button>
+              <button class="btn btn-outline-secondary" type="button" data-bs-dismiss="modal">Cancelar</button>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
 
     <!-- Overlay de sucesso -->
@@ -318,13 +314,10 @@ $usuarios = $pdo->query("SELECT id, nome, email, tipo FROM usuarios ORDER BY id 
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-    /* Tabs */
     function showTab(tab) {
         document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
         document.getElementById(tab).classList.add('active');
     }
-
-    /* Gráfico */
     const ctx = document.getElementById('grafico').getContext('2d');
     new Chart(ctx, {
         type: 'line',
@@ -341,40 +334,14 @@ $usuarios = $pdo->query("SELECT id, nome, email, tipo FROM usuarios ORDER BY id 
                 pointRadius: 5
             }]
         },
-        options: {
-            plugins: {
-                legend: {
-                    display: false
-                }
-            },
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    grid: {
-                        color: '#eee'
-                    }
-                },
-                x: {
-                    grid: {
-                        color: '#f5f5f5'
-                    }
-                }
-            }
-        }
+        options: { plugins:{legend:{display:false}}, scales:{y:{beginAtZero:true,grid:{color:'#eee'}},x:{grid:{color:'#f5f5f5'}} } }
     });
-
-    /* Overlay */
     function mostrarOverlay(msg) {
         document.getElementById('overlayMsg').innerText = msg || 'Operação concluída!';
         const ov = document.getElementById('sucessoOverlay');
         ov.style.display = 'flex';
-        setTimeout(() => {
-            ov.style.display = 'none';
-        }, 1600);
-
+        setTimeout(() => { ov.style.display = 'none'; }, 1600);
     }
-
-    /* Helpers de fetch JSON */
     async function fetchJSON(url, options = {}) {
         const res = await fetch(url, options);
         const ct = res.headers.get('content-type') || '';
@@ -386,11 +353,7 @@ $usuarios = $pdo->query("SELECT id, nome, email, tipo FROM usuarios ORDER BY id 
         if (data.status && data.status !== 'success') throw new Error(data.msg || 'Erro');
         return data;
     }
-
-    /* Modal editar */
     const modalEditar = new bootstrap.Modal(document.getElementById('modalEditar'));
-
-    /* Abrir modal com dados do usuário */
     async function abrirEditar(id) {
         try {
             const user = await fetchJSON(`../admin/editar.php?id=${id}`);
@@ -399,47 +362,86 @@ $usuarios = $pdo->query("SELECT id, nome, email, tipo FROM usuarios ORDER BY id 
             document.getElementById('editEmail').value = user.email;
             document.getElementById('editTipo').value = user.tipo;
             modalEditar.show();
-        } catch (e) {
-            alert('Erro ao carregar usuário: ' + e.message);
-        }
+        } catch (e) { alert('Erro ao carregar usuário: ' + e.message); }
     }
-
-    /* Salvar edição */
     document.getElementById('formEditar').addEventListener('submit', async (e) => {
         e.preventDefault();
         try {
             const form = e.target;
-            await fetchJSON('../admin/editar.php', {
-                method: 'POST',
-                body: new FormData(form)
-            });
+            await fetchJSON('../admin/editar.php', { method: 'POST', body: new FormData(form) });
             modalEditar.hide();
-            /* Atualiza a linha na tabela sem reload */
             const id = form.editId ? form.editId.value : document.getElementById('editId').value;
             const tr = document.querySelector(`tr[data-id="${id}"]`);
             if (tr) {
                 tr.querySelector('.col-nome').innerText = document.getElementById('editNome').value;
                 tr.querySelector('.col-email').innerText = document.getElementById('editEmail').value;
-                tr.querySelector('.col-tipo').innerText = (document.getElementById('editTipo').value || '')
-                    .replace(/^./, c => c.toUpperCase());
+                tr.querySelector('.col-tipo').innerText = (document.getElementById('editTipo').value || '').replace(/^./, c => c.toUpperCase());
             }
             mostrarOverlay('Usuário atualizado com sucesso!');
-        } catch (e) {
-            alert('Erro ao salvar: ' + e.message);
-        }
+        } catch (e) { alert('Erro ao salvar: ' + e.message); }
     });
-
-    /* Resetar senha */
-    async function resetarSenha(id) {
-        if (!confirm('Resetar a senha deste usuário para "123456"?')) return;
+    let modalResetar = null, resetarId = null;
+    function criarModalResetar() {
+      if (modalResetar) return;
+      const modalHtml = `
+      <div class="modal fade" id="modalResetar" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="border-radius:12px;">
+        <div class="modal-header" style="background:#2e7d32;color:#fff;">
+          <h5 class="modal-title"><i class="bi bi-arrow-counterclockwise"></i> Resetar Senha</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <p>Digite a nova senha para o usuário:</p>
+          <input type="password" id="novaSenha" class="form-control" placeholder="Nova senha">
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-success" id="confirmResetar"><i class="bi bi-check-circle"></i> Confirmar</button>
+          <button class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+        </div>
+        </div></div></div>`;
+      document.body.insertAdjacentHTML('beforeend', modalHtml);
+      modalResetar = new bootstrap.Modal(document.getElementById('modalResetar'));
+      document.getElementById('confirmResetar').addEventListener('click', async () => {
+        const senha = document.getElementById('novaSenha').value;
+        if (!senha) return alert('Informe a nova senha');
         try {
-            const data = await fetchJSON(`../admin/resetar.php?id=${id}`);
-            mostrarOverlay(data.msg || 'Senha resetada com sucesso!');
-        } catch (e) {
-            alert('Erro ao resetar: ' + e.message);
-        }
+          await fetchJSON('../admin/resetar.php', { method: 'POST', body: new URLSearchParams({ id: resetarId, senha }) });
+          modalResetar.hide();
+          mostrarOverlay('Senha redefinida!');
+        } catch (e) { alert('Erro: ' + e.message); }
+      });
     }
+    function resetarSenha(id) { resetarId = id; criarModalResetar(); modalResetar.show(); }
+    const formAdicionar = document.getElementById('formAdicionar');
+    formAdicionar.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      try {
+        const dados = new FormData(formAdicionar);
+        const resp = await fetchJSON('../admin/adicionar.php', { method: 'POST', body: dados });
+        const novo = resp.usuario;
+        const tbody = document.getElementById('tbodyUsuarios');
+        const tr = document.createElement('tr');
+        tr.setAttribute('data-id', novo.id);
+        tr.innerHTML = `
+          <td>${novo.id}</td>
+          <td class="col-nome">${novo.nome}</td>
+          <td class="col-email">${novo.email}</td>
+          <td class="col-tipo">${(novo.tipo||'').replace(/^./, c=>c.toUpperCase())}</td>
+          <td>
+            <button class="btn btn-sm btn-warning me-2" onclick="abrirEditar(${novo.id})">
+              <i class="bi bi-pencil-square"></i> Editar
+            </button>
+            <button class="btn btn-sm btn-danger" onclick="resetarSenha(${novo.id})">
+              <i class="bi bi-arrow-counterclockwise"></i> Resetar Senha
+            </button>
+          </td>`;
+        tbody.prepend(tr);
+        bootstrap.Modal.getInstance(document.getElementById('modalAdicionar')).hide();
+        formAdicionar.reset();
+        mostrarOverlay('Usuário adicionado com sucesso!');
+      } catch (e) { alert('Erro ao adicionar: ' + e.message); }
+    });
     </script>
 </body>
-
 </html>
