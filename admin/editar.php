@@ -1,73 +1,44 @@
 <?php
 session_start();
 require_once __DIR__ . "/../bin/config.php";
+header("Content-Type: application/json; charset=utf-8");
 
-// Bloqueia acesso se não for admin
+// Segurança
 if (empty($_SESSION["usuario"]) || $_SESSION["usuario"]["tipo"] !== "admin") {
-    header("Location: ../painel/login.php");
-    exit;
+    echo json_encode(["status"=>"error","msg"=>"Acesso negado"]); exit;
 }
 
-$id = intval($_GET["id"] ?? 0);
+$method = $_SERVER["REQUEST_METHOD"];
 
-// Buscar usuário
-$stmt = $pdo->prepare("SELECT * FROM usuarios WHERE id = :id LIMIT 1");
-$stmt->execute(["id" => $id]);
-$user = $stmt->fetch(PDO::FETCH_ASSOC);
+if ($method === "GET") {
+    $id = intval($_GET["id"] ?? 0);
+    if ($id <= 0) { echo json_encode(["status"=>"error","msg"=>"ID inválido"]); exit; }
 
-if (!$user) {
-    die("Usuário não encontrado!");
+    $stmt = $pdo->prepare("SELECT id, nome, email, tipo FROM usuarios WHERE id = :id LIMIT 1");
+    $stmt->execute(["id"=>$id]);
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    if (!$user) { echo json_encode(["status"=>"error","msg"=>"Usuário não encontrado"]); exit; }
+
+    echo json_encode($user); exit;
 }
 
-// Atualizar usuário
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $nome = $_POST["nome"] ?? "";
-    $email = $_POST["email"] ?? "";
-    $tipo = $_POST["tipo"] ?? "cliente";
+if ($method === "POST") {
+    $id    = intval($_POST["id"] ?? 0);
+    $nome  = trim($_POST["nome"] ?? "");
+    $email = trim($_POST["email"] ?? "");
+    $tipo  = $_POST["tipo"] ?? "cliente";
 
-    $sql = "UPDATE usuarios SET nome = :nome, email = :email, tipo = :tipo WHERE id = :id";
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute([
-        "nome" => $nome,
-        "email" => $email,
-        "tipo" => $tipo,
-        "id" => $id
-    ]);
+    if ($id<=0 || $nome==="" || $email==="") {
+        echo json_encode(["status"=>"error","msg"=>"Dados inválidos"]); exit;
+    }
 
-    header("Location: gerenciar.php");
-    exit;
+    $stmt = $pdo->prepare("UPDATE usuarios SET nome = :n, email = :e, tipo = :t WHERE id = :id");
+    $stmt->execute(["n"=>$nome, "e"=>$email, "t"=>$tipo, "id"=>$id]);
+
+    echo json_encode(["status"=>"success","msg"=>"Usuário atualizado com sucesso"]); exit;
 }
-?>
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-  <meta charset="UTF-8">
-  <title>Editar Usuário</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body>
-<div class="container py-4">
-  <h3>Editar Usuário</h3>
-  <a href="gerenciar.php" class="btn btn-secondary mb-3">⬅ Voltar</a>
 
-  <form method="POST">
-    <div class="mb-3">
-      <label>Nome</label>
-      <input type="text" class="form-control" name="nome" value="<?= htmlspecialchars($user["nome"]) ?>" required>
-    </div>
-    <div class="mb-3">
-      <label>Email</label>
-      <input type="email" class="form-control" name="email" value="<?= htmlspecialchars($user["email"]) ?>" required>
-    </div>
-    <div class="mb-3">
-      <label>Tipo</label>
-      <select class="form-select" name="tipo">
-        <option value="cliente" <?= $user["tipo"] === "cliente" ? "selected" : "" ?>>Cliente</option>
-        <option value="admin" <?= $user["tipo"] === "admin" ? "selected" : "" ?>>Admin</option>
-      </select>
-    </div>
-    <button type="submit" class="btn btn-success">Salvar</button>
-  </form>
-</div>
-</body>
-</html>
+echo json_encode(["status"=>"error","msg"=>"Método não suportado"]);
+
+
+
