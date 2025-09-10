@@ -1,6 +1,4 @@
 <?php
-// bootstrap/app.php
-
 session_start();
 
 // Carrega configurações
