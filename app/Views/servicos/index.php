@@ -1,8 +1,3 @@
-<?php foreach ($servicos as $servico): ?>
-    <?= $servico->render(); ?>
-<?php endforeach; ?>
-
-
 <!-- Seção Serviços -->
 <section class="container py-5">
   <h2 class="text-center mb-5 text-paint-green-700 fw-bold">Nossos Serviços</h2>
@@ -15,7 +10,8 @@
     <?php endforeach; ?>
   </div>
 </section>
- <!-- Nova seção: Chamada para ação -->
+
+<!-- Nova seção: Chamada para ação -->
 <section class="container text-center my-5">
   <div class="p-5 bg-success text-white rounded-3 shadow">
     <h2 class="fw-bold">Pronto para transformar seu ambiente?</h2>
@@ -25,6 +21,7 @@
     </button>
   </div>
 </section>
+
 <!-- Seção Serviços em Destaque -->
 <section class="container my-5">
   <h2 class="text-center mb-5 text-paint-green-700 fw-bold">Serviços em Destaque</h2>
@@ -36,7 +33,7 @@
       </div>
     <?php endforeach; ?>
   </div>
-
+</section>
 
 <!-- Nova seção: Processo de Trabalho -->
 <section class="bg-light py-5">
@@ -66,5 +63,3 @@
     </div>
   </div>
 </section>
-
-
