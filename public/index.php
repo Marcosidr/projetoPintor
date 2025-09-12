@@ -2,6 +2,12 @@
 // Front Controller
 define('ROOT_PATH', dirname(__DIR__) . '/');
 
+// Força exibição de erros em ambiente de diagnóstico.
+// ATENÇÃO: Remover (ou definir APP_DEBUG=false) em produção.
+ini_set('display_errors', '1');
+ini_set('display_startup_errors', '1');
+error_reporting(E_ALL);
+
 require ROOT_PATH.'vendor/autoload.php';
 
 // Carrega variáveis de ambiente antes de decidir debug
@@ -10,8 +16,11 @@ if (class_exists(\App\Core\Env::class)) {
 }
 
 // Config de ambiente básico após carregar .env
-error_reporting(E_ALL);
-ini_set('display_errors', getenv('APP_DEBUG') === 'true' ? '1' : '0');
+// Mantém controle por APP_DEBUG, mas já ativamos acima para sessão atual.
+if (getenv('APP_DEBUG') !== 'true') {
+	// Se quiser que debug respeite .env, comente as três linhas de ini_set acima.
+	ini_set('display_errors', '0');
+}
 
 // Handler simples para exceções não tratadas
 set_exception_handler(function(Throwable $e){

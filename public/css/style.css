@@ -171,3 +171,55 @@ h1, h2, h3, h4, h5, h6 {
     from { opacity: 0; transform: translateY(-10px); }
     to { opacity: 1; transform: translateY(0); }
 }
+
+/* ==== Modal Orçamento / Feedback ==== */
+#sucessoOverlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.7);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    color: #fff;
+    font-size: 1.5rem;
+    animation: fadeIn 0.5s ease-in-out;
+}
+#sucessoOverlay .checkmark {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: block;
+    stroke-width: 4;
+    stroke: #fff;
+    stroke-miterlimit: 10;
+    margin: 20px auto;
+    box-shadow: inset 0 0 0 #28a745;
+    animation: fill .4s ease-in-out .4s forwards, scale .3s ease-in-out .9s both;
+}
+#sucessoOverlay .checkmark__circle {
+    stroke-dasharray: 166;
+    stroke-dashoffset: 166;
+    stroke-width: 4;
+    stroke-miterlimit: 10;
+    stroke: #28a745;
+    fill: none;
+    animation: stroke .6s cubic-bezier(.65,0,.45,1) forwards;
+}
+#sucessoOverlay .checkmark__check {
+    transform-origin: 50% 50%;
+    stroke-dasharray: 48;
+    stroke-dashoffset: 48;
+    animation: stroke .3s cubic-bezier(.65,0,.45,1) .8s forwards;
+}
+@keyframes stroke { 100% { stroke-dashoffset: 0; } }
+@keyframes scale { 0%,100% { transform:none; } 50% { transform: scale3d(1.1,1.1,1); } }
+@keyframes fill { 100% { box-shadow: inset 0 0 0 40px #28a745; } }
+
+/* Botão com animação de carregamento */
+.btn-loading { position: relative; color: transparent !important; background-color: #198754 !important; }
+.btn-loading::after { content: '...'; position: absolute; left: 50%; transform: translateX(-50%); animation: blink 1s infinite; color: #fff; }
+@keyframes blink { 0%,50%,100%{opacity:1;} 25%,75%{opacity:0;} }
+

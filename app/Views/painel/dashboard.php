@@ -1,14 +1,15 @@
 <?php /* View: painel/dashboard - nova UI moderna */ ?>
-<div class="dashboard-wrapper">
+<?php $isAdmin = \App\Core\Auth::checkAdmin(); ?>
+<div class="dashboard-wrapper" id="painelRoot" data-is-admin="<?= $isAdmin ? '1':'0' ?>">
   <header class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center mb-4 gap-2">
       <div>
-          <h1 class="h3 mb-0 fw-semibold">Painel</h1>
-          <small class="text-muted">Bem-vindo, <?= htmlspecialchars($usuario ?? 'Usuário') ?></small>
+          <h1 class="h3 mb-0 fw-semibold" style="margin-bottom: 0; color: #2e7d32;">Painel</h1>
+          
+          <span><small class="text-muted">Bem-vindo, <?= htmlspecialchars($usuario ?? 'Usuário') ?></small></span>
       </div>
       <div class="d-flex gap-2">
-          <?php if(\App\Core\Auth::checkAdmin()): ?>
-              <span class="badge bg-danger align-self-start">Admin</span>
-              <button class="btn btn-sm btn-primary" id="btnNovoUsuario"><i class="bi bi-person-plus"></i> Novo Usuário</button>
+          <?php if($isAdmin): ?>
+              
           <?php endif; ?>
       </div>
   </header>
@@ -99,7 +100,7 @@
   <div class="card shadow-sm mb-5" id="cardUsuarios">
       <div class="card-header bg-transparent d-flex justify-content-between align-items-center py-2">
           <h6 class="mb-0 fw-semibold"><i class="bi bi-people me-1"></i> Usuários</h6>
-          <?php if(\App\Core\Auth::checkAdmin()): ?><button class="btn btn-sm btn-outline-primary" id="btnNovoUsuario2"><i class="bi bi-plus-circle"></i> Novo</button><?php endif; ?>
+          <?php if($isAdmin): ?><button class="btn btn-sm btn-outline-primary" id="btnNovoUsuario2"><i class="bi bi-plus-circle"></i> Novo</button><?php endif; ?>
       </div>
       <div class="card-body p-0">
           <div class="table-responsive">
@@ -111,7 +112,7 @@
                           <th>Email</th>
                           <th>Tipo</th>
                           <th>Criado</th>
-                          <?php if(\App\Core\Auth::checkAdmin()): ?><th class="text-center" style="width:160px">Ações</th><?php endif; ?>
+                          <?php if($isAdmin): ?><th class="text-center" style="width:170px; ">Ações</th><?php endif; ?>
                       </tr>
                   </thead>
                   <tbody>
@@ -121,9 +122,9 @@
                                   <td><?= $u['id'] ?></td>
                                   <td class="user-nome"><?= htmlspecialchars($u['nome']) ?></td>
                                   <td class="user-email"><?= htmlspecialchars($u['email']) ?></td>
-                                  <td><span class="badge bg-<?= $u['tipo']==='admin'?'danger':'secondary' ?> user-tipo"><?= htmlspecialchars($u['tipo']) ?></span></td>
+                                  <td><span class="badge bg-<?= $u['tipo']==='admin'?'success':'secondary' ?> user-tipo"><?= htmlspecialchars($u['tipo']) ?></span></td>
                                   <td class="small text-muted user-criado"><?= htmlspecialchars($u['created_at'] ?? '') ?></td>
-                                  <?php if(\App\Core\Auth::checkAdmin()): ?>
+                                  <?php if($isAdmin): ?>
                                   <td class="text-center">
                                       <div class="btn-group btn-group-sm" role="group">
                                           <button class="btn btn-outline-secondary btn-edit" title="Editar"><i class="bi bi-pencil-square"></i></button>
@@ -145,7 +146,7 @@
   </div>
 </div>
 
-<?php if(\App\Core\Auth::checkAdmin()): ?>
+<?php if($isAdmin): ?>
 <!-- Modal Form Usuário -->
 <div class="modal fade" id="modalUsuario" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
@@ -194,10 +195,43 @@
 
 <!-- Toast Container -->
 <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index:1080" id="toastStack" aria-live="polite" aria-atomic="true"></div>
+
+<!-- Modal Confirmação Ação -->
+<div class="modal fade" id="modalConfirmacao" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow">
+            <div class="modal-header border-0 pb-0">
+                <h5 class="modal-title fw-semibold" id="tituloConfirmacao">Confirmar Ação</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body pt-2">
+                <div class="d-flex align-items-start gap-3">
+                    <div id="iconConfirmacao" class="confirm-icon flex-shrink-0"></div>
+                    <div>
+                        <p class="mb-2" id="mensagemConfirmacao">Tem certeza?</p>
+                        <p class="text-muted small mb-0" id="detalheConfirmacao"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer border-0 pt-0">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger d-none" id="btnExecutarDelete"><i class="bi bi-trash me-1"></i>Excluir</button>
+                <button type="button" class="btn btn-warning d-none" id="btnExecutarReset"><i class="bi bi-key me-1"></i>Resetar Senha</button>
+            </div>
+        </div>
+    </div>
+ </div>
 <?php endif; ?>
 
 <style>
   .metric-card .icon-circle { width:48px; height:48px; display:flex; align-items:center; justify-content:center; font-size:1.3rem; border-radius:50%; }
   .dashboard-wrapper { animation: fadeIn .35s ease; }
   @keyframes fadeIn { from { opacity:0; transform: translateY(4px);} to { opacity:1; transform: translateY(0);} }
+    /* Modal confirmação custom */
+    #modalConfirmacao .confirm-icon { width:46px; height:46px; border-radius:14px; display:flex; align-items:center; justify-content:center; font-size:1.4rem; }
+    #modalConfirmacao .confirm-icon.delete { background:rgba(220,53,69,.12); color:#dc3545; }
+    #modalConfirmacao .confirm-icon.reset { background:rgba(255,193,7,.18); color:#b58100; }
+    #modalConfirmacao .modal-content { border-radius:1rem; }
+    #modalConfirmacao .btn-warning { color:#5a4100; font-weight:600; }
+    #modalConfirmacao .btn-danger { font-weight:600; }
 </style>

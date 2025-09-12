@@ -2,7 +2,7 @@
 // app/Views/partials/modal-orcamento.php
 ?>
 <!-- MODAL DE ORÇAMENTO -->
-<div class="modal fade" id="orcamentoModal" tabindex="-1" aria-labelledby="orcamentoModalLabel" aria-hidden="true">
+<div class="modal fade" id="orcamentoModal" tabindex="-1" aria-labelledby="orcamentoModalLabel" role="dialog" aria-modal="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <form id="formOrcamento" method="POST" action="<?= BASE_URL ?>/orcamento">
@@ -133,79 +133,4 @@
   <p>✅ Enviado com sucesso!</p>
 </div>
 
-<!-- Bootstrap JS (caso não esteja já incluso no layout) -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
-<!-- CSS exclusivo do modal -->
-<style>
-
-/* Botão com animação de carregamento */
-.btn-loading {
-  position: relative;
-  color: transparent !important;
-  background-color: #198754 !important; 
-}
-.btn-loading::after {
-  content: '...';
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  animation: blink 1s infinite;
-  color: white; /* pontinhos em branco */
-}
-@keyframes blink {
-  0%, 50%, 100% { opacity: 1; }
-  25%, 75% { opacity: 0; }
-}
-
-
-/* Tela de sucesso (overlay) */
-#sucessoOverlay {
-  display: none;
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: rgba(0,0,0,0.7);
-  z-index: 9999;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  color: white;
-  font-size: 1.5rem;
-  animation: fadeIn 0.5s ease-in-out;
-}
-#sucessoOverlay .checkmark {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  display: block;
-  stroke-width: 4;
-  stroke: #fff;
-  stroke-miterlimit: 10;
-  margin: 20px auto;
-  box-shadow: inset 0px 0px 0px #28a745;
-  animation: fill .4s ease-in-out .4s forwards, scale .3s ease-in-out .9s both;
-}
-#sucessoOverlay .checkmark__circle {
-  stroke-dasharray: 166;
-  stroke-dashoffset: 166;
-  stroke-width: 4;
-  stroke-miterlimit: 10;
-  stroke: #28a745;
-  fill: none;
-  animation: stroke .6s cubic-bezier(.65,0,.45,1) forwards;
-}
-#sucessoOverlay .checkmark__check {
-  transform-origin: 50% 50%;
-  stroke-dasharray: 48;
-  stroke-dashoffset: 48;
-  animation: stroke .3s cubic-bezier(.65,0,.45,1) .8s forwards;
-}
-@keyframes stroke { 100% { stroke-dashoffset: 0; } }
-@keyframes scale {
-  0%, 100% { transform: none; }
-  50% { transform: scale3d(1.1, 1.1, 1); }
-}
-@keyframes fill { 100% { box-shadow: inset 0px 0px 0px 40px #28a745; } }
-@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-</style>
+<!-- Estilos e scripts foram movidos para arquivos centrais (style.css / layout) para reduzir inline e respeitar CSP -->
