@@ -3,10 +3,7 @@ use App\Core\Session; use App\Core\Csrf;
 if (!function_exists('csrf_field')) {
   function csrf_field(): string { return '<input type="hidden" name="_csrf" value="'.htmlspecialchars(\App\Core\Csrf::token(), ENT_QUOTES,'UTF-8').'">'; }
 }
-$erro     = Session::get('erro');
-$sucesso  = Session::get('sucesso');
-Session::remove('erro');
-Session::remove('sucesso');
+// Variáveis $erro e $sucesso são fornecidas pelo controller.
 ?>
 <div class="d-flex align-items-center justify-content-center vh-100 bg-light">
   <div class="card shadow-lg p-4 border-0 rounded-4" style="width: 380px;">

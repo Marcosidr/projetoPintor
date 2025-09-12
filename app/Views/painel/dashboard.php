@@ -1,37 +1,7 @@
-<?php
-
-require_once ROOT_PATH . 'app/Models/User.php';
-require_once ROOT_PATH . 'app/Models/Orcamento.php';
-require_once ROOT_PATH . 'app/Models/Log.php';
-require_once ROOT_PATH . 'app/Middleware/AuthMiddleware.php';
-
-class DashboardController {
-    public function index() {
-        AuthMiddleware::requireLogin(); // ou requireAdmin se quiser só admin
-
-        // MESMA IDEIA DO ANTIGO DASHBOARD
-        $totalUsuarios   = User::count();
-        $totalOrcamentos = Orcamento::count();
-        $totalLogsHoje   = Log::countHoje();
-        $totalAdmins     = User::countAdmins();
-        $grafico         = Orcamento::ultimos7Dias();
-        $usuarios        = User::all();
-        $logsRecentes    = Log::recentes(5);
-
-        view('painel/dashboard', compact(
-            'totalUsuarios',
-            'totalOrcamentos',
-            'totalLogsHoje',
-            'totalAdmins',
-            'grafico',
-            'usuarios',
-            'logsRecentes'
-        ));
-    }
-}
-?>
+<?php /* View: painel/dashboard - recebe variáveis do DashboardController */ ?>
 <div class="container my-5">
-    <h1 class="text-center mb-4">Dashboard</h1>
+    <h1 class="text-center mb-2">Dashboard</h1>
+    <p class="text-center text-muted mb-4">Bem-vindo, <?= htmlspecialchars($usuario ?? 'Usuário') ?></p>
 
     <div class="row g-4 mb-4">
         <div class="col-md-3">
@@ -75,9 +45,13 @@ class DashboardController {
     <h5>Logs Recentes</h5>
     <div class="card p-3 mb-4">
         <ul class="mb-0">
-            <?php foreach ($logsRecentes as $l): ?>
-                <li><?= htmlspecialchars($l['datahora']) ?> - <?= htmlspecialchars($l['acao'] ?? '') ?></li>
-            <?php endforeach; ?>
+            <?php if (!empty($logsRecentes)): ?>
+                <?php foreach ($logsRecentes as $l): ?>
+                    <li><?= htmlspecialchars($l['datahora']) ?> - <?= htmlspecialchars($l['acao'] ?? '') ?></li>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <li class="text-muted">Sem logs recentes.</li>
+            <?php endif; ?>
         </ul>
     </div>
 
@@ -91,6 +65,7 @@ class DashboardController {
                     </tr>
                 </thead>
                 <tbody>
+                <?php if (!empty($usuarios)): ?>
                 <?php foreach ($usuarios as $u): ?>
                     <tr>
                         <td><?= $u['id'] ?></td>
@@ -100,6 +75,9 @@ class DashboardController {
                         <td><?= htmlspecialchars($u['created_at'] ?? '') ?></td>
                     </tr>
                 <?php endforeach; ?>
+                <?php else: ?>
+                <tr><td colspan="5" class="text-center text-muted">Nenhum usuário encontrado.</td></tr>
+                <?php endif; ?>
                 </tbody>
             </table>
         </div>

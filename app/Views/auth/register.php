@@ -1,12 +1,9 @@
 <?php
-use App\Core\Session; use App\Core\Csrf;
+use App\Core\Csrf;
 if (!function_exists('csrf_field')) {
   function csrf_field(): string { return '<input type="hidden" name="_csrf" value="'.htmlspecialchars(\App\Core\Csrf::token(), ENT_QUOTES,'UTF-8').'">'; }
 }
-$erro = Session::get('erro');
-$sucesso = Session::get('sucesso');
-Session::remove('erro');
-Session::remove('sucesso');
+// $erro e $sucesso são passados pelo controller.
 ?>
 
 <div class="d-flex align-items-center justify-content-center vh-100 bg-light">

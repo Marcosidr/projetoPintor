@@ -1,10 +1,9 @@
 <?php
-// Partial de cartão de serviço. Variável esperada: $servico (objeto ou array associativo)
-// Se for objeto legacy (Servico), usamos getters; caso futuro array, acessamos chaves.
-$icone = is_object($servico) ? $servico->getIcone() : ($servico['icone'] ?? '');
-$titulo = is_object($servico) ? $servico->getTitulo() : ($servico['titulo'] ?? '');
-$descricao = is_object($servico) ? $servico->getDescricao() : ($servico['descricao'] ?? '');
-$caracteristicas = is_object($servico) ? $servico->getCaracteristicas() : ($servico['caracteristicas'] ?? []);
+// Partial de cartão de serviço. Variável esperada: $servico (array associativo vindo do banco)
+$icone = $servico['icone'] ?? '';
+$titulo = $servico['titulo'] ?? '';
+$descricao = $servico['descricao'] ?? '';
+$caracteristicas = $servico['caracteristicas'] ?? [];
 ?>
 <div class="card mb-4 flex-fill shadow-sm h-100">
   <div class="card-body d-flex flex-column">

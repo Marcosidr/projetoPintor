@@ -3,6 +3,8 @@ namespace App\Controllers;
 
 use App\Core\Auth;
 use App\Core\Controller;
+use App\Repositories\DbLogRepository;
+use App\Services\LoggerService;
 
 class LogController extends Controller
 {
@@ -18,25 +20,44 @@ class LogController extends Controller
         $page = (int)($_GET['page'] ?? 1); if ($page < 1) $page = 1;
         $perPage = 20;
 
-        $allLogs = $this->readByDate($filtroData);
-        if ($filtroAcao !== '') {
-            $allLogs = array_values(array_filter($allLogs, function($l) use ($filtroAcao){
-                return stripos($l['acao'] ?? '', $filtroAcao) !== false;
-            }));
+        $driver = getenv('LOG_DRIVER') ?: 'file';
+        if ($driver === 'db') {
+            $repo = new DbLogRepository();
+            $result = $repo->paginate(['acao'=>$filtroAcao,'data'=>$filtroData], $page, $perPage);
+            $logs = array_map(function($r){
+                return [
+                    'datahora' => $r['ts'],
+                    'usuario' => $r['user_id'],
+                    'acao' => $r['acao'],
+                    'nivel' => 'INFO',
+                    'detalhes' => json_encode($r['ctx'], JSON_UNESCAPED_UNICODE)
+                ];
+            }, $result['data']);
+            $paginacao = [
+                'page' => $result['page'],
+                'totalPages' => $result['totalPages'],
+                'total' => $result['total'],
+                'perPage' => $result['perPage'],
+            ];
+        } else {
+            $allLogs = $this->readByDate($filtroData);
+            if ($filtroAcao !== '') {
+                $allLogs = array_values(array_filter($allLogs, function($l) use ($filtroAcao){
+                    return stripos($l['acao'] ?? '', $filtroAcao) !== false;
+                }));
+            }
+            $total = count($allLogs);
+            $totalPages = max(1, (int)ceil($total / $perPage));
+            if ($page > $totalPages) $page = $totalPages;
+            $offset = ($page - 1) * $perPage;
+            $logs = array_slice($allLogs, $offset, $perPage);
+            $paginacao = [
+                'page' => $page,
+                'totalPages' => $totalPages,
+                'total' => $total,
+                'perPage' => $perPage,
+            ];
         }
-
-        $total = count($allLogs);
-        $totalPages = max(1, (int)ceil($total / $perPage));
-        if ($page > $totalPages) $page = $totalPages;
-        $offset = ($page - 1) * $perPage;
-        $logs = array_slice($allLogs, $offset, $perPage);
-
-        $paginacao = [
-            'page' => $page,
-            'totalPages' => $totalPages,
-            'total' => $total,
-            'perPage' => $perPage,
-        ];
 
         $this->view('painel/logs', compact('logs','filtroAcao','filtroData','paginacao'));
     }
@@ -56,7 +77,7 @@ class LogController extends Controller
 
                 if (!$hasValidToken && !$isAdmin) {
                     // Loga tentativa 401 simplificada
-                    (new \App\Services\LoggerService())->info(null, 'log_ingest_unauthorized', ['ip'=>$ip,'ua'=>$_SERVER['HTTP_USER_AGENT'] ?? null]);
+                    (new LoggerService())->info(null, 'log_ingest_unauthorized', ['ip'=>$ip,'ua'=>$_SERVER['HTTP_USER_AGENT'] ?? null]);
                     http_response_code(401); header('Content-Type: application/json'); echo json_encode(['ok'=>false,'error'=>'unauthorized']); return; }
 
                 $acao = $_POST['acao'] ?? '';
@@ -75,7 +96,7 @@ class LogController extends Controller
                     $ctx = ['_truncated'=>true];
                 }
 
-                (new \App\Services\LoggerService())->info(\App\Core\Session::get('usuario')['id'] ?? null, $acao, $ctx + ['via'=>$hasValidToken ? 'token':'admin']);
+                (new LoggerService())->info(\App\Core\Session::get('usuario')['id'] ?? null, $acao, $ctx + ['via'=>$hasValidToken ? 'token':'admin']);
                 header('Content-Type: application/json'); echo json_encode(['ok'=>true]);
         }
 

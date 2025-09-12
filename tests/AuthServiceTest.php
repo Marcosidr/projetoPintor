@@ -4,7 +4,7 @@ use App\Services\AuthService;
 
 class AuthServiceTest extends TestCase {
     private $repo; // mock repository
-    private AuthService $service;
+    private AuthService $service; private $attempts;
     protected function setUp(): void {
         // Mock simples do repository via classe anônima compatível com AuthService
         $this->repo = new class {
@@ -13,7 +13,18 @@ class AuthServiceTest extends TestCase {
             public function create(array $data): int { $id = count($this->users)+1; $data['id']=$id; $this->users[$data['email']]=$data; return $id; }
         };
         // Usa closure para injetar uma instância adaptada (AuthService aceita UsuarioRepository ou similar com mesmos métodos)
-        $this->service = new AuthService($this->repo);
+        $this->attempts = new class extends \App\Repositories\LoginAttemptRepository {
+            public array $rows = [];
+            public function __construct(){}
+            public function record(?string $email, ?string $ip, bool $sucesso): void { $this->rows[] = ['e'=>$email,'ip'=>$ip,'s'=>$sucesso,'t'=>time()]; }
+            public function countRecentFailures(?string $email, ?string $ip, DateTimeInterface $since): int {
+                $c=0; $min = $since->getTimestamp();
+                foreach($this->rows as $r){ if(!$r['s'] && $r['t'] >= $min && ($email===null || $r['e']===$email)) $c++; }
+                return $c;
+            }
+            public function clearFailures(?string $email): void { if($email===null) return; $this->rows = array_filter($this->rows, fn($r)=>$r['e']!==$email); }
+        };
+        $this->service = new AuthService($this->repo, $this->attempts);
     }
 
     public function testRegisterSuccess(): void {

@@ -14,10 +14,7 @@
         <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>/quem-somos">QUEM SOMOS</a></li>
         <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>/servicos">SERVIÇOS</a></li>
         <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>/catalogos">CATÁLOGO</a></li>
-        <?php if (!empty($_SESSION['usuario'])): ?>
-          <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>/painel">PAINEL</a></li>
-          <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>/painel/logs">LOGS</a></li>
-        <?php endif; ?>
+        <!-- Itens de painel/logs removidos conforme solicitação -->
         <li class="nav-item ms-2">
           <button type="button" class="btn btn-success rounded-pill px-4 fw-bold text-white"
             data-bs-toggle="modal" data-bs-target="#orcamentoModal">

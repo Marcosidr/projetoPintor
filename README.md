@@ -5,16 +5,19 @@ Aplicar arquitetura limpa em PHP 8 com separação clara (Controllers, Services,
 
 🚀 Funcionalidades (atual)
 
-✅ Site institucional: Home, Quem Somos, Serviços (mock), Catálogo (mock), Orçamento
+✅ Site institucional: Home, Quem Somos, Serviços (persistido em tabela), Catálogo (estrutura preparada), Orçamento
 ✅ Sistema de usuários: registro, login, logout, painel admin (CRUD usuários, promover/demover admin, reset senha)
 ✅ Orçamentos: submissão via formulário (CSRF) e registro
 ✅ LoggerService: logs JSON line (auth, orçamento, ingestão via `/log` com token/admin)
 ✅ Estrutura modular MVC + mini-core (Router c/ middleware, Controller, Env, Session, Csrf, Auth, Response)
-✅ Banco MySQL (usuários, orçamentos) + seed inicial
+✅ Banco MySQL (usuários, orçamentos, serviços, catálogo) via seed
+✅ Upload de catálogos (PDF/JPG/PNG) com validação (extensão, MIME, tamanho) e armazenamento em public/uploads/catalogo
+✅ Suporte planejado para LOG_DRIVER (file ou db) – default file em dev; db em produção
 ✅ PHPMailer integrado
 ✅ Layout responsivo (Bootstrap 5 + ícones)
-⚙️ Próximos passos: filtros/paginação logs, hardening /log, persistência real de serviços/catalogo, testes automatizados.
-🛠️ Tecnologias
+⚙️ Próximos passos: migrar logs p/ banco (opcional), CRUD catálogo com upload, níveis de log, interfaces de repositório.
+� Catálogo: repositório + upload implementados; remover itens se necessário via painel admin.
+�🛠️ Tecnologias
 PHP 8+, MySQL (PDO), Composer
 MVC + Services/Repositories + Middleware
 Bootstrap 5, Bootstrap Icons (FontAwesome opcional)
@@ -24,10 +27,70 @@ PHPMailer
 Tabelas atuais:
 - usuarios (admin bool)
 - orcamentos
-Futuras:
-- servicos
-- catalogos
-- logs (atualmente arquivos JSONL em storage/logs)
+- servicos (caracteristicas JSON)
+- catalogos (arquivo + título)
+Planejado:
+- logs (arquivo JSONL atual → futura tabela)
+
+### Catálogo
+
+Endpoint público: `/catalogos`
+
+Admin:
+- Listagem / formulário: `GET /admin/catalogos`
+- Upload: `POST /admin/catalogos` (campos: titulo, arquivo)
+- Remoção: `POST /admin/catalogos/delete/{id}`
+
+Validações de upload:
+- Extensões permitidas: pdf, png, jpg, jpeg
+- MIME checado via finfo: application/pdf, image/png, image/jpeg
+- Tamanho máximo: 5MB
+- Nome final seguro: slug + timestamp
+
+Diretório de arquivos: `public/uploads/catalogo/`
+
+Seed não inclui itens de catálogo (adicionar via painel).
+
+### Logging
+
+Variável de ambiente: `LOG_DRIVER`
+- Valores aceitos: `file` (padrão), `db`.
+- `file`: grava em `storage/logs/app-YYYY-MM-DD.log` (JSON lines).
+- `db`: grava na tabela `logs` (ver `database/seed.sql`).
+
+Tabela `logs` (ativada no seed):
+```
+id BIGINT PK, ts DATETIME, user_id INT NULL, acao VARCHAR(160), ctx JSON, ip VARCHAR(45), ua VARCHAR(255)
+Índices: ts, acao, user_id
+```
+
+#### Construtor do LoggerService e Retrocompatibilidade
+O serviço aceita múltiplas formas de inicialização:
+
+| Uso | Efeito |
+|-----|--------|
+| `new LoggerService()` | Usa `LOG_DRIVER` (ou `file` se não definido) e diretório padrão `storage/logs` |
+| `new LoggerService('file')` | Força driver file com diretório padrão |
+| `new LoggerService('file', '/caminho/custom')` | Driver file em diretório custom |
+| `new LoggerService('db')` | Driver banco (ignora diretório) |
+| `new LoggerService('/caminho/antigo')` | (Retrocompat) Interpreta argumento como diretório e driver vem de `LOG_DRIVER` (ou `file`) |
+
+Retrocompatibilidade: versões anteriores recebiam apenas o diretório no primeiro parâmetro. Para não quebrar testes/uso legado, se o primeiro argumento NÃO for `file` ou `db` e parecer um caminho, ele é tratado como diretório e o driver é carregado do ambiente.
+
+Exemplos rápidos:
+```php
+$logger = new LoggerService();                 // file (default)
+$loggerDb = new LoggerService('db');           // banco
+$loggerCustomDir = new LoggerService('file', __DIR__.'/logs_tmp');
+$loggerLegacy = new LoggerService(__DIR__.'/logs_legacy'); // tratado como diretório (driver do ambiente)
+```
+
+#### Migração para driver DB
+1. Garantir criação da tabela (rodar seed ou script DDL).
+2. Definir `LOG_DRIVER=db` no `.env`.
+3. (Opcional) Manter arquivos antigos para histórico; ferramenta futura poderá importar JSONL em lote.
+
+Futuro opcional: comando de import `php bin/import_logs.php` (não implementado ainda).
 
 📦 Instalação
 1. Clone o repositório
@@ -51,6 +114,81 @@ Arquivos:
 - `tests/*Test.php`
 
 Mocks: repositórios são simulados via classes anônimas (tipagem dos Services flexibilizada para facilitar injeção). Futuro: criar interfaces formais.
+
+## 🔐 Segurança
+
+Esta aplicação passou por uma fase de hardening para mitigar vetores comuns em apps PHP.
+
+### Hash de Senhas (Argon2id + fallback)
+Sempre que possível utilizamos `password_hash(..., PASSWORD_ARGON2ID)`. Se a extensão não estiver disponível no ambiente, cai automaticamente para `PASSWORD_DEFAULT` (BCrypt hoje). Recomenda-se manter Argon2id habilitado em produção.
+
+### Lockout de Login
+Após 5 tentativas falhas dentro de 15 minutos combinando email + IP o login é temporariamente bloqueado para aquele par. No sucesso as tentativas são limpas. Prevê mitigação de brute force simples.
+
+### Reset Seguro de Senha
+Fluxo:
+1. Usuário solicita em `/forgot-password` informando email.
+2. Token aleatório (32 bytes -> hex) é gerado; somente o hash SHA-256 é persistido (tabela `password_resets`).
+3. Email envia link com `?token=RAW&email=...` (token em memória do usuário apenas).
+4. Validação garante: não expirado (ex.: 60 min), não usado, hash coincide.
+5. Consumo: senha redefinida (Argon2id) e registro marcado como usado (single-use).
+6. Tokens antigos do mesmo email são invalidados antes de criar um novo.
+
+Limpeza recomendada (cron horário):
+```sql
+DELETE FROM password_resets WHERE used_at IS NOT NULL OR expires_at < NOW();
+```
+
+### CSRF Tokens
+Todos formulários POST sensíveis contêm `<input type="hidden" name="_csrf" ...>` gerado por `Csrf::token()` (session-bound). Controllers validam via `Csrf::validate()`. Em falha retornam HTTP 419 e interrompem execução. Abrange: login, registro, logout, CRUD admin, catálogo (upload/delete), orçamento, reset de senha.
+
+### Security Headers Middleware
+Middleware global injeta cabeçalhos (vide `app/Middleware/SecurityHeadersMiddleware.php`):
+```
+X-Frame-Options: SAMEORIGIN
+X-Content-Type-Options: nosniff
+Referrer-Policy: no-referrer-when-downgrade
+Content-Security-Policy: default-src 'self' https://cdn.jsdelivr.net; ... (ver arquivo)
+Strict-Transport-Security: max-age=63072000; includeSubDomains; preload (apenas se HTTPS)
+```
+Diretrizes CSP permitem CDN jsDelivr e inline styles mínimos (Bootstrap). Ajustar conforme novos assets.
+
+### Rate Limit de Ingestão de Logs
+Endpoint `/log` protegido por token/usuário admin + limitação de frequência (detalhes no service de logging) para evitar flood.
+
+### Upload Seguro
+Catálogo: valida extensão, MIME real via `finfo`, tamanho máximo (5MB) e renomeia arquivo com slug + timestamp para evitar colisão e path traversal.
+
+### Próximas Melhorias Possíveis
+- Adicionar SameSite=strict aos cookies de sessão (dependendo de onde a sessão é configurada).
+- Headers adicionais: `Permissions-Policy`, `Cross-Origin-Opener-Policy` se for servir conteúdo embutido.
+- Interface de auditoria dos resets e tentativas de login.
+
+## 🧹 Limpeza e Manutenção
+Crons recomendados (diário):
+```sql
+-- Limpa resets expirados ou usados
+DELETE FROM password_resets WHERE used_at IS NOT NULL OR expires_at < NOW();
+-- (Opcional) Limpa tentativas de login antigas (> 1 dia)
+DELETE FROM login_attempts WHERE criado_em < (NOW() - INTERVAL 1 DAY);
+```
+
+Log rotation (driver file): remover arquivos em `storage/logs/` mais antigos que X dias conforme política interna.
+
+## ✅ Cobertura de Testes de Segurança
+- `PasswordResetServiceTest`: geração, validação, consumo single-use
+- `AuthServiceLockoutTest`: bloqueio após 5 falhas e liberação após sucesso
+- (Sugestão futura) Teste para middleware de security headers assegurando presença de CSP / X-Frame-Options.
+
+## 📝 Variáveis de Ambiente Relacionadas
+| Variável | Uso |
+|----------|-----|
+| LOG_DRIVER | file ou db para LoggerService |
+| LOG_INGEST_TOKEN | Token de ingestão remota de logs |
+| SMTP_HOST/PORT/USER/PASS | Envio de email de reset |
+| MAIL_FROM / MAIL_FROM_NAME | Remetente dos emails |
+
+Certifique-se de não commitar `.env`.
 
 👨‍💻 Equipe
 Marcos Inácio de Souza Rosa  

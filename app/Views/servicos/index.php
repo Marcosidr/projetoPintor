@@ -3,11 +3,15 @@
   <h2 class="text-center mb-5 text-paint-green-700 fw-bold">Nossos Serviços</h2>
   
   <div class="row g-4">
-    <?php foreach ($servicos as $servico): ?>
-      <div class="col-md-4 d-flex">
-        <?php include __DIR__ . '/_card.php'; ?>
-      </div>
-    <?php endforeach; ?>
+    <?php if (empty($servicos)): ?>
+      <div class="col-12 text-center text-muted">Nenhum serviço cadastrado ainda.</div>
+    <?php else: ?>
+      <?php foreach ($servicos as $servico): ?>
+        <div class="col-md-4 d-flex">
+          <?php include __DIR__ . '/_card.php'; ?>
+        </div>
+      <?php endforeach; ?>
+    <?php endif; ?>
   </div>
 </section>
 
@@ -27,11 +31,15 @@
   <h2 class="text-center mb-5 text-paint-green-700 fw-bold">Serviços em Destaque</h2>
   
   <div class="row g-4">
-    <?php foreach (array_slice($servicos, 0, 3) as $servico): ?> <!-- Mostra só 3 -->
-      <div class="col-md-4 d-flex">
-        <?php include __DIR__ . '/_card.php'; ?>
-      </div>
-    <?php endforeach; ?>
+    <?php if (!empty($servicos)): ?>
+      <?php foreach (array_slice($servicos, 0, 3) as $servico): ?> <!-- Mostra só 3 -->
+        <div class="col-md-4 d-flex">
+          <?php include __DIR__ . '/_card.php'; ?>
+        </div>
+      <?php endforeach; ?>
+    <?php else: ?>
+      <div class="col-12 text-center text-muted">Cadastre serviços para destacá-los aqui.</div>
+    <?php endif; ?>
   </div>
 </section>
 

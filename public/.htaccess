@@ -1,7 +1,11 @@
-Options -Indexes
 RewriteEngine On
 
-# Redireciona tudo para index.php, exceto arquivos e pastas reais
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
+# Se arquivo ou diretório existe, serve direto
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# Caso contrário envia para index.php (front controller MVC)
 RewriteRule ^ index.php [L]
+
+Options -Indexes

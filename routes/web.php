@@ -20,6 +20,10 @@ $router->get('/login', [AuthController::class, 'showLogin']);
 $router->post('/login', [AuthController::class, 'login']);
 $router->get('/register', [AuthController::class, 'showRegister']);
 $router->post('/register', [AuthController::class, 'register']);
+$router->get('/forgot-password', [AuthController::class, 'forgotPassword']);
+$router->post('/forgot-password', [AuthController::class, 'sendReset']);
+$router->get('/reset-password', [AuthController::class, 'showResetForm']);
+$router->post('/reset-password', [AuthController::class, 'processReset']);
 $router->post('/logout', [AuthController::class, 'logout']);
 
 /* Painel */
@@ -36,5 +40,10 @@ $router->post('/admin/update/{id}', [\App\Controllers\AdminController::class, 'u
 $router->post('/admin/destroy/{id}', [\App\Controllers\AdminController::class, 'destroy'], [\App\Middleware\AdminMiddleware::class]);
 $router->post('/admin/toggle-admin/{id}', [\App\Controllers\AdminController::class, 'toggleAdmin'], [\App\Middleware\AdminMiddleware::class]);
 $router->post('/admin/reset-senha/{id}', [\App\Controllers\AdminController::class, 'resetSenha'], [\App\Middleware\AdminMiddleware::class]);
+
+/* Admin Catálogos */
+$router->get('/admin/catalogos', [\App\Controllers\CatalogoAdminController::class, 'index'], [\App\Middleware\AdminMiddleware::class]);
+$router->post('/admin/catalogos', [\App\Controllers\CatalogoAdminController::class, 'store'], [\App\Middleware\AdminMiddleware::class]);
+$router->post('/admin/catalogos/delete/{id}', [\App\Controllers\CatalogoAdminController::class, 'delete'], [\App\Middleware\AdminMiddleware::class]);
 
 // TODO: adicionar rotas admin, orcamento e logs detalhados.

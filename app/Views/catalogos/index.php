@@ -2,9 +2,22 @@
     <h1 class="text-center mb-5 display-5 fw-bold text-paint-green-700">Catálogo de Tintas</h1>
 
     <div class="row g-4">
-        <?php foreach ($itens as $item): ?>
-            <?= $item->render(); ?>
-        <?php endforeach; ?>
+        <?php if (empty($itens)): ?>
+            <div class="col-12 text-center text-muted">Nenhum catálogo enviado ainda.</div>
+        <?php else: ?>
+            <?php foreach ($itens as $item): ?>
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="card h-100 shadow-sm border-0">
+                        <div class="card-body text-center">
+                            <i class="bi bi-file-earmark-pdf mb-3" style="font-size: 2.5rem;"></i>
+                            <h5 class="card-title fw-bold"><?= htmlspecialchars($item['titulo']) ?></h5>
+                            <p class="card-text small text-muted mb-3">Arquivo: <?= htmlspecialchars(basename($item['arquivo'])) ?></p>
+                            <a href="<?= BASE_URL . '/uploads/catalogo/' . rawurlencode($item['arquivo']) ?>" class="btn btn-outline-success btn-sm" target="_blank">Abrir</a>
+                        </div>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        <?php endif; ?>
     </div>
 
     <div class="row mt-5">

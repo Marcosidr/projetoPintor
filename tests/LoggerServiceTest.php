@@ -8,7 +8,9 @@ class LoggerServiceTest extends TestCase {
     protected function tearDown(): void { if (is_dir($this->tmpDir)) { array_map('unlink', glob($this->tmpDir.'/*')); @rmdir($this->tmpDir); } }
 
     public function testEscreveLinha(): void {
-        $logger = new LoggerService($this->tmpDir);
+        // Garante que não estamos forçando driver db via env
+        putenv('LOG_DRIVER=file');
+        $logger = new LoggerService($this->tmpDir); // retrocompat: primeiro arg tratado como diretório
         $logger->info(5,'acao_teste',['k'=>'v']);
         $file = $this->tmpDir . '/app-' . date('Y-m-d') . '.log';
         $this->assertFileExists($file);

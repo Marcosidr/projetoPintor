@@ -9,4 +9,9 @@ abstract class Controller {
         $content = ob_get_clean();
         require ROOT_PATH.'app/Views/layouts/main.php';
     }
+
+    protected function redirect(string $to): void {
+        header('Location: '.BASE_URL.$to);
+        exit;
+    }
 }

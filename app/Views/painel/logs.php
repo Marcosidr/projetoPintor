@@ -1,15 +1,4 @@
-<?php
-// filepath: c:\xampp\htdocs\projetoPintor\app\Views\painel\logs.php
-?>
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-  <meta charset="UTF-8">
-  <title>Logs do Sistema</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body class="bg-light">
-  <div class="container py-4">
+<div class="container py-4">
     <h3 class="mb-4">📜 Logs do Sistema</h3>
 
     <!-- Filtros mínimos (ação, data) -->
@@ -85,5 +74,3 @@
       </nav>
     <?php endif; ?>
   </div>
-</body>
-</html>

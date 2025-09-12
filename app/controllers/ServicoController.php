@@ -11,6 +11,9 @@ class ServicoController extends Controller
     {
         $repo = new ServicoRepository();
         $servicos = $repo->all();
+        if (!$servicos) {
+            $servicos = [];
+        }
         $this->view('servicos/index', compact('servicos'));
     }
 }

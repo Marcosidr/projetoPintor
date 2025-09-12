@@ -2,11 +2,16 @@
 // Front Controller
 define('ROOT_PATH', dirname(__DIR__) . '/');
 
-// Config de ambiente básico antes de tudo
-ini_set('display_errors', getenv('APP_DEBUG') === 'true' ? '1' : '0');
-error_reporting(E_ALL);
-
 require ROOT_PATH.'vendor/autoload.php';
+
+// Carrega variáveis de ambiente antes de decidir debug
+if (class_exists(\App\Core\Env::class)) {
+	\App\Core\Env::load(ROOT_PATH.'.env');
+}
+
+// Config de ambiente básico após carregar .env
+error_reporting(E_ALL);
+ini_set('display_errors', getenv('APP_DEBUG') === 'true' ? '1' : '0');
 
 // Handler simples para exceções não tratadas
 set_exception_handler(function(Throwable $e){

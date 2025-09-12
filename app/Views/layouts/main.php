@@ -11,7 +11,8 @@
     <!-- Bootstrap e ícones primeiro -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <!-- Font Awesome via jsDelivr (sem atributo integrity até obter hash correto) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.2/css/all.min.css" crossorigin="anonymous">
     <!-- Seu CSS por último -->
     <link rel="stylesheet" href="<?= BASE_URL ?>/css/style.css">
 </head>
@@ -32,5 +33,7 @@
 
     <!-- Scripts Bootstrap -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Script de inicialização custom (dropdown, etc.) -->
+    <script src="<?= BASE_URL ?>/js/app.js"></script>
 </body>
 </html>

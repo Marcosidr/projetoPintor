@@ -1,0 +1,8 @@
+RewriteEngine On
+
+# Se pedir algo que não é arquivo nem diretório existente na raiz, redireciona para /public mantendo caminho
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ public/$1 [L]
+
+Options -Indexes
