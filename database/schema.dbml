@@ -1,0 +1,98 @@
+// Schema ER em DBML para uso no dbdiagram.io
+// Gerado a partir de seed.sql, repositórios, models, services e testes.
+// Data: 2025-09-12
+
+Enum user_tipo {
+  user
+  admin
+}
+
+Table usuarios {
+  id int [pk, increment]
+  nome varchar(120) [not null]
+  email varchar(160) [not null, unique]
+  senha varchar(255) [not null]
+  tipo user_tipo [not null, default: 'user']
+  criado_em timestamp [default: `CURRENT_TIMESTAMP`, note: 'Em alguns ambientes pode haver created_at']
+  Note: 'Usuários do sistema (admin ou user).'
+}
+
+Table orcamentos {
+  id int [pk, increment]
+  nome varchar(120) [not null]
+  email varchar(160) [not null]
+  telefone varchar(60) [not null]
+  servico varchar(160) [not null, note: 'Descrição textual; não há FK para servicos']
+  mensagem text
+  criado_em timestamp [default: `CURRENT_TIMESTAMP`, note: 'Em variantes pode existir created_at']
+  Note: 'Solicitações de orçamento feitas pelo site.'
+}
+
+Table servicos {
+  id int [pk, increment]
+  titulo varchar(120) [not null]
+  icone varchar(60) [not null, note: 'Classes de ícone (ex.: Bootstrap Icons)']
+  descricao text [not null]
+  caracteristicas json [not null, note: 'Array JSON (lista de características)']
+  created_at timestamp [default: `CURRENT_TIMESTAMP`]
+  Note: 'Catálogo de serviços oferecidos.'
+}
+
+Table catalogos {
+  id int [pk, increment]
+  titulo varchar(160) [not null]
+  arquivo varchar(255) [not null]
+  created_at timestamp [default: `CURRENT_TIMESTAMP`]
+  Note: 'Arquivos de catálogos (PDFs etc).'
+}
+
+Table logs {
+  id bigint [pk, increment]
+  ts datetime [not null, note: 'Coluna temporal principal; variantes: datahora ou created_at']
+  user_id int [ref: > usuarios.id, note: 'Pode ser NULL']
+  acao varchar(160) [not null]
+  ctx json
+  ip varchar(45)
+  ua varchar(255)
+  Indexes {
+    (ts)
+    (acao)
+    (user_id)
+  }
+  Note: 'Auditoria / eventos do sistema.'
+}
+
+Table password_resets {
+  id bigint [pk, increment]
+  email varchar(160) [not null]
+  token_hash char(64) [not null, unique, note: 'SHA-256 do token de reset']
+  created_at datetime [default: `CURRENT_TIMESTAMP`]
+  expires_at datetime [not null]
+  used_at datetime
+  ip varchar(45)
+  user_agent varchar(255)
+  Indexes {
+    (email)
+    token_hash [unique]
+  }
+  Note: 'Fluxo de redefinição de senha.'
+}
+
+Table login_attempts {
+  id bigint [pk, increment]
+  email varchar(160)
+  ip varchar(45)
+  sucesso boolean [not null, note: 'MySQL TINYINT(1)']
+  created_at datetime [default: `CURRENT_TIMESTAMP`]
+  Indexes {
+    (email)
+    (ip)
+    (created_at)
+  }
+  Note: 'Tentativas de login para política de lockout.'
+}
+
+// Relações
+Ref: logs.user_id > usuarios.id
+Ref password_resets_user: password_resets.email > usuarios.email
+Ref login_attempts_user: login_attempts.email > usuarios.email
