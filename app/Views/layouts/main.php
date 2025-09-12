@@ -31,18 +31,8 @@
     <!-- Footer -->
     <?php include __DIR__ . '/../partials/footer.php'; ?>
 
-        <!-- Scripts Bootstrap -->
+        <!-- Scripts Bootstrap + inicialização custom -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script>
-        <!-- Fallback rápido: garante dropdown do usuário caso app.js não execute ou carregue depois -->
-        <script>
-            document.addEventListener('DOMContentLoaded', function(){
-                var trigger = document.getElementById('userDropdown');
-                if (trigger && window.bootstrap && !bootstrap.Dropdown.getInstance(trigger)) {
-                    try { new bootstrap.Dropdown(trigger); } catch(e) { /* silencia */ }
-                }
-            });
-        </script>
-        <!-- Script de inicialização custom (dropdown, etc.) -->
         <script src="<?= BASE_URL ?>/js/app.js"></script>
 </body>
 </html>

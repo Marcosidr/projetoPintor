@@ -23,6 +23,7 @@ class DbLogRepository
 {
     private PDO $db;
     private string $tsColumn = 'ts'; // poderá ser ts | created_at | datahora conforme detectado
+    private bool $tsNeedsManual = false; // quando coluna temporal é NOT NULL sem default
     private bool $hasUserId = true;
     private bool $hasIp = true;
     private bool $hasUa = true;
@@ -32,26 +33,71 @@ class DbLogRepository
     {
         $this->db = $conn ?: Database::connection();
         try {
-            $cols = $this->db->query("SHOW COLUMNS FROM logs")->fetchAll(PDO::FETCH_COLUMN);
-            // Prioridade temporal: ts > created_at > datahora. Cria ts se nada conhecido.
-            if (in_array('ts', $cols, true)) {
-                $this->tsColumn = 'ts';
-            } elseif (in_array('created_at', $cols, true)) {
-                $this->tsColumn = 'created_at';
-            } elseif (in_array('datahora', $cols, true)) {
-                $this->tsColumn = 'datahora';
-            } else {
-                // Migração suave: cria coluna ts padrão.
-                $this->db->exec("ALTER TABLE logs ADD COLUMN ts DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER id");
-                $this->tsColumn = 'ts';
+            // Primeiro tenta dialeto MySQL
+            $colsStmt = $this->db->query("SHOW COLUMNS FROM logs");
+            $all = $colsStmt->fetchAll(PDO::FETCH_ASSOC);
+            $cols = array_map(fn($r)=>$r['Field']??$r[0]??null, $all);
+            $cols = array_filter($cols, fn($c)=>$c!==null);
+            if ($cols) {
+                if (in_array('ts', $cols, true)) {
+                    $this->tsColumn = 'ts';
+                } elseif (in_array('created_at', $cols, true)) {
+                    $this->tsColumn = 'created_at';
+                } elseif (in_array('datahora', $cols, true)) {
+                    $this->tsColumn = 'datahora';
+                } else {
+                    $this->db->exec("ALTER TABLE logs ADD COLUMN ts DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP");
+                    $this->tsColumn = 'ts';
+                }
+                $this->hasUserId = in_array('user_id', $cols, true);
+                $this->hasIp = in_array('ip', $cols, true);
+                $this->hasUa = in_array('ua', $cols, true);
+                $this->hasCtx = in_array('ctx', $cols, true);
+                // Detecta necessidade de timestamp manual (NOT NULL sem default)
+                foreach ($all as $def) {
+                    if (($def['Field'] ?? null) === $this->tsColumn) {
+                        $null = $def['Null'] ?? '';
+                        $default = $def['Default'] ?? null;
+                        if (strcasecmp($null, 'NO') === 0 && $default === null) {
+                            $this->tsNeedsManual = true;
+                        }
+                        break;
+                    }
+                }
             }
-            // Flags de colunas opcionais (evita montar SQL com colunas inexistentes).
-            $this->hasUserId = in_array('user_id', $cols, true);
-            $this->hasIp = in_array('ip', $cols, true);
-            $this->hasUa = in_array('ua', $cols, true);
-            $this->hasCtx = in_array('ctx', $cols, true);
         } catch (\Throwable $e) {
-            // Mantém defaults; erros posteriores revelarão problema real ao chamador (não suprimimos totalmente).
+            // Fallback para SQLite (pragma table_info)
+            try {
+                $pragma = $this->db->query("PRAGMA table_info('logs')")->fetchAll(PDO::FETCH_ASSOC);
+                $cols = array_map(fn($r)=>$r['name'], $pragma);
+                if (in_array('ts', $cols, true)) {
+                    $this->tsColumn = 'ts';
+                } elseif (in_array('created_at', $cols, true)) {
+                    $this->tsColumn = 'created_at';
+                } elseif (in_array('datahora', $cols, true)) {
+                    $this->tsColumn = 'datahora';
+                }
+                $this->hasUserId = in_array('user_id', $cols, true);
+                $this->hasIp = in_array('ip', $cols, true);
+                $this->hasUa = in_array('ua', $cols, true);
+                $this->hasCtx = in_array('ctx', $cols, true);
+                foreach ($pragma as $def) {
+                    if ($def['name'] === $this->tsColumn) {
+                        $notnull = (int)($def['notnull'] ?? 0);
+                        $dflt = $def['dflt_value'] ?? null;
+                        if ($notnull === 1 && ($dflt === null || $dflt === '')) {
+                            $this->tsNeedsManual = true;
+                        }
+                        break;
+                    }
+                }
+            } catch (\Throwable $e2) {
+                // Mantém defaults silenciosamente.
+            }
+        }
+        // Colunas 'datahora' em alguns legados nunca têm default -> sempre manual.
+        if ($this->tsColumn === 'datahora') {
+            $this->tsNeedsManual = true;
         }
     }
 
@@ -64,8 +110,8 @@ class DbLogRepository
     {
         $json = json_encode($ctx, JSON_UNESCAPED_UNICODE);
         $cols = [];$placeholders=[];$values=[];
-        $needsExplicitTs = ($this->tsColumn === 'datahora'); // datahora sem default exige NOW manual.
-        if ($needsExplicitTs) { $cols[] = $this->tsColumn; $placeholders[]='?'; $values[] = date('Y-m-d H:i:s'); }
+    $needsExplicitTs = $this->tsNeedsManual; // coluna temporal NOT NULL sem default
+    if ($needsExplicitTs) { $cols[] = $this->tsColumn; $placeholders[]='?'; $values[] = date('Y-m-d H:i:s'); }
         if ($this->hasUserId) { $cols[]='user_id'; $placeholders[]='?'; $values[]=$userId; }
         $cols[]='acao'; $placeholders[]='?'; $values[]=$acao;
         if ($this->hasCtx) { $cols[]='ctx'; $placeholders[]='?'; $values[]=$json; }
