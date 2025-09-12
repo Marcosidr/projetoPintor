@@ -23,25 +23,37 @@
         </li>
         <li class="nav-item dropdown ms-3">
           <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown"
-             role="button" data-bs-toggle="dropdown" aria-expanded="false">
+             role="button" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">
             <i class="bi bi-person-circle fs-4 text-paint-green-700"></i>
+            <span class="visually-hidden">Menu do usuário</span>
           </a>
           <ul class="dropdown-menu dropdown-menu-end shadow rounded-3 border-0 p-2"
-              aria-labelledby="userDropdown">
+              aria-labelledby="userDropdown" style="min-width: 14rem;">
             <?php if (!empty($_SESSION['usuario'])): ?>
-              <li class="px-3 py-2 small text-muted">
-                <?= htmlspecialchars($_SESSION['usuario']['nome'] ?? 'Usuário') ?>
+              <li class="px-3 py-2 small text-muted d-flex flex-column">
+                <span class="fw-semibold">
+                  <?= htmlspecialchars($_SESSION['usuario']['nome'] ?? 'Usuário') ?>
+                </span>
+                <span class="text-muted"><?= htmlspecialchars($_SESSION['usuario']['email'] ?? '') ?></span>
               </li>
               <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="<?= BASE_URL ?>/painel"><i class="bi bi-speedometer2 me-2"></i>Painel</a></li>
+              <?php if (!empty($_SESSION['usuario']['tipo']) && $_SESSION['usuario']['tipo'] === 'admin'): ?>
+                <li><a class="dropdown-item" href="<?= BASE_URL ?>/admin"><i class="bi bi-people me-2"></i>Gerenciar Usuários</a></li>
+                <li><a class="dropdown-item" href="<?= BASE_URL ?>/admin/catalogos"><i class="bi bi-images me-2"></i>Catálogos</a></li>
+                <li><a class="dropdown-item" href="<?= BASE_URL ?>/painel/logs"><i class="bi bi-journal-text me-2"></i>Logs</a></li>
+                <li><hr class="dropdown-divider"></li>
+              <?php endif; ?>
               <li>
-                <form action="<?= BASE_URL ?>/logout" method="POST">
+                <form action="<?= BASE_URL ?>/logout" method="POST" class="m-0">
                   <?php if (function_exists('csrf_field')) echo csrf_field(); ?>
-                  <button type="submit" class="dropdown-item text-danger">Sair</button>
+                  <button type="submit" class="dropdown-item text-danger"><i class="bi bi-box-arrow-right me-2"></i>Sair</button>
                 </form>
               </li>
             <?php else: ?>
-              <li><a class="dropdown-item" href="<?= BASE_URL ?>/login">Entrar</a></li>
-              <li><a class="dropdown-item" href="<?= BASE_URL ?>/register">Registrar</a></li>
+              <li class="px-3 py-2 small text-muted">Bem-vindo! Faça login ou crie conta.</li>
+              <li><a class="dropdown-item" href="<?= BASE_URL ?>/login"><i class="bi bi-box-arrow-in-right me-2"></i>Entrar</a></li>
+              <li><a class="dropdown-item" href="<?= BASE_URL ?>/register"><i class="bi bi-person-plus me-2"></i>Registrar</a></li>
             <?php endif; ?>
           </ul>
         </li>
