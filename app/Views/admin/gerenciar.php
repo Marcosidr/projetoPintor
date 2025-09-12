@@ -1,2 +1,4 @@
-<h1>Painel Administrativo</h1>
-<p>Somente administradores podem ver isso.</p>
+<div class="container my-5">
+  <h1 class="text-center">Painel Administrativo</h1>
+  <p class="text-center">Área restrita para administradores.</p>
+</div>

@@ -1,2 +1,4 @@
-<h1>Dashboard do Usuário</h1>
-<p>Bem-vindo ao painel do usuário!</p>
+<div class="container my-5">
+  <h1 class="text-center">Dashboard do Usuário</h1>
+  <p class="text-center">Bem-vindo, <?= $_SESSION['usuario']['nome'] ?? 'Usuário' ?>!</p>
+</div>
