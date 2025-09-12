@@ -40,14 +40,24 @@ switch ($uri) {
     default:
         view('errors/404');
         break;
-        case '/login':
+     case '/login':
     require ROOT_PATH . 'app/Controllers/AuthController.php';
-    (new AuthController())->login();
+    (new AuthController())->showLogin();
+    break;
+
+case '/auth/login':
+    require ROOT_PATH . 'app/Controllers/AuthController.php';
+    (new AuthController())->login($_POST);
     break;
 
 case '/register':
     require ROOT_PATH . 'app/Controllers/AuthController.php';
-    (new AuthController())->register();
+    (new AuthController())->showRegister();
+    break;
+
+case '/auth/register':
+    require ROOT_PATH . 'app/Controllers/AuthController.php';
+    (new AuthController())->register($_POST);
     break;
 
 case '/logout':
@@ -60,9 +70,10 @@ case '/painel':
     (new DashboardController())->index();
     break;
 
-case '/admin':
-    require ROOT_PATH . 'app/Controllers/AdminController.php';
-    (new AdminController())->index();
+case '/logs':
+    require ROOT_PATH . 'app/Controllers/LogController.php';
+    (new LogController())->index($_GET);
     break;
+
 
 }

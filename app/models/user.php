@@ -1,32 +1,31 @@
 <?php
-declare(strict_types=1);
-
-class User
-{
-    public function __construct(
-        private string $nome,
-        private string $email,
-        private string $senha,
-        private string $tipo = 'usuario' // pode ser 'usuario' ou 'admin'
-    ) {}
-
-    public function getNome(): string
-    {
-        return $this->nome;
+class User {
+    public static function findByEmail($email) {
+        $pdo = db();
+        $stmt = $pdo->prepare("SELECT * FROM usuarios WHERE email = :email LIMIT 1");
+        $stmt->execute(['email' => $email]);
+        return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
     }
 
-    public function getEmail(): string
-    {
-        return $this->email;
+    public static function create($nome, $email, $senha) {
+        $pdo = db();
+        $stmt = $pdo->prepare("INSERT INTO usuarios (nome, email, senha, tipo) VALUES (:nome, :email, :senha, 'user')");
+        $stmt->execute([
+            'nome' => $nome,
+            'email' => strtolower($email),
+            'senha' => password_hash($senha, PASSWORD_DEFAULT)
+        ]);
     }
 
-    public function getSenha(): string
-    {
-        return $this->senha;
+    public static function count() {
+        return (int) db()->query("SELECT COUNT(*) FROM usuarios")->fetchColumn();
     }
 
-    public function getTipo(): string
-    {
-        return $this->tipo;
+    public static function countAdmins() {
+        return (int) db()->query("SELECT COUNT(*) FROM usuarios WHERE tipo = 'admin'")->fetchColumn();
+    }
+
+    public static function all() {
+        return db()->query("SELECT id, nome, email, tipo FROM usuarios ORDER BY id DESC")->fetchAll(PDO::FETCH_ASSOC);
     }
 }
