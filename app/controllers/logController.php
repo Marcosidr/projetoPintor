@@ -26,11 +26,11 @@ class LogController extends Controller
             $result = $repo->paginate(['acao'=>$filtroAcao,'data'=>$filtroData], $page, $perPage);
             $logs = array_map(function($r){
                 return [
-                    'datahora' => $r['ts'],
-                    'usuario' => $r['user_id'],
-                    'acao' => $r['acao'],
+                    'datahora' => $r['ts'] ?? null,
+                    'usuario' => $r['user_id'] ?? null,
+                    'acao' => $r['acao'] ?? '',
                     'nivel' => 'INFO',
-                    'detalhes' => json_encode($r['ctx'], JSON_UNESCAPED_UNICODE)
+                    'detalhes' => isset($r['ctx']) ? json_encode($r['ctx'], JSON_UNESCAPED_UNICODE) : ''
                 ];
             }, $result['data']);
             $paginacao = [
