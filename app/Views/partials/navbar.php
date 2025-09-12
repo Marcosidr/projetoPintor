@@ -22,11 +22,11 @@
           </button>
         </li>
         <li class="nav-item dropdown ms-3">
-          <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown"
-             role="button" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">
+          <button class="nav-link dropdown-toggle d-flex align-items-center bg-transparent border-0 p-0" id="userDropdown"
+             type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true" data-bs-auto-close="outside">
             <i class="bi bi-person-circle fs-4 text-paint-green-700"></i>
             <span class="visually-hidden">Menu do usuário</span>
-          </a>
+          </button>
           <ul class="dropdown-menu dropdown-menu-end shadow rounded-3 border-0 p-2"
               aria-labelledby="userDropdown" style="min-width: 14rem;">
             <?php if (!empty($_SESSION['usuario'])): ?>
