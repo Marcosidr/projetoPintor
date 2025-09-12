@@ -17,12 +17,23 @@ class OrcamentoController extends Controller
     {
         if (!Csrf::validate($_POST['_csrf'] ?? '')) { http_response_code(419); exit('CSRF inválido'); }
         $res = $this->service->criar($_POST);
+        $isAjax = (($_SERVER['HTTP_X_REQUESTED_WITH'] ?? '') === 'XMLHttpRequest') || str_contains(($_SERVER['HTTP_ACCEPT'] ?? ''), 'application/json');
         if (!$res['ok']) {
             Session::set('erro_orcamento', $res['error']);
             $this->logger->info(null, 'orcamento_falha', ['erro'=>$res['error']]);
+            if ($isAjax) {
+                header('Content-Type: application/json');
+                echo json_encode(['ok'=>false,'error'=>$res['error']]);
+                return;
+            }
         } else {
             Session::set('sucesso_orcamento', 'Orçamento enviado com sucesso!');
             $this->logger->info(null, 'orcamento_sucesso', ['dados'=>[ 'nome'=>$_POST['nome'] ?? null, 'email'=>$_POST['email'] ?? null, 'telefone'=>$_POST['telefone'] ?? null ]]);
+            if ($isAjax) {
+                header('Content-Type: application/json');
+                echo json_encode(['ok'=>true,'id'=>$res['id']]);
+                return;
+            }
         }
         Response::redirect(BASE_URL . '/');
     }

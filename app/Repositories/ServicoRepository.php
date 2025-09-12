@@ -23,11 +23,18 @@ class ServicoRepository {
      */
     public function all(): array
     {
-        $sql = "SELECT id, icone, titulo, descricao, caracteristicas FROM servicos ORDER BY titulo";
-        $stmt = $this->db->query($sql);
+        try {
+            $stmt = $this->db->query("SELECT id, icone, titulo, descricao, caracteristicas FROM servicos ORDER BY titulo");
+        } catch (\Throwable $e) {
+            // Fallback: coluna 'caracteristicas' pode não existir ainda
+            $stmt = $this->db->query("SELECT id, icone, titulo, descricao FROM servicos ORDER BY titulo");
+            $rows = $stmt->fetchAll();
+            foreach ($rows as &$r) { $r['caracteristicas'] = []; }
+            return $rows;
+        }
         $rows = $stmt->fetchAll();
         foreach ($rows as &$row) {
-            $row['caracteristicas'] = $this->decodeJsonArray($row['caracteristicas']);
+            $row['caracteristicas'] = $this->decodeJsonArray($row['caracteristicas'] ?? '');
         }
         return $rows;
     }
@@ -37,12 +44,21 @@ class ServicoRepository {
      */
     public function find(int $id): ?array
     {
-        $stmt = $this->db->prepare("SELECT id, icone, titulo, descricao, caracteristicas FROM servicos WHERE id = ? LIMIT 1");
-        $stmt->execute([$id]);
-        $row = $stmt->fetch();
-        if (!$row) return null;
-        $row['caracteristicas'] = $this->decodeJsonArray($row['caracteristicas']);
-        return $row;
+        try {
+            $stmt = $this->db->prepare("SELECT id, icone, titulo, descricao, caracteristicas FROM servicos WHERE id = ? LIMIT 1");
+            $stmt->execute([$id]);
+            $row = $stmt->fetch();
+            if (!$row) return null;
+            $row['caracteristicas'] = $this->decodeJsonArray($row['caracteristicas'] ?? '');
+            return $row;
+        } catch (\Throwable $e) {
+            $stmt = $this->db->prepare("SELECT id, icone, titulo, descricao FROM servicos WHERE id = ? LIMIT 1");
+            $stmt->execute([$id]);
+            $row = $stmt->fetch();
+            if (!$row) return null;
+            $row['caracteristicas'] = [];
+            return $row;
+        }
     }
 
     /**
@@ -51,14 +67,25 @@ class ServicoRepository {
      */
     public function create(array $data): int
     {
-        $stmt = $this->db->prepare("INSERT INTO servicos (icone, titulo, descricao, caracteristicas) VALUES (?, ?, ?, ?)");
-        $json = json_encode(array_values($data['caracteristicas'] ?? []), JSON_UNESCAPED_UNICODE);
-        $stmt->execute([
-            $data['icone'],
-            $data['titulo'],
-            $data['descricao'],
-            $json,
-        ]);
+        $caracts = array_values($data['caracteristicas'] ?? []);
+        $json = json_encode($caracts, JSON_UNESCAPED_UNICODE);
+        try {
+            $stmt = $this->db->prepare("INSERT INTO servicos (icone, titulo, descricao, caracteristicas) VALUES (?, ?, ?, ?)");
+            $stmt->execute([
+                $data['icone'],
+                $data['titulo'],
+                $data['descricao'],
+                $json,
+            ]);
+        } catch (\Throwable $e) {
+            // Fallback sem coluna caracteristicas
+            $stmt = $this->db->prepare("INSERT INTO servicos (icone, titulo, descricao) VALUES (?, ?, ?)");
+            $stmt->execute([
+                $data['icone'],
+                $data['titulo'],
+                $data['descricao'],
+            ]);
+        }
         return (int)$this->db->lastInsertId();
     }
 
@@ -69,15 +96,26 @@ class ServicoRepository {
     public function update(int $id, array $data): bool
     {
     // Uso de CURRENT_TIMESTAMP (compatível MySQL e SQLite) em vez de NOW() para facilitar testes.
-    $stmt = $this->db->prepare("UPDATE servicos SET icone = ?, titulo = ?, descricao = ?, caracteristicas = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?");
-        $json = json_encode(array_values($data['caracteristicas'] ?? []), JSON_UNESCAPED_UNICODE);
-        $stmt->execute([
-            $data['icone'],
-            $data['titulo'],
-            $data['descricao'],
-            $json,
-            $id,
-        ]);
+        $caracts = array_values($data['caracteristicas'] ?? []);
+        $json = json_encode($caracts, JSON_UNESCAPED_UNICODE);
+        try {
+            $stmt = $this->db->prepare("UPDATE servicos SET icone = ?, titulo = ?, descricao = ?, caracteristicas = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?");
+            $stmt->execute([
+                $data['icone'],
+                $data['titulo'],
+                $data['descricao'],
+                $json,
+                $id,
+            ]);
+        } catch (\Throwable $e) {
+            $stmt = $this->db->prepare("UPDATE servicos SET icone = ?, titulo = ?, descricao = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?");
+            $stmt->execute([
+                $data['icone'],
+                $data['titulo'],
+                $data['descricao'],
+                $id,
+            ]);
+        }
         return $stmt->rowCount() > 0;
     }
 

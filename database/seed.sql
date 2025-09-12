@@ -93,6 +93,6 @@ CREATE TABLE IF NOT EXISTS login_attempts (
 
 -- Usuário admin inicial (senha: admin123)
 INSERT INTO usuarios (nome,email,senha,tipo) VALUES (
-  'Admin','admin@example.com',
+  'Admin','marcos@example.com',
   '$2y$10$g7Y.QmGzq0HLdA9b2pHGFu4dVZP8YCMGhxJkHC6nMrtxPV9QRLd0e','admin'
 ) ON DUPLICATE KEY UPDATE email=email;
