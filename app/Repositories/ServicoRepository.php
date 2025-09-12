@@ -26,6 +26,7 @@ class ServicoRepository {
         try {
             $stmt = $this->db->query("SELECT id, icone, titulo, descricao, caracteristicas FROM servicos ORDER BY titulo");
         } catch (\Throwable $e) {
+            $this->logRepo('all-fallback', $e->getMessage());
             // Fallback: coluna 'caracteristicas' pode não existir ainda
             $stmt = $this->db->query("SELECT id, icone, titulo, descricao FROM servicos ORDER BY titulo");
             $rows = $stmt->fetchAll();
@@ -78,6 +79,7 @@ class ServicoRepository {
                 $json,
             ]);
         } catch (\Throwable $e) {
+            $this->logRepo('create-fallback', $e->getMessage());
             // Fallback sem coluna caracteristicas
             $stmt = $this->db->prepare("INSERT INTO servicos (icone, titulo, descricao) VALUES (?, ?, ?)");
             $stmt->execute([
@@ -95,28 +97,24 @@ class ServicoRepository {
      */
     public function update(int $id, array $data): bool
     {
-    // Uso de CURRENT_TIMESTAMP (compatível MySQL e SQLite) em vez de NOW() para facilitar testes.
-        $caracts = array_values($data['caracteristicas'] ?? []);
+        // Carrega registro atual para permitir atualização parcial sem sobrescrever campos omitidos
+        $atual = $this->find($id);
+        if(!$atual) return false;
+        $icone = $data['icone'] ?? $atual['icone'] ?? '';
+        $titulo = $data['titulo'] ?? $atual['titulo'] ?? '';
+        $descricao = $data['descricao'] ?? $atual['descricao'] ?? '';
+        $caracts = array_key_exists('caracteristicas',$data) ? array_values($data['caracteristicas'] ?? []) : ($atual['caracteristicas'] ?? []);
         $json = json_encode($caracts, JSON_UNESCAPED_UNICODE);
         try {
             $stmt = $this->db->prepare("UPDATE servicos SET icone = ?, titulo = ?, descricao = ?, caracteristicas = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?");
-            $stmt->execute([
-                $data['icone'],
-                $data['titulo'],
-                $data['descricao'],
-                $json,
-                $id,
-            ]);
+            $stmt->execute([$icone,$titulo,$descricao,$json,$id]);
         } catch (\Throwable $e) {
+            $this->logRepo('update-fallback', $e->getMessage());
+            // Fallback sem coluna caracteristicas
             $stmt = $this->db->prepare("UPDATE servicos SET icone = ?, titulo = ?, descricao = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?");
-            $stmt->execute([
-                $data['icone'],
-                $data['titulo'],
-                $data['descricao'],
-                $id,
-            ]);
+            $stmt->execute([$icone,$titulo,$descricao,$id]);
         }
-        return $stmt->rowCount() > 0;
+        return ($stmt->rowCount() > 0) || true; // Considera sucesso mesmo se dados idempotentes
     }
 
     /**
@@ -137,5 +135,12 @@ class ServicoRepository {
         if ($json === null || $json === '') return [];
         $data = json_decode($json, true);
         return is_array($data) ? $data : [];
+    }
+
+    private function logRepo(string $evento, string $detalhe): void {
+        try {
+            $linha = date('c')."\tservicos\t$evento\t".preg_replace('/\s+/',' ', $detalhe)."\n";
+            @file_put_contents(ROOT_PATH.'storage/logs/servicos-repo.log',$linha, FILE_APPEND);
+        } catch(\Throwable $e) { /* silêncio */ }
     }
 }

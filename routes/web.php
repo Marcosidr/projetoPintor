@@ -8,6 +8,7 @@ use App\Controllers\QuemSomosController;
 use App\Controllers\LogController;
 use App\Controllers\OrcamentoController;
 use App\Controllers\AdminUserApiController;
+use App\Controllers\AdminServicoApiController;
 
 /* Públicas */
 $router->get('/', [HomeController::class, 'index']);
@@ -42,6 +43,9 @@ $router->post('/admin/destroy/{id}', [\App\Controllers\AdminController::class, '
 $router->post('/admin/toggle-admin/{id}', [\App\Controllers\AdminController::class, 'toggleAdmin'], [\App\Middleware\AdminMiddleware::class]);
 $router->post('/admin/reset-senha/{id}', [\App\Controllers\AdminController::class, 'resetSenha'], [\App\Middleware\AdminMiddleware::class]);
 
+/* Admin Serviços (view) */
+$router->get('/admin/servicos', [\App\Controllers\AdminServicoController::class, 'index'], [\App\Middleware\AdminMiddleware::class]);
+
 /* Admin Catálogos */
 $router->get('/admin/catalogos', [\App\Controllers\CatalogoAdminController::class, 'index'], [\App\Middleware\AdminMiddleware::class]);
 $router->post('/admin/catalogos', [\App\Controllers\CatalogoAdminController::class, 'store'], [\App\Middleware\AdminMiddleware::class]);
@@ -56,3 +60,9 @@ $router->post('/api/admin/users/update/{id}', [AdminUserApiController::class, 'u
 $router->post('/api/admin/users/delete/{id}', [AdminUserApiController::class, 'destroy'], [\App\Middleware\AdminMiddleware::class]);
 $router->post('/api/admin/users/reset/{id}', [AdminUserApiController::class, 'resetSenha'], [\App\Middleware\AdminMiddleware::class]);
 $router->post('/api/admin/users/toggle/{id}', [AdminUserApiController::class, 'toggleAdmin'], [\App\Middleware\AdminMiddleware::class]);
+
+/* API Admin Serviços (JSON) */
+$router->get('/api/admin/servicos', [AdminServicoApiController::class, 'index'], [\App\Middleware\AdminMiddleware::class]);
+$router->post('/api/admin/servicos', [AdminServicoApiController::class, 'store'], [\App\Middleware\AdminMiddleware::class]);
+$router->post('/api/admin/servicos/update/{id}', [AdminServicoApiController::class, 'update'], [\App\Middleware\AdminMiddleware::class]);
+$router->post('/api/admin/servicos/delete/{id}', [AdminServicoApiController::class, 'destroy'], [\App\Middleware\AdminMiddleware::class]);

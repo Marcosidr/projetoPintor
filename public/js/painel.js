@@ -4,9 +4,15 @@
   const root      = document.getElementById('painelRoot');
   const isAdmin   = root?.dataset.isAdmin === '1';
   const csrfToken = (document.querySelector('meta[name="csrf-token"]')?.content) || (document.querySelector('input[name="_csrf"]')?.value) || '';
+  // Usuarios elementos
   const tabela    = document.getElementById('tabelaUsuarios');
   const modalEl   = document.getElementById('modalUsuario');
   const form      = document.getElementById('formUsuario');
+  // Serviços elementos
+  const tabelaServicos = document.getElementById('tabelaServicos');
+  const modalServicoEl = document.getElementById('modalServico');
+  const formServico    = document.getElementById('formServico');
+  let modalServicoInstance = null; let editingServicoId = null;
   let modalInstance = null;
   let editingId     = null;
   const DEBUG = !!window.localStorage?.getItem('painel_debug');
@@ -21,28 +27,47 @@
   const btnExecReset = document.getElementById('btnExecutarReset');
   if(modalConfirmEl){ modalConfirm = new bootstrap.Modal(modalConfirmEl); }
 
-  function openConfirm(type, userId, contextData={}){
-    actionPending = type; actionUserId = userId;
-    if(!modalConfirm) return;
-    btnExecDelete.classList.add('d-none'); btnExecReset.classList.add('d-none');
-    iconConf.className='confirm-icon '+(type==='delete'?'delete':'reset');
-    if(type==='delete'){
-      tituloConf.textContent='Excluir Usuário';
-      msgConf.textContent='Tem certeza que deseja excluir este usuário?';
-      detalheConf.textContent='Esta ação é permanente e não pode ser desfeita.';
+  function openConfirm(type, entityId, contextData={}) {
+    actionPending = type;
+    actionUserId = entityId;
+    if (!modalConfirm) return;
+
+    // Reset botões
+    btnExecDelete.classList.add('d-none');
+    btnExecReset.classList.add('d-none');
+
+    const isDelete = (type === 'delete' || type === 'delete-servico');
+    iconConf.className = 'confirm-icon ' + (isDelete ? 'delete' : 'reset');
+
+    if (isDelete) {
+      const alvo = contextData.entityLabel || 'registro';
+      const tituloEntidade = (contextData.titlePrefix || '') + (contextData.entityTitle || '');
+      tituloConf.textContent = tituloEntidade ? 'Excluir ' + tituloEntidade : 'Confirmar exclusão';
+      msgConf.textContent = 'Tem certeza que deseja excluir ' + (alvo === 'registro' ? 'este ' + alvo : 'este ' + alvo) + '?';
+      detalheConf.textContent = 'Esta ação é permanente e não pode ser desfeita.';
       btnExecDelete.classList.remove('d-none');
     } else {
-      tituloConf.textContent='Resetar Senha';
-      msgConf.textContent='Redefinir a senha deste usuário para "reset123"?';
-      detalheConf.textContent='O usuário deverá alterar após o próximo login.';
+      tituloConf.textContent = 'Resetar Senha';
+      msgConf.textContent = 'Redefinir a senha deste usuário para "reset123"?';
+      detalheConf.textContent = 'O usuário deverá alterar após o próximo login.';
       btnExecReset.classList.remove('d-none');
     }
+
     modalConfirm.show();
   }
 
   btnExecDelete?.addEventListener('click', async ()=>{
     if(!actionUserId) return; const id=actionUserId; modalConfirm.hide();
-    try { const j= await request(`/api/admin/users/delete/${id}`,{method:'POST'}); toast(j.message,'success'); carregarUsuarios(); }
+    try {
+      if(actionPending==='delete-servico'){
+        const j= await request(`/api/admin/servicos/delete/${id}`, {method:'POST'});
+        toast(j.message,'success');
+        carregarServicos();
+      } else {
+        const j= await request(`/api/admin/users/delete/${id}`,{method:'POST'});
+        toast(j.message,'success'); carregarUsuarios();
+      }
+    }
     catch(err){ toast(err.message,'danger'); }
     finally { actionPending=null; actionUserId=null; }
   });
@@ -86,9 +111,10 @@
     let text = await res.text();
     let json = null;
     try { json = JSON.parse(text); } catch(_e) {
-      // Se retornou HTML provavelmente sessão expirou ou foi redirecionado.
-      if(text.trim().startsWith('<!DOCTYPE') || text.includes('<html')){
-        throw new Error('Sessão expirada ou resposta inesperada. Recarregue a página.');
+        // Se retornou HTML provavelmente sessão expirada ou foi redirecionado.
+        if(text.trim().startsWith('<!DOCTYPE') || text.includes('<html')){
+          const snippet = text.slice(0,160).replace(/\n+/g,' ').trim();
+          throw new Error('Sessão expirada ou resposta inesperada. Preview: '+snippet);
       }
     }
     if(DEBUG) console.debug('[painel request]', {path, method, status: res.status, json});
@@ -175,6 +201,85 @@
   document.getElementById('btnNovoUsuario')?.addEventListener('click', openModalCreate);
   document.getElementById('btnNovoUsuario2')?.addEventListener('click', openModalCreate);
 
+  /* ===================== SERVIÇOS ======================= */
+  function showModalServico(){ if(!modalServicoEl) return; modalServicoInstance = modalServicoInstance || new bootstrap.Modal(modalServicoEl); modalServicoInstance.show(); }
+  function openModalCreateServico(){ editingServicoId=null; formServico?.reset(); document.getElementById('tituloModalServico')?.textContent='Novo Serviço'; showModalServico(); }
+  function openModalEditServico(tr){
+    editingServicoId = tr.dataset.servicoId;
+    formServico?.reset();
+    document.getElementById('tituloModalServico').textContent='Editar Serviço';
+    document.getElementById('servicoId').value = editingServicoId;
+    document.getElementById('servicoIcone').value = tr.querySelector('.serv-icone').dataset.iconRaw || '';
+    document.getElementById('servicoTitulo').value = tr.querySelector('.serv-titulo').textContent;
+    document.getElementById('servicoDescricao').value = tr.querySelector('.serv-descricao').dataset.descFull || tr.querySelector('.serv-descricao').textContent;
+    // Características
+    const caracts = Array.from(tr.querySelectorAll('.serv-caracts li')).map(li=>li.textContent.trim()).join('\n');
+    document.getElementById('servicoCaracteristicas').value = caracts;
+    showModalServico();
+  }
+
+  async function carregarServicos(){
+    if(!tabelaServicos) return;
+    try {
+      const {data=[]} = await request('/api/admin/servicos',{method:'GET'});
+      renderServicos(data);
+    } catch(e){ toast(e.message,'danger'); }
+  }
+
+  function renderServicos(servicos){
+    const tbody = tabelaServicos.querySelector('tbody');
+    tbody.innerHTML='';
+    if(!servicos.length){ tbody.innerHTML='<tr><td colspan="6" class="text-center text-muted py-3">Nenhum serviço.</td></tr>'; return; }
+    servicos.forEach(s=>{
+      const tr=document.createElement('tr');
+      tr.dataset.servicoId = s.id;
+      const caractsList = (s.caracteristicas||[]);
+      const caractsHtml = caractsList.length
+        ? '<ul class="caracts-list serv-caracts">'+ caractsList.map(c=>'<li>'+escapeHtml(c)+'</li>').join('') + '</ul>'
+        : '<span class="text-muted small">-</span>';
+      const iconRaw = escapeHtml(s.icone||'');
+      const iconHtml = iconRaw ? '<i class="'+iconRaw+'"></i>' : '<i class="bi bi-gear"></i>';
+      const titulo = escapeHtml(s.titulo||'');
+      const descFull = escapeHtml(s.descricao||'');
+      const descInner = '<span class="d-inline-block text-truncate" style="max-width:240px" title="'+descFull+'">'+descFull+'</span>';
+      tr.innerHTML = ''+
+        '<td>'+s.id+'</td>'+
+        '<td class="serv-icone" data-icon-raw="'+iconRaw+'">'+iconHtml+'</td>'+
+        '<td class="serv-titulo">'+titulo+'</td>'+
+        '<td class="serv-descricao" data-desc-full="'+descFull+'">'+descInner+'</td>'+
+        '<td>'+caractsHtml+'</td>'+
+        '<td class="text-center">'+
+           '<div class="btn-group btn-group-sm" role="group">'+
+             '<button class="btn btn-outline-secondary btn-edit-serv" title="Editar"><i class="bi bi-pencil-square"></i></button>'+
+             '<button class="btn btn-outline-danger btn-delete-serv" title="Excluir"><i class="bi bi-trash"></i></button>'+
+           '</div>'+
+        '</td>';
+      tbody.appendChild(tr);
+    });
+  }
+
+  formServico?.addEventListener('submit', async e=>{
+    e.preventDefault();
+    if(!formServico.checkValidity()){ formServico.classList.add('was-validated'); return; }
+    const data = Object.fromEntries(new FormData(formServico).entries());
+    try {
+      const url = editingServicoId ? `/api/admin/servicos/update/${editingServicoId}` : '/api/admin/servicos';
+      const j = await request(url,{method:'POST', data});
+      toast(j.message || (editingServicoId?'Atualizado':'Criado'),'success');
+      modalServicoInstance?.hide();
+      carregarServicos();
+    } catch(err){ toast(err.message,'danger'); }
+  });
+
+  tabelaServicos?.addEventListener('click', e=>{
+    const btn = e.target.closest('button'); if(!btn) return; const tr = btn.closest('tr'); const id = tr?.dataset.servicoId;
+    if(btn.classList.contains('btn-edit-serv')) return openModalEditServico(tr);
+    if(btn.classList.contains('btn-delete-serv')){ openConfirm('delete-servico', id, { entityLabel:'serviço', entityTitle: tr.querySelector('.serv-titulo')?.textContent || ''}); }
+  });
+
+  document.getElementById('btnNovoServico')?.addEventListener('click', openModalCreateServico);
+  document.getElementById('btnNovoServico2')?.addEventListener('click', openModalCreateServico);
+
   // Gráfico Chart.js
   function renderGraph(){
     const canvas = document.getElementById('chartOrcamentos7d'); if(!canvas || !window.Chart) return;
@@ -191,7 +296,8 @@
   }
 
   document.addEventListener('DOMContentLoaded', ()=>{
-    if(isAdmin) carregarUsuarios();
+  if(isAdmin) carregarUsuarios();
+  carregarServicos();
     if(window.Chart) renderGraph(); else window.addEventListener('load', renderGraph);
   });
 })();

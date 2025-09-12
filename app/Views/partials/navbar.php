@@ -39,7 +39,7 @@
               <li><hr class="dropdown-divider"></li>
               <li><a class="dropdown-item" href="<?= BASE_URL ?>/painel"><i class="bi bi-speedometer2 me-2"></i>Painel</a></li>
               <?php if (!empty($_SESSION['usuario']['tipo']) && $_SESSION['usuario']['tipo'] === 'admin'): ?>
-                <li><a class="dropdown-item" href="<?= BASE_URL ?>/admin"><i class="bi bi-people me-2"></i>Gerenciar Usuários</a></li>
+                <li><a class="dropdown-item" href="<?= BASE_URL ?>/admin/servicos"><i class="bi bi-tools me-2"></i>Serviços</a></li>
                 <li><a class="dropdown-item" href="<?= BASE_URL ?>/admin/catalogos"><i class="bi bi-images me-2"></i>Catálogos</a></li>
                 <li><a class="dropdown-item" href="<?= BASE_URL ?>/painel/logs"><i class="bi bi-journal-text me-2"></i>Logs</a></li>
                 <li><hr class="dropdown-divider"></li>

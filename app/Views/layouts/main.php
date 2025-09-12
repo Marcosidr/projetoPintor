@@ -49,8 +49,8 @@
         $normalized = substr($normalized, strlen($base));
         if ($normalized === false) $normalized = '/';
     }
-    // Carrega o script do painel para /painel e qualquer subrota futura (/painel/logs, /painel/usuarios, etc.)
-    if ($normalized === '/painel' || str_starts_with($normalized, '/painel/')) :
+    // Carrega o script do painel para rotas de painel e admin.
+    if ($normalized === '/painel' || str_starts_with($normalized, '/painel/') || $normalized === '/admin' || str_starts_with($normalized,'/admin/')) :
         echo '<script src="'.BASE_URL.'/js/painel.js" defer></script>';
     endif;          
     ?>
