@@ -1,9 +1,17 @@
 <?php
+namespace App\Controllers;
 
-class HomeController
+use App\Core\Controller;
+
+class HomeController extends Controller
 {
-    public function index()
+    public function index(): void
     {
-        view('home/index');
+        $this->view('home/index');
+    }
+
+    public function about(): void
+    {
+        $this->view('quem_somos/index');
     }
 }

@@ -23,6 +23,7 @@
     <?php include __DIR__ . '/../partials/navbar.php'; ?>
 
     <main class="container my-4">
+        <?php include __DIR__.'/../partials/flash.php'; ?>
         <?= $content ?? '' ?>
     </main>
 

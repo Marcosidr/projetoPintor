@@ -1,79 +1,40 @@
 <?php
-// routes/web.php
+use App\Controllers\HomeController;
+use App\Controllers\ServicoController;
+use App\Controllers\CatalogoController;
+use App\Controllers\AuthController;
+use App\Controllers\DashboardController;
+use App\Controllers\QuemSomosController;
+use App\Controllers\LogController;
+use App\Controllers\OrcamentoController;
 
-function view($path, $data = []) {
-    extract($data);
-    ob_start();
-    require ROOT_PATH . "app/Views/{$path}.php";
-    $content = ob_get_clean();
-    require ROOT_PATH . "app/Views/layouts/main.php";
-}
+/* Públicas */
+$router->get('/', [HomeController::class, 'index']);
+$router->get('/servicos', [ServicoController::class, 'index']);
+$router->get('/catalogos', [CatalogoController::class, 'index']);
+$router->get('/quem-somos', [HomeController::class, 'about']);
+$router->post('/orcamento', [OrcamentoController::class, 'store']);
 
-$uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+/* Auth */
+$router->get('/login', [AuthController::class, 'showLogin']);
+$router->post('/login', [AuthController::class, 'login']);
+$router->get('/register', [AuthController::class, 'showRegister']);
+$router->post('/register', [AuthController::class, 'register']);
+$router->post('/logout', [AuthController::class, 'logout']);
 
-// Normaliza URI (remove /projetoPintor/public e /index.php)
-$base = str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME']));
-$uri = preg_replace('#^' . $base . '#', '', $uri);
-$uri = '/' . trim($uri, '/');
+/* Painel */
+$router->get('/painel', [DashboardController::class, 'index'], [\App\Middleware\AuthMiddleware::class]);
+$router->get('/painel/logs', [LogController::class, 'index'], [\App\Middleware\AdminMiddleware::class]);
+$router->post('/log', [LogController::class, 'store']);
 
-switch ($uri) {
-    case '/':
-        require ROOT_PATH . 'app/Controllers/HomeController.php';
-        (new HomeController())->index();
-        break;
+/* Admin Usuarios */
+$router->get('/admin', [\App\Controllers\AdminController::class, 'index'], [\App\Middleware\AdminMiddleware::class]);
+$router->get('/admin/create', [\App\Controllers\AdminController::class, 'create'], [\App\Middleware\AdminMiddleware::class]);
+$router->post('/admin/store', [\App\Controllers\AdminController::class, 'store'], [\App\Middleware\AdminMiddleware::class]);
+$router->get('/admin/edit/{id}', [\App\Controllers\AdminController::class, 'edit'], [\App\Middleware\AdminMiddleware::class]);
+$router->post('/admin/update/{id}', [\App\Controllers\AdminController::class, 'update'], [\App\Middleware\AdminMiddleware::class]);
+$router->post('/admin/destroy/{id}', [\App\Controllers\AdminController::class, 'destroy'], [\App\Middleware\AdminMiddleware::class]);
+$router->post('/admin/toggle-admin/{id}', [\App\Controllers\AdminController::class, 'toggleAdmin'], [\App\Middleware\AdminMiddleware::class]);
+$router->post('/admin/reset-senha/{id}', [\App\Controllers\AdminController::class, 'resetSenha'], [\App\Middleware\AdminMiddleware::class]);
 
-    case '/servicos':
-        require ROOT_PATH . 'app/Controllers/ServicoController.php';
-        (new ServicoController())->index();
-        break;
-
-    case '/catalogos':
-        require ROOT_PATH . 'app/Controllers/CatalogoController.php';
-        (new CatalogoController())->index();
-        break;
-
-    case '/quem-somos':
-        require ROOT_PATH . 'app/Controllers/QuemSomosController.php';
-        (new QuemSomosController())->index();
-        break;
-
-    default:
-        view('errors/404');
-        break;
-     case '/login':
-    require ROOT_PATH . 'app/Controllers/AuthController.php';
-    (new AuthController())->showLogin();
-    break;
-
-case '/auth/login':
-    require ROOT_PATH . 'app/Controllers/AuthController.php';
-    (new AuthController())->login($_POST);
-    break;
-
-case '/register':
-    require ROOT_PATH . 'app/Controllers/AuthController.php';
-    (new AuthController())->showRegister();
-    break;
-
-case '/auth/register':
-    require ROOT_PATH . 'app/Controllers/AuthController.php';
-    (new AuthController())->register($_POST);
-    break;
-
-case '/logout':
-    require ROOT_PATH . 'app/Controllers/AuthController.php';
-    (new AuthController())->logout();
-    break;
-
-case '/painel':
-    require ROOT_PATH . 'app/Controllers/DashboardController.php';
-    (new DashboardController())->index();
-    break;
-
-case '/logs':
-    require ROOT_PATH . 'app/Controllers/LogController.php';
-    (new LogController())->index($_GET);
-    break;
-
-
-}
+// TODO: adicionar rotas admin, orcamento e logs detalhados.

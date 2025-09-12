@@ -1,24 +1,14 @@
 <?php
-require_once ROOT_PATH . 'app/Models/User.php';
-require_once ROOT_PATH . 'app/Models/Orcamento.php';
-require_once ROOT_PATH . 'app/Models/Log.php';
+namespace App\Controllers;
 
-class DashboardController {
-    public function index() {
-        session_start();
-        if (empty($_SESSION['usuario']) || $_SESSION['usuario']['tipo'] !== 'admin') {
-            header("Location: /login");
-            exit;
-        }
+use App\Core\Auth; use App\Core\Controller; use App\Core\Session;
 
-        $totalUsuarios   = User::count();
-        $totalOrcamentos = Orcamento::count();
-        $totalLogsHoje   = Log::countHoje();
-        $totalAdmins     = User::countAdmins();
-
-        $grafico = Orcamento::ultimos7Dias();
-        $usuarios = User::all();
-
-        view('painel/dashboard', compact('totalUsuarios', 'totalOrcamentos', 'totalLogsHoje', 'totalAdmins', 'grafico', 'usuarios'));
+class DashboardController extends Controller
+{
+    public function index(): void
+    {
+        Auth::requireLogin();
+        $usuario = (Session::get('usuario')['nome'] ?? 'Usuário');
+        $this->view('painel/dashboard', compact('usuario'));
     }
 }

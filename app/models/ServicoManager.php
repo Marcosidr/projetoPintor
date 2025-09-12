@@ -1,6 +1,10 @@
 <?php
 require_once ROOT_PATH . 'app/Models/Servico.php';
 
+/**
+ * @deprecated Substituído por App\Repositories\ServicoRepository. Mantido apenas enquanto não há tabela real.
+ * Será removido após refatorar a view para usar partial em vez de Servico::render().
+ */
 class ServicoManager
 {
     /**

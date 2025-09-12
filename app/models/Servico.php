@@ -10,6 +10,10 @@ class Servico
         private string $descricao,
         private array $caracteristicas
     ) {}
+        /**
+         * Modelo simples usado apenas como DTO temporário para mock de serviços.
+         * @deprecated Será removido quando Serviços vierem do banco e o HTML for movido para partial (ver tarefa 'Refatorar Servico::render').
+         */
 
     public function getIcone(): string
     {
@@ -31,21 +35,5 @@ class Servico
         return $this->caracteristicas;
     }
 
-    public function render(): string
-    {
-        $lista = '';
-        foreach ($this->caracteristicas as $item) {
-            $lista .= "<li><i class='bi bi-check-circle-fill text-success me-2'></i>{$item}</li>";
-        }
-
-        return "
-        <div class='card mb-4'>
-            <div class='card-body'>
-                <h3 class='card-title'><i class='{$this->icone} me-2'></i>{$this->titulo}</h3>
-                <p class='card-text'>{$this->descricao}</p>
-                <ul class='list-unstyled'>{$lista}</ul>
-            </div>
-        </div>
-        ";
-    }
+    // Método render removido: responsabilidade movida para partial de view `servicos/_card.php`.
 }

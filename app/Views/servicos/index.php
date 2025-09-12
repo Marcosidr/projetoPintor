@@ -5,7 +5,7 @@
   <div class="row g-4">
     <?php foreach ($servicos as $servico): ?>
       <div class="col-md-4 d-flex">
-        <?= $servico->render(); ?>
+        <?php include __DIR__ . '/_card.php'; ?>
       </div>
     <?php endforeach; ?>
   </div>
@@ -29,7 +29,7 @@
   <div class="row g-4">
     <?php foreach (array_slice($servicos, 0, 3) as $servico): ?> <!-- Mostra só 3 -->
       <div class="col-md-4 d-flex">
-        <?= $servico->render(); ?>
+        <?php include __DIR__ . '/_card.php'; ?>
       </div>
     <?php endforeach; ?>
   </div>

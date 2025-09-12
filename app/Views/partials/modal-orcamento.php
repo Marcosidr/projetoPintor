@@ -5,8 +5,9 @@
 <div class="modal fade" id="orcamentoModal" tabindex="-1" aria-labelledby="orcamentoModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
-      <form id="formOrcamento" method="POST" action="banco/enviar_orcamento.php">
-        <input type="hidden" name="formulario" value="orcamento">
+      <form id="formOrcamento" method="POST" action="<?= BASE_URL ?>/orcamento">
+        <?php if (!function_exists('csrf_field')) { function csrf_field(): string { return '<input type="hidden" name="_csrf" value="'.htmlspecialchars(\App\Core\Csrf::token(), ENT_QUOTES,'UTF-8').'">'; } } ?>
+        <?= csrf_field(); ?>
         <div class="modal-header">
           <h5 class="modal-title" id="orcamentoModalLabel">Quer um orçamento sem compromisso?</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
@@ -14,7 +15,13 @@
         <div class="modal-body">
 
           <!-- Área de mensagem -->
-          <div id="alertaEnvio" class="alert d-none" role="alert"></div>
+          <?php
+            use App\Core\Session;
+            $erroOrc = Session::get('erro_orcamento');
+            $okOrc = Session::get('sucesso_orcamento');
+            if ($erroOrc) { echo '<div class="alert alert-danger">'.htmlspecialchars($erroOrc).'</div>'; Session::remove('erro_orcamento'); }
+            if ($okOrc) { echo '<div class="alert alert-success">'.htmlspecialchars($okOrc).'</div>'; Session::remove('sucesso_orcamento'); }
+          ?>
 
           <!-- Campos do formulário -->
           <div class="mb-3">
@@ -126,68 +133,8 @@
   <p>✅ Enviado com sucesso!</p>
 </div>
 
-<!-- Bootstrap JS -->
+<!-- Bootstrap JS (caso não esteja já incluso no layout) -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
-<!-- Script -->
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-  const form = document.getElementById('formOrcamento');
-  const alerta = document.getElementById('alertaEnvio');
-  const submitBtn = form.querySelector("button[type='submit']");
-  const overlay = document.getElementById('sucessoOverlay');
-
-  if (!form) return;
-
-  form.addEventListener('submit', function(e) {
-    e.preventDefault();
-
-    // Ativa animação de carregamento no botão
-    submitBtn.disabled = true;
-    submitBtn.classList.add("btn-loading");
-
-    const formData = new FormData(form);
-
-    fetch('bin/enviar_orcamento.php', {
-      method: 'POST',
-      body: formData
-    })
-    .then(res => res.json())
-    .then(data => {
-      submitBtn.classList.remove("btn-loading");
-      submitBtn.disabled = false;
-
-      if (data.success) {
-        form.reset();
-
-        // Mostra overlay com check animado
-        overlay.style.display = "flex";
-
-        setTimeout(() => {
-          overlay.style.display = "none";
-          const modalElement = document.getElementById('orcamentoModal');
-          if (bootstrap && bootstrap.Modal.getInstance(modalElement)) {
-            bootstrap.Modal.getInstance(modalElement).hide();
-          }
-        }, 3000);
-
-      } else {
-        alerta.className = "alert alert-danger";
-        alerta.textContent = "❌ Erro: " + data.error;
-        alerta.classList.remove("d-none");
-      }
-    })
-    .catch(err => {
-      submitBtn.classList.remove("btn-loading");
-      submitBtn.disabled = false;
-
-      alerta.className = "alert alert-danger";
-      alerta.textContent = "❌ Erro inesperado: " + err;
-      alerta.classList.remove("d-none");
-    });
-  });
-});
-</script>
 
 <!-- CSS exclusivo do modal -->
 <style>

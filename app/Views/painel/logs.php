@@ -12,35 +12,21 @@
   <div class="container py-4">
     <h3 class="mb-4">📜 Logs do Sistema</h3>
 
-    <!-- Filtros -->
+    <!-- Filtros mínimos (ação, data) -->
     <form method="GET" class="row g-3 mb-4">
-      <div class="col-md-3">
-        <label class="form-label">Usuário</label>
-        <input type="text" name="usuario" class="form-control" value="<?= htmlspecialchars($filtroUsuario ?? '') ?>">
-      </div>
-      <div class="col-md-3">
-        <label class="form-label">Ação</label>
+      <div class="col-md-4">
+        <label class="form-label">Ação contém</label>
         <input type="text" name="acao" class="form-control" value="<?= htmlspecialchars($filtroAcao ?? '') ?>">
       </div>
-      <div class="col-md-2">
-        <label class="form-label">Nível</label>
-        <select name="nivel" class="form-select">
-          <option value="">Todos</option>
-          <option value="INFO" <?= ($filtroNivel ?? '')=="INFO"?"selected":"" ?>>INFO</option>
-          <option value="WARNING" <?= ($filtroNivel ?? '')=="WARNING"?"selected":"" ?>>WARNING</option>
-          <option value="ERROR" <?= ($filtroNivel ?? '')=="ERROR"?"selected":"" ?>>ERROR</option>
-        </select>
-      </div>
-      <div class="col-md-2">
-        <label class="form-label">Data início</label>
-        <input type="date" name="data_ini" class="form-control" value="<?= htmlspecialchars($filtroDataIni ?? '') ?>">
-      </div>
-      <div class="col-md-2">
-        <label class="form-label">Data fim</label>
-        <input type="date" name="data_fim" class="form-control" value="<?= htmlspecialchars($filtroDataFim ?? '') ?>">
+      <div class="col-md-3">
+        <label class="form-label">Data</label>
+        <input type="date" name="data" class="form-control" value="<?= htmlspecialchars($filtroData ?? '') ?>">
       </div>
       <div class="col-md-2 d-flex align-items-end">
         <button type="submit" class="btn btn-success w-100">Filtrar</button>
+      </div>
+      <div class="col-md-2 d-flex align-items-end">
+        <a href="?" class="btn btn-outline-secondary w-100">Limpar</a>
       </div>
     </form>
 
@@ -64,10 +50,7 @@
                 <td><?= htmlspecialchars($log['usuario']) ?></td>
                 <td><?= htmlspecialchars($log['acao']) ?></td>
                 <td>
-                  <span class="badge 
-                    <?= $log['nivel'] === 'ERROR' ? 'bg-danger' : ($log['nivel'] === 'WARNING' ? 'bg-warning text-dark' : 'bg-success') ?>">
-                    <?= htmlspecialchars($log['nivel']) ?>
-                  </span>
+                  <span class="badge bg-success">INFO</span>
                 </td>
                 <td><?= htmlspecialchars($log['detalhes']) ?></td>
               </tr>
@@ -80,6 +63,27 @@
         </tbody>
       </table>
     </div>
+
+    <!-- Paginação -->
+    <?php if (!empty($paginacao) && $paginacao['totalPages'] > 1): ?>
+      <nav class="mt-4">
+        <ul class="pagination">
+          <?php for ($p=1; $p <= $paginacao['totalPages']; $p++): ?>
+            <?php
+              $qs = http_build_query([
+                'acao' => $filtroAcao,
+                'data' => $filtroData,
+                'page' => $p,
+              ]);
+            ?>
+            <li class="page-item <?= $paginacao['page']===$p?'active':'' ?>">
+              <a class="page-link" href="?<?= $qs ?>"><?= $p ?></a>
+            </li>
+          <?php endfor; ?>
+        </ul>
+        <p class="text-muted small">Exibindo <?= count($logs) ?> de <?= $paginacao['total'] ?> registros (<?= $paginacao['totalPages'] ?> páginas)</p>
+      </nav>
+    <?php endif; ?>
   </div>
 </body>
 </html>

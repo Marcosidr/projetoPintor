@@ -1,72 +1,62 @@
 <?php
-require_once ROOT_PATH . 'app/Models/User.php';
-require_once ROOT_PATH . 'app/Models/Log.php';
+namespace App\Controllers;
 
-class AuthController {
-    public function showLogin() {
-        view('painel/login');
+use App\Core\Controller;
+use App\Core\Session;
+use App\Core\Response;
+use App\Core\Csrf;
+use App\Services\AuthService;
+use App\Services\LoggerService;
+
+class AuthController extends Controller {
+    private AuthService $auth; private LoggerService $logger;
+    public function __construct() { $this->auth = new AuthService(); $this->logger = new LoggerService(); }
+
+    public function showLogin(): void {
+        $erro = Session::get('erro','');
+        $sucesso = Session::get('sucesso','');
+        Session::remove('erro'); Session::remove('sucesso');
+        $this->view('auth/login', compact('erro','sucesso'));
     }
 
-    public function login(array $data) {
-        session_start();
-        $user = User::findByEmail($data['email']);
-
-        if (!$user || !password_verify($data['senha'], $user['senha'])) {
-            $_SESSION['erro'] = "E-mail ou senha inválidos.";
-            header("Location: /login");
-            exit;
+    public function login(): void {
+        if (!Csrf::validate($_POST['_csrf'] ?? '')) { http_response_code(419); exit('CSRF inválido'); }
+        $res = $this->auth->login($_POST['email'] ?? '', $_POST['senha'] ?? '');
+        if (!$res['ok']) {
+            $this->logger->info(null, 'login_falha', ['email'=>$_POST['email'] ?? '', 'erro'=>$res['error']]);
+            Session::set('erro', $res['error']);
+            Response::redirect(BASE_URL . '/login');
         }
-
-        $_SESSION['usuario'] = $user;
-        Log::registrar("LOGIN OK: {$user['email']}", "INFO");
-        header("Location: /painel");
+        Session::set('usuario', $res['user']);
+        $this->logger->info($res['user']['id'] ?? null, 'login_sucesso', ['email'=>$res['user']['email'] ?? '']);
+        Response::redirect(BASE_URL . '/painel');
     }
 
-    public function logout() {
-        session_start();
-        if (!empty($_SESSION['usuario'])) {
-            Log::registrar("LOGOUT: {$_SESSION['usuario']['email']}", "INFO");
-        }
-        session_destroy();
-        header("Location: /login");
+    public function showRegister(): void {
+        $erro = Session::get('erro','');
+        $sucesso = Session::get('sucesso','');
+        Session::remove('erro'); Session::remove('sucesso');
+        $this->view('auth/register', compact('erro','sucesso'));
     }
 
-    public function showRegister() {
-        view('painel/register');
+    public function register(): void {
+        if (!Csrf::validate($_POST['_csrf'] ?? '')) { http_response_code(419); exit('CSRF inválido'); }
+        $res = $this->auth->register($_POST['nome'] ?? '', $_POST['email'] ?? '', $_POST['senha'] ?? '');
+        if (!$res['ok']) {
+            $this->logger->info(null, 'registro_falha', ['email'=>$_POST['email'] ?? '', 'erro'=>$res['error']]);
+            Session::set('erro', $res['error']);
+            Response::redirect(BASE_URL . '/register');
+        }
+        $this->logger->info($res['user']['id'] ?? null, 'registro_sucesso', ['email'=>$res['user']['email'] ?? '']);
+        Session::set('sucesso','Registrado com sucesso! Faça login.');
+        Response::redirect(BASE_URL . '/login');
     }
 
-    public function register(array $data) {
-        session_start();
-
-        if (empty($data['nome']) || empty($data['email']) || empty($data['senha'])) {
-            $_SESSION["erro"] = "Preencha todos os campos.";
-            header("Location: /register");
-            return;
-        }
-
-        if (strlen($data['senha']) < 6) {
-            $_SESSION["erro"] = "A senha deve ter pelo menos 6 caracteres.";
-            header("Location: /register");
-            return;
-        }
-
-        try {
-            if (User::findByEmail($data['email'])) {
-                $_SESSION["erro"] = "E-mail já cadastrado.";
-                header("Location: /register");
-                return;
-            }
-
-            User::create($data['nome'], $data['email'], $data['senha']);
-            Log::registrar("REGISTRO OK: {$data['email']}", "INFO");
-
-            $_SESSION["sucesso"] = "Usuário registrado com sucesso!";
-            header("Location: /login");
-
-        } catch (Exception $e) {
-            $_SESSION["erro"] = "Erro: " . $e->getMessage();
-            Log::registrar("REGISTRO ERRO: {$data['email']} - {$e->getMessage()}", "ERROR");
-            header("Location: /register");
-        }
+    public function logout(): void {
+        $user = Session::get('usuario');
+        $this->logger->info($user['id'] ?? null, 'logout', ['email'=>$user['email'] ?? null]);
+        Session::remove('usuario');
+        Session::regenerate();
+        Response::redirect(BASE_URL . '/login');
     }
 }

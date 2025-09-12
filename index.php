@@ -10,8 +10,7 @@ if (empty($_SERVER['HTTPS']) || $_SERVER['HTTPS'] === "off") {
 // Define o caminho absoluto para a raiz do seu projeto
 define('ROOT_PATH', __DIR__ . '/');
 
-// Inclui a classe Servico para todas as páginas
-require_once __DIR__ . '/classes/servico.php';
+// (Legacy) Antes carregava classes/servico.php – removido no processo de migração MVC.
 
 // Parâmetro da URL para controle de página
 $param = $_GET["param"] ?? "home";
@@ -166,23 +165,8 @@ $pagina = "páginas/{$param}.php";
     </style>
 </head>
 <script>
-document.addEventListener("click", function(e) {
-    const target = e.target.closest("button, a");
-    if (!target) return;
-
-    const acao = target.innerText.trim() || target.getAttribute("href") || "Ação sem nome";
-
-    fetch("./registrar_log.php", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            acao: acao,
-            pagina: window.location.pathname
-        })
-    });
-});
+// Script legacy removido: captura de cliques e envio para registrar_log.php.
+// O logging agora é centralizado via LoggerService e rota /log (token ou admin).
 </script>
 
 

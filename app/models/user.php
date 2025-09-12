@@ -1,31 +1,22 @@
 <?php
+
 class User {
-    public static function findByEmail($email) {
-        $pdo = db();
-        $stmt = $pdo->prepare("SELECT * FROM usuarios WHERE email = :email LIMIT 1");
-        $stmt->execute(['email' => $email]);
-        return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
-    }
-
-    public static function create($nome, $email, $senha) {
-        $pdo = db();
-        $stmt = $pdo->prepare("INSERT INTO usuarios (nome, email, senha, tipo) VALUES (:nome, :email, :senha, 'user')");
-        $stmt->execute([
-            'nome' => $nome,
-            'email' => strtolower($email),
-            'senha' => password_hash($senha, PASSWORD_DEFAULT)
-        ]);
-    }
-
     public static function count() {
         return (int) db()->query("SELECT COUNT(*) FROM usuarios")->fetchColumn();
     }
 
     public static function countAdmins() {
-        return (int) db()->query("SELECT COUNT(*) FROM usuarios WHERE tipo = 'admin'")->fetchColumn();
+        $stmt = db()->query("SELECT COUNT(*) FROM usuarios WHERE tipo = 'admin'");
+        return (int) $stmt->fetchColumn();
     }
 
     public static function all() {
-        return db()->query("SELECT id, nome, email, tipo FROM usuarios ORDER BY id DESC")->fetchAll(PDO::FETCH_ASSOC);
+        return db()->query("SELECT id, nome, email, tipo, created_at FROM usuarios ORDER BY id DESC")->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public static function findByEmail($email) {
+        $stmt = db()->prepare("SELECT * FROM usuarios WHERE email = :e LIMIT 1");
+        $stmt->execute(['e' => $email]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 }

@@ -1,11 +1,16 @@
 <?php
-require_once ROOT_PATH . 'app/Models/ServicoManager.php';
+namespace App\Controllers;
 
-class ServicoController
+use App\Core\Controller;
+
+use App\Repositories\ServicoRepository;
+
+class ServicoController extends Controller
 {
-    public function index()
+    public function index(): void
     {
-        $servicos = ServicoManager::getServicos();
-        view('servicos/index', compact('servicos'));
+        $repo = new ServicoRepository();
+        $servicos = $repo->all();
+        $this->view('servicos/index', compact('servicos'));
     }
 }

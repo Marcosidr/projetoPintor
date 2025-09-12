@@ -1,9 +1,12 @@
 <?php
+namespace App\Controllers;
 
-class QuemSomosController
+use App\Core\Controller;
+
+class QuemSomosController extends Controller
 {
-    public function index()
+    public function index(): void
     {
-        view('quem_somos/index');
+        $this->view('quem_somos/index');
     }
 }

@@ -1,0 +1,1 @@
+{"version":2,"defects":[],"times":{"OrcamentoServiceTest::testCriarCamposObrigatorios":0.008,"OrcamentoServiceTest::testCriarSucesso":0.002,"LoggerServiceTest::testEscreveLinha":0.017,"AuthServiceTest::testRegisterDuplicateEmail":0.08,"AuthServiceTest::testLoginSuccess":0.15,"AuthServiceTest::testLoginFail":0,"AuthServiceTest::testRegisterSuccess":0.082}}

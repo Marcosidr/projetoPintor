@@ -1,11 +1,15 @@
 <?php
-require_once ROOT_PATH . 'app/Models/CatalogoManager.php';
+namespace App\Controllers;
 
-class CatalogoController
+use App\Core\Controller;
+use App\Repositories\CatalogoRepository;
+
+class CatalogoController extends Controller
 {
-    public function index()
+    public function index(): void
     {
-        $itens = CatalogoManager::getItens();
-        view('catalogos/index', compact('itens'));
+        $repo = new CatalogoRepository();
+        $itens = $repo->all();
+        $this->view('catalogos/index', compact('itens'));
     }
 }
