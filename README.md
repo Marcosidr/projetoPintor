@@ -199,3 +199,97 @@ Vitor Hugo de Moraes
 2. Hardening rota /log (rate limit, tamanho ctx)
 3. Persistir serviços/catalogo
 4. Testes automatizados base
+
+---
+
+## 🖥️ Painel Moderno (Dashboard)
+
+O painel (`/painel`) foi atualizado para uma interface moderna e responsiva com foco em usabilidade e segurança.
+
+### Componentes Visuais
+- Cards de métricas com ícones (Usuários, Admins, Orçamentos últimos dias, Logs Hoje)
+- Gráfico (Chart.js) de orçamentos dos últimos 7 dias (barras)
+- Lista de logs recentes (5 mais recentes)
+- Tabela dinâmica de usuários com ações inline (CRUD completo) via API
+- Modais para criar/editar usuários e toasts para feedback
+
+### Arquitetura do Painel
+| Camada | Arquivo | Função |
+|--------|---------|--------|
+| View principal | `app/Views/painel/dashboard.php` | Estrutura HTML, cards, tabela, modais e JSON dos dados do gráfico |
+| Serviço de métricas | `app/Services/DashboardService.php` | Detecção dinâmica de colunas e agregações |
+| API Usuários | `app/Controllers/AdminUserApiController.php` | Endpoints JSON seguros para CRUD |
+| JS Dinâmico | `public/js/painel.js` | Fetch API, render tabela, modais, toasts, gráfico |
+| Repositório | `app/Repositories/UsuarioRepository.php` | Operações PDO (prepared statements) |
+
+### Endpoints API (Admin)
+Todos requerem usuário logado com tipo `admin`. Respostas: `{ success: bool, message?: string, data?: any, errors?: string[] }`.
+
+| Método | Rota | Descrição |
+|--------|------|-----------|
+| GET | `/api/admin/users` | Lista usuários (array) |
+| POST | `/api/admin/users` | Cria novo (nome, email, senha, tipo) |
+| POST | `/api/admin/users/update/{id}` | Atualiza campos enviados (nome, email, tipo, senha) |
+| POST | `/api/admin/users/delete/{id}` | Remove usuário |
+| POST | `/api/admin/users/reset/{id}` | Redefine senha para `reset123` |
+| POST | `/api/admin/users/toggle/{id}` | Alterna tipo entre `user`/`admin` |
+
+Campos aceitos (create/update):
+| Campo | Regras |
+|-------|--------|
+| nome | obrigatório, 2–100 chars |
+| email | obrigatório, formato válido, <=150 chars |
+| senha | create: obrigatória >=6; update: opcional (>=6 se enviada) |
+| tipo | `user` ou `admin` |
+
+### Segurança Aplicada
+- Checagem explícita de `Auth::checkAdmin()` em todos endpoints
+- CSRF obrigatório (token em header/form `_csrf`)
+- Preparação SQL via `PDO::prepare`
+- Validação de comprimento e formato
+- Sem uso de scripts inline (CSP permanece rígida)
+- Dados do gráfico entregues via `<script type="application/json">` (não executável)
+
+### Fluxo CRUD (Exemplo via curl)
+```
+# Listar
+curl -b cookie.txt -c cookie.txt http://localhost:8000/api/admin/users
+
+# Criar
+curl -b cookie.txt -c cookie.txt -X POST -F "_csrf=TOKEN" -F "nome=Teste" -F "email=teste@example.com" -F "senha=abcdef" -F "tipo=user" http://localhost:8000/api/admin/users
+
+# Atualizar
+curl -b cookie.txt -c cookie.txt -X POST -F "_csrf=TOKEN" -F "tipo=admin" http://localhost:8000/api/admin/users/update/ID
+```
+(Substituir TOKEN/ID e garantir autenticação prévia no cookie.)
+
+### Gráfico de Orçamentos
+- Fonte: `DashboardService::getGraficoUltimos7Dias()`
+- Intervalo: últimos 7 dias (dia atual incluído)
+- Render: Chart.js (barras) em `painel.js`
+- Extensível: adicionar segunda série (ex: orçamentos aprovados) basta incluir novo dataset JS + ajuste no serviço.
+
+### Testes Cobertos
+- `tests/AdminUserApiControllerTest.php`
+	- List usuários
+	- Create inválido (senha curta)
+	- Create válido
+	- Update tipo
+	- Toggle admin
+	- Reset senha
+	- Delete
+
+### Possíveis Extensões Futuras
+- Paginação / busca incremental de usuários (offset + filtros)
+- Filtro temporal para logs e orçamentos
+- Export CSV (logs / usuários)
+- Dashboard multi-série com comparativo semanas
+- Rate limiting de mutações via camada de middleware
+
+### Notas de CSP
+Incluir host da CDN `https://cdn.jsdelivr.net` em `script-src` (já utilizado para Bootstrap/Chart.js). Para reforçar ainda mais:
+1. Adicionar Subresource Integrity (SRI) aos assets externos
+2. Remover qualquer dependência de `'unsafe-inline'` (já mitigado removendo scripts inline)
+3. Usar nonce caso scripts críticos dinâmicos sejam necessários no futuro
+
+---

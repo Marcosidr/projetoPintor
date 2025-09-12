@@ -10,9 +10,11 @@
 
     <!-- Bootstrap e ícones primeiro -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-    <!-- Font Awesome via jsDelivr (sem atributo integrity até obter hash correto) -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.2/css/all.min.css" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Font Awesome (todo: adicionar SRI) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.2/css/all.min.css" crossorigin="anonymous">
+    <!-- Chart.js (todo: adicionar SRI) -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
     <!-- Seu CSS por último -->
     <link rel="stylesheet" href="<?= BASE_URL ?>/css/style.css">
 </head>
@@ -34,5 +36,10 @@
         <!-- Scripts Bootstrap + inicialização custom -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script>
         <script src="<?= BASE_URL ?>/js/app.js"></script>
+        <?php // Carrega JS específico do painel somente quando rota /painel é usada
+        $uriPath = parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH) ?? '';
+        if ($uriPath === '/painel') : ?>
+            <script src="<?= BASE_URL ?>/js/painel.js" defer></script>
+        <?php endif; ?>
 </body>
 </html>

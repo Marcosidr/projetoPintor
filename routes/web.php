@@ -7,6 +7,7 @@ use App\Controllers\DashboardController;
 use App\Controllers\QuemSomosController;
 use App\Controllers\LogController;
 use App\Controllers\OrcamentoController;
+use App\Controllers\AdminUserApiController;
 
 /* Públicas */
 $router->get('/', [HomeController::class, 'index']);
@@ -47,3 +48,11 @@ $router->post('/admin/catalogos', [\App\Controllers\CatalogoAdminController::cla
 $router->post('/admin/catalogos/delete/{id}', [\App\Controllers\CatalogoAdminController::class, 'delete'], [\App\Middleware\AdminMiddleware::class]);
 
 // TODO: adicionar rotas admin, orcamento e logs detalhados.
+
+/* API Admin Users (JSON) */
+$router->get('/api/admin/users', [AdminUserApiController::class, 'index'], [\App\Middleware\AdminMiddleware::class]);
+$router->post('/api/admin/users', [AdminUserApiController::class, 'store'], [\App\Middleware\AdminMiddleware::class]);
+$router->post('/api/admin/users/update/{id}', [AdminUserApiController::class, 'update'], [\App\Middleware\AdminMiddleware::class]);
+$router->post('/api/admin/users/delete/{id}', [AdminUserApiController::class, 'destroy'], [\App\Middleware\AdminMiddleware::class]);
+$router->post('/api/admin/users/reset/{id}', [AdminUserApiController::class, 'resetSenha'], [\App\Middleware\AdminMiddleware::class]);
+$router->post('/api/admin/users/toggle/{id}', [AdminUserApiController::class, 'toggleAdmin'], [\App\Middleware\AdminMiddleware::class]);
