@@ -100,7 +100,7 @@
   <div class="card shadow-sm mb-5" id="cardUsuarios">
       <div class="card-header bg-transparent d-flex justify-content-between align-items-center py-2">
           <h6 class="mb-0 fw-semibold"><i class="bi bi-people me-1"></i> Usuários</h6>
-          <?php if($isAdmin): ?><button class="btn btn-sm btn-outline-primary" id="btnNovoUsuario2"><i class="bi bi-plus-circle"></i> Novo</button><?php endif; ?>
+          <?php if($isAdmin): ?><button class="btn btn-sm btn-success" id="btnNovoUsuario2"><i class="bi bi-plus-circle"></i> Novo</button><?php endif; ?>
       </div>
       <div class="card-body p-0">
           <div class="table-responsive">
@@ -186,7 +186,7 @@
               </div>
               <div class="modal-footer">
                   <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
-                  <button type="submit" class="btn btn-primary" id="btnSalvarUsuario"><i class="bi bi-check2"></i> Salvar</button>
+                  <button type="submit" class="btn btn-success" id="btnSalvarUsuario"><i class="bi bi-check2"></i> Salvar</button>
               </div>
           </form>
       </div>

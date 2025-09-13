@@ -14,7 +14,7 @@
   <div class="card shadow-sm mb-5" id="cardServicos">
       <div class="card-header bg-transparent d-flex justify-content-between align-items-center py-2">
           <h6 class="mb-0 fw-semibold"><i class="bi bi-list-task me-1"></i> Lista de Serviços</h6>
-          <?php if($isAdmin): ?><button class="btn btn-sm btn-outline-primary" id="btnNovoServico2"><i class="bi bi-plus-circle"></i> Novo</button><?php endif; ?>
+          <?php if($isAdmin): ?><button class="btn btn-sm btn-success" id="btnNovoServico2"><i class="bi bi-plus-circle"></i> Novo</button><?php endif; ?>
       </div>
       <div class="card-body p-0">
           <div class="table-responsive">
@@ -75,7 +75,7 @@
               </div>
               <div class="modal-footer">
                   <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
-                  <button type="submit" class="btn btn-primary" id="btnSalvarServico"><i class="bi bi-check2"></i> Salvar</button>
+                  <button type="submit" class="btn btn-success" id="btnSalvarServico"><i class="bi bi-check2"></i> Salvar</button>
               </div>
           </form>
       </div>
