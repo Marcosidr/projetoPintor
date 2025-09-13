@@ -293,3 +293,64 @@ Incluir host da CDN `https://cdn.jsdelivr.net` em `script-src` (já utilizado pa
 3. Usar nonce caso scripts críticos dinâmicos sejam necessários no futuro
 
 ---
+
+## ✅ Pendências Atuais para Finalização
+
+Estas são as tarefas restantes antes de considerar o ciclo atual “encerrado”. Cada uma inclui objetivo, ações sugeridas e critério de aceite.
+
+### 1. Logs no Banco – Verificação / Correção
+Objetivo: garantir que o `LoggerService` escreva na tabela `logs` sem fallback silencioso para arquivo.
+Passos sugeridos:
+- Confirmar `LOG_DRIVER=db` no `.env` (sem espaços ou BOM).
+- `SELECT DATABASE();` para validar banco ativo.
+- `SHOW TABLES LIKE 'logs';` e `SHOW CREATE TABLE logs;` para conferir estrutura.
+- Inserção manual de teste (temporário): `INSERT INTO logs (ts, user_id, acao, ctx, ip, ua) VALUES (NOW(), NULL, 'diagnostic.test', JSON_OBJECT('ok',1), '127.0.0.1', 'cli');`
+- Acessar painel e disparar uma ação (ex: criar usuário) -> verificar linha `acao` iniciando com `api.users.`
+Critério de aceite: pelo menos 1 linha nova registrada após ação do painel; ausência de erros em PHP log.
+
+### 2. Helper `debugApi` (Melhoria de DX)
+Objetivo: centralizar logs estruturados de endpoints admin evitando repetição de chamada manual ao `LoggerService`.
+Sugestão de assinatura:
+```php
+// Em LoggerService ou trait ApiDebugLogger
+public function debugApi(string $grupo, string $etapa, array $dados = []): void
+// Loga acao = "api.{grupo}.{etapa}" e ctx = $dados (merge ip/ua/user_id interno)
+```
+Integração: substituir chamadas atuais de dbg()/logger->log nas controllers por `$logger->debugApi('users','store.ok',[ 'id'=>$novoId ])`.
+Critério de aceite: todas as rotas admin sensíveis usam helper; formato consistente `api.<grupo>.<etapa>`.
+
+### 3. Limpeza de Instrumentação Temporária
+Objetivo: remover ruído de desenvolvimento.
+Escopo:
+- Remover `console.debug` condicionais ou manter somente se `DEBUG` for definido via `localStorage` (já existe gate – apenas revisar excesso).
+- Eliminar comentários "todo" já resolvidos e blocos de logs redundantes no `AdminUserApiController`.
+Critério de aceite: nenhum console.log/debug aparece em ambiente normal (sem flag), código mais limpo sem perda de rastreabilidade essencial.
+
+### 4. Diagnóstico “Logs não aparecendo” (Documentação)
+Objetivo: adicionar à documentação de operação um mini playbook de diagnóstico.
+Checklist a inserir futuramente na seção Logging:
+1. Ver `.env` → `LOG_DRIVER=db`
+2. Ver tabela existe → `SHOW TABLES LIKE 'logs'`
+3. Teste script rápido → `php -r "require 'vendor/autoload.php';(new App\\Services\\LoggerService('db'))->log('probe','{}');"`
+4. Conferir exceptions em `storage/logs/*` ou display_errors.
+5. Conferir permissões de usuário MySQL para INSERT.
+Critério de aceite: operador consegue isolar falha em < 5 minutos seguindo instruções.
+
+### 5. (Opcional) Paginação / Visualização de Logs no Painel
+Objetivo: permitir inspeção rápida sem acessar DB diretamente.
+Escopo mínimo: rota `GET /api/admin/logs?limit=50&after=<id>` + listagem incremental na lateral.
+Critério de aceite: lista carrega últimas N entradas e suporta “carregar mais”.
+
+---
+### Resumo Rápido
+| ID | Tarefa | Status |
+|----|--------|--------|
+| 7  | Analisar logs retornados | Pendente (aguarda coleta) |
+| 8  | Remover instrumentação | Pendente |
+| 20 | Helper debugApi | Pendente |
+| 23 | Diagnosticar logs não aparecendo | Pendente |
+
+Quando as quatro acima forem concluídas, realizar commit final:  
+`feat(logging): helper debugApi + limpeza instrumentação e docs de diagnóstico`
+
+---
