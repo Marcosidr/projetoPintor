@@ -57,6 +57,7 @@
   }
 
   btnExecDelete?.addEventListener('click', async ()=>{
+    if(DEBUG) console.debug('[painel] confirmar delete', {actionPending, actionUserId});
     if(!actionUserId) return; const id=actionUserId; modalConfirm.hide();
     try {
       if(actionPending==='delete-servico'){
@@ -134,27 +135,36 @@
   }
 
   function renderUsuarios(users){
-    const tbody = tabela.querySelector('tbody');
+    var tbody = tabela.querySelector('tbody');
     tbody.innerHTML = '';
-    if(!users.length){ tbody.innerHTML = '<tr><td colspan="6" class="text-center text-muted py-3">Nenhum usuário.</td></tr>'; return; }
-    users.forEach(u=>{
-      const tr = document.createElement('tr');
+    if(!users.length){
+      tbody.innerHTML = '<tr><td colspan="6" class="text-center text-muted py-3">Nenhum usuário.</td></tr>';
+      return;
+    }
+    users.forEach(function(u){
+      var tr = document.createElement('tr');
       tr.dataset.userId = u.id;
-      tr.innerHTML = `
-        <td>${u.id}</td>
-        <td class="user-nome">${escapeHtml(u.nome)}</td>
-        <td class="user-email">${escapeHtml(u.email)}</td>
-  <td><span class="badge ${u.tipo==='admin'?'bg-success':'bg-secondary'} user-tipo">${escapeHtml(u.tipo)}</span></td>
-        <td class="small text-muted user-criado">${escapeHtml(u.created_at||'')}</td>
-        ${isAdmin?`<td class="text-center">
-          <div class="btn-group btn-group-sm" role="group">
-            <button class="btn btn-outline-secondary btn-edit" title="Editar"><i class="bi bi-pencil-square"></i></button>
-            <button class="btn btn-outline-warning btn-toggle" title="Toggle Admin"><i class="bi bi-shield-lock"></i></button>
-            <button class="btn btn-outline-secondary btn-reset" title="Reset Senha"><i class="bi bi-key"></i></button>
-            <button class="btn btn-outline-danger btn-delete" title="Excluir"><i class="bi bi-trash"></i></button>
-          </div>
-        </td>`:''}
-      `;
+      var badgeClass = (u.tipo === 'admin') ? 'bg-success' : 'bg-secondary';
+      var actions = '';
+      if(isAdmin){
+        actions = ''+
+          '<td class="text-center">'+
+            '<div class="btn-group btn-group-sm" role="group">'+
+              '<button class="btn btn-outline-secondary btn-edit" title="Editar"><i class="bi bi-pencil-square"></i></button>'+
+              '<button class="btn btn-outline-warning btn-toggle" title="Toggle Admin"><i class="bi bi-shield-lock"></i></button>'+
+              '<button class="btn btn-outline-secondary btn-reset" title="Reset Senha"><i class="bi bi-key"></i></button>'+
+              '<button class="btn btn-outline-danger btn-delete" title="Excluir"><i class="bi bi-trash"></i></button>'+
+            '</div>'+
+          '</td>';
+      }
+      var created = (u.created_at || '');
+      tr.innerHTML = ''+
+        '<td>'+u.id+'</td>'+
+        '<td class="user-nome">'+escapeHtml(u.nome)+'</td>'+
+        '<td class="user-email">'+escapeHtml(u.email)+'</td>'+
+        '<td><span class="badge '+badgeClass+' user-tipo">'+escapeHtml(u.tipo)+'</span></td>'+
+        '<td class="small text-muted user-criado">'+escapeHtml(created)+'</td>'+
+        actions;
       tbody.appendChild(tr);
     });
   }
@@ -177,6 +187,7 @@
     e.preventDefault();
     if(!form.checkValidity()) { form.classList.add('was-validated'); return; }
     const data = Object.fromEntries(new FormData(form).entries());
+    if(DEBUG) console.debug('[painel] submit usuario', {editingId, dataKeys:Object.keys(data)});
     try {
       const url = editingId ? `/api/admin/users/update/${editingId}` : '/api/admin/users';
       const json = await request(url,{method:'POST',data});
@@ -189,6 +200,7 @@
   tabela?.addEventListener('click', async e=>{
     const btn = e.target.closest('button'); if(!btn) return;
     const tr = btn.closest('tr'); const id = tr?.dataset.userId;
+    if(DEBUG) console.debug('[painel] click tabela usuarios', {classList:btn.className, id});
     if(btn.classList.contains('btn-edit')) return openModalEdit(tr);
     if(btn.classList.contains('btn-delete')){ openConfirm('delete', id); return; }
     if(btn.classList.contains('btn-toggle')){
@@ -202,8 +214,18 @@
   document.getElementById('btnNovoUsuario2')?.addEventListener('click', openModalCreate);
 
   /* ===================== SERVIÇOS ======================= */
-  function showModalServico(){ if(!modalServicoEl) return; modalServicoInstance = modalServicoInstance || new bootstrap.Modal(modalServicoEl); modalServicoInstance.show(); }
-  function openModalCreateServico(){ editingServicoId=null; formServico?.reset(); document.getElementById('tituloModalServico')?.textContent='Novo Serviço'; showModalServico(); }
+  function showModalServico(){
+    if(!modalServicoEl) return;
+    modalServicoInstance = modalServicoInstance || new bootstrap.Modal(modalServicoEl);
+    modalServicoInstance.show();
+  }
+  function openModalCreateServico(){
+    editingServicoId = null;
+    if(formServico) formServico.reset();
+    const tituloEl = document.getElementById('tituloModalServico');
+    if(tituloEl) tituloEl.textContent = 'Novo Serviço';
+    showModalServico();
+  }
   function openModalEditServico(tr){
     editingServicoId = tr.dataset.servicoId;
     formServico?.reset();
@@ -262,6 +284,7 @@
     e.preventDefault();
     if(!formServico.checkValidity()){ formServico.classList.add('was-validated'); return; }
     const data = Object.fromEntries(new FormData(formServico).entries());
+    if(DEBUG) console.debug('[painel] submit servico', {editingServicoId, dataKeys:Object.keys(data)});
     try {
       const url = editingServicoId ? `/api/admin/servicos/update/${editingServicoId}` : '/api/admin/servicos';
       const j = await request(url,{method:'POST', data});
@@ -273,6 +296,7 @@
 
   tabelaServicos?.addEventListener('click', e=>{
     const btn = e.target.closest('button'); if(!btn) return; const tr = btn.closest('tr'); const id = tr?.dataset.servicoId;
+    if(DEBUG) console.debug('[painel] click tabela servicos', {classList:btn.className, id});
     if(btn.classList.contains('btn-edit-serv')) return openModalEditServico(tr);
     if(btn.classList.contains('btn-delete-serv')){ openConfirm('delete-servico', id, { entityLabel:'serviço', entityTitle: tr.querySelector('.serv-titulo')?.textContent || ''}); }
   });
@@ -296,8 +320,16 @@
   }
 
   document.addEventListener('DOMContentLoaded', ()=>{
+  if(DEBUG) console.debug('[painel] DOMContentLoaded',{isAdmin, hasTabelaUsuarios:!!tabela, hasTabelaServicos:!!tabelaServicos, csrfToken: csrfToken?('len:'+csrfToken.length):'ausente'});
   if(isAdmin) carregarUsuarios();
   carregarServicos();
     if(window.Chart) renderGraph(); else window.addEventListener('load', renderGraph);
+  });
+  // Captura global de erros JS para auxiliar diagnóstico no painel
+  window.addEventListener('error', function(ev){
+    try { console.error('[PAINEL JS ERROR]', ev.message,'@', ev.filename+':'+ev.lineno+':'+ev.colno); } catch(_e){}
+  });
+  window.addEventListener('unhandledrejection', function(ev){
+    try { console.error('[PAINEL PROMISE REJECTION]', ev.reason); } catch(_e){}
   });
 })();
