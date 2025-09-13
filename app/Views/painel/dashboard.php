@@ -68,7 +68,9 @@
                   <h6 class="mb-0 fw-semibold"><i class="bi bi-graph-up-arrow me-1"></i> Orçamentos (últimos 7 dias)</h6>
               </div>
               <div class="card-body">
-                  <canvas id="chartOrcamentos7d" height="140" aria-label="Gráfico de orçamentos últimos 7 dias" role="img"></canvas>
+                                    <div class="chart-wrapper">
+                                        <canvas id="chartOrcamentos7d" aria-label="Gráfico de orçamentos últimos 7 dias" role="img"></canvas>
+                                    </div>
                   <script id="graficoData" type="application/json"><?= json_encode($grafico, JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES) ?></script>
                   <noscript><p class="text-muted small">Ative JavaScript para ver o gráfico.</p></noscript>
               </div>
@@ -234,4 +236,7 @@
     #modalConfirmacao .modal-content { border-radius:1rem; }
     #modalConfirmacao .btn-warning { color:#5a4100; font-weight:600; }
     #modalConfirmacao .btn-danger { font-weight:600; }
+        /* ==== Gráfico Responsivo ==== */
+            .chart-wrapper { position: relative; width:100%; height:140px; }
+            .chart-wrapper canvas { width:100% !important; height:100% !important; display:block; }
 </style>

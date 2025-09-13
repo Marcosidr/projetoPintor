@@ -312,8 +312,7 @@
     // Hardening responsivo: garantir que canvas nunca ultrapasse container
     canvas.style.maxWidth = '100%';
     canvas.style.width = '100%';
-    // Se height atributo existir, mantemos; caso contrário pode definir um padrão
-    if(!canvas.getAttribute('height')) canvas.height = 140;
+  // Altura controlada via CSS (.chart-wrapper). Altura padrão mantida em 140px (valor histórico) configurada em .chart-wrapper no HTML.
     if(canvas.parentElement) {
       canvas.parentElement.style.overflow = 'hidden';
       canvas.parentElement.style.maxWidth = '100%';
