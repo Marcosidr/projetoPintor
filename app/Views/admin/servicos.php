@@ -7,9 +7,7 @@
           <span><small class="text-muted">Gerencie os serviços exibidos no site</small></span>
       </div>
       <div class="d-flex gap-2">
-          <?php if($isAdmin): ?>
-            <button class="btn btn-sm btn-outline-primary" id="btnNovoServico"><i class="bi bi-plus-circle"></i> Novo Serviço</button>
-          <?php endif; ?>
+          
       </div>
   </header>
 
