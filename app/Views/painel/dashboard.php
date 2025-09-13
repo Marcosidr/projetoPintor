@@ -218,7 +218,7 @@
             <div class="modal-footer border-0 pt-0">
                 <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
                 <button type="button" class="btn btn-danger d-none" id="btnExecutarDelete"><i class="bi bi-trash me-1"></i>Excluir</button>
-                <button type="button" class="btn btn-warning d-none" id="btnExecutarReset"><i class="bi bi-key me-1"></i>Resetar Senha</button>
+                <button type="button" class="btn btn-outline-success" id="btnExecutarReset"><i class="bi bi-key me-1"></i>Resetar Senha</button>
             </div>
         </div>
     </div>
