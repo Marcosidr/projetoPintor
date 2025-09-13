@@ -5,29 +5,32 @@ use App\Core\Auth;
 use App\Core\Csrf;
 use App\Core\Response;
 use App\Repositories\UsuarioRepository;
+use App\Services\LoggerService;
 
 class AdminUserApiController
 {
-    public function __construct(private UsuarioRepository $repo = new UsuarioRepository()) {}
+    public function __construct(
+        private UsuarioRepository $repo = new UsuarioRepository(),
+        private LoggerService $logger = new LoggerService('db')
+    ) {}
 
-    /** DEBUG: logger temporário. Remove após diagnóstico. */
+    /** DEBUG agora persistido em banco (tabela logs) usando LoggerService driver=db */
     private function dbg(string $etapa, array $extra = []): void {
         try {
-            $logDir = __DIR__ . '/../../storage/logs';
-            if (!is_dir($logDir)) @mkdir($logDir, 0777, true);
-            $payload = [
-                'ts' => date('c'),
-                'etapa' => $etapa,
-                'uri' => $_SERVER['REQUEST_URI'] ?? null,
-                'method' => $_SERVER['REQUEST_METHOD'] ?? null,
-                'is_admin' => \App\Core\Auth::checkAdmin(),
-                'post_keys' => array_keys($_POST ?: []),
-                'csrf_header' => $_SERVER['HTTP_X_CSRF_TOKEN'] ?? null,
+            $user = \App\Core\Auth::user();
+            $userId = $user['id'] ?? null;
+            $context = [
+                'uri'        => $_SERVER['REQUEST_URI'] ?? null,
+                'method'     => $_SERVER['REQUEST_METHOD'] ?? null,
+                'is_admin'   => \App\Core\Auth::checkAdmin(),
+                'post_keys'  => array_keys($_POST ?: []),
+                'csrf_hdr'   => $_SERVER['HTTP_X_CSRF_TOKEN'] ?? null,
                 'session_id' => session_id(),
             ] + $extra;
-            file_put_contents($logDir . '/api-users-debug.log', json_encode($payload, JSON_UNESCAPED_UNICODE) . PHP_EOL, FILE_APPEND);
+            // acao padronizada: api.users.<etapa>
+            $this->logger->info($userId, 'api.users.' . $etapa, $context);
         } catch (\Throwable $e) {
-            // silencia
+            // silencia para não quebrar fluxo da API caso logging falhe
         }
     }
 
