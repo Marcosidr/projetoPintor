@@ -22,7 +22,7 @@
         <option value="admin">Admin</option>
       </select>
     </div>
-    <button class="btn btn-success">Salvar</button>
+    <button class="btn btn-success" style="color: #2e7d32;">Salvar</button>
     <a href="<?= BASE_URL ?>/admin" class="btn btn-secondary">Voltar</a>
   </form>
 </div>

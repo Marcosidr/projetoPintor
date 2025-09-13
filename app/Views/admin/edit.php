@@ -22,7 +22,7 @@
         <option value="admin" <?= $user['tipo']==='admin'? 'selected':'' ?>>Admin</option>
       </select>
     </div>
-    <button class="btn btn-primary">Atualizar</button>
+    <button class="btn btn-primary" style="color: #2e7d32;">Atualizar</button>
     <a href="<?= BASE_URL ?>/admin" class="btn btn-secondary">Voltar</a>
   </form>
 </div>
