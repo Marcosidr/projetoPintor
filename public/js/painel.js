@@ -1,5 +1,7 @@
 // painel.js - lógica dinâmica do painel admin (refatorado)
 (function(){
+  // Utilitário simples debounce para eventos de resize (evita loop de reflow em mobile)
+  function debounce(fn, wait=120){ let t; return (...args)=>{ clearTimeout(t); t=setTimeout(()=>fn.apply(null,args), wait); }; }
   const BASE_URL = (document.querySelector('meta[name="base-url"]')?.content || '').replace(/\/$/,'');
   const root      = document.getElementById('painelRoot');
   const isAdmin   = root?.dataset.isAdmin === '1';
@@ -307,6 +309,15 @@
   // Gráfico Chart.js
   function renderGraph(){
     const canvas = document.getElementById('chartOrcamentos7d'); if(!canvas || !window.Chart) return;
+    // Hardening responsivo: garantir que canvas nunca ultrapasse container
+    canvas.style.maxWidth = '100%';
+    canvas.style.width = '100%';
+    // Se height atributo existir, mantemos; caso contrário pode definir um padrão
+    if(!canvas.getAttribute('height')) canvas.height = 140;
+    if(canvas.parentElement) {
+      canvas.parentElement.style.overflow = 'hidden';
+      canvas.parentElement.style.maxWidth = '100%';
+    }
     // Captura dados do backend (renderizados em PHP no HTML via dataset JSON)
     let dados = {};
     // Como não colocamos dataset ainda, vamos reconstruir lendo elementos PHP no lado do servidor: colocaremos script inline seguro? Evitar inline => vamos criar dataset via JSON gerado server-side.
@@ -316,7 +327,22 @@
     const labels = Object.keys(dados);
     const values = Object.values(dados);
     if(!labels.length) return;
-    new Chart(canvas.getContext('2d'), { type: 'bar', data: { labels, datasets: [{ label: 'Orçamentos (7 dias)', data: values, backgroundColor: 'rgba(25,135,84,.65)', borderRadius:4 }]}, options: { responsive:true, maintainAspectRatio:false, scales:{ y:{ beginAtZero:true, ticks:{ precision:0 }}} }});
+    // Destroi gráfico anterior se já existir (evita re-instanciações que podem causar efeitos bizarros de tamanho)
+    try { if(window._orc7Chart) { window._orc7Chart.destroy(); } } catch(_e){}
+    window._orc7Chart = new Chart(canvas.getContext('2d'), {
+      type: 'bar',
+      data: { labels, datasets: [{ label: 'Orçamentos (7 dias)', data: values, backgroundColor: 'rgba(25,135,84,.65)', borderRadius:4 }]},
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        // Limitar animação pesada em resize contínuo
+        animation: { duration: 300 },
+        resizeDelay: 120,
+        scales:{
+          y:{ beginAtZero:true, ticks:{ precision:0 } }
+        }
+      }
+    });
   }
 
   document.addEventListener('DOMContentLoaded', ()=>{
@@ -324,6 +350,12 @@
   if(isAdmin) carregarUsuarios();
   carregarServicos();
     if(window.Chart) renderGraph(); else window.addEventListener('load', renderGraph);
+    // Recalcula / força resize controlado em mudança de orientação ou resize estreito
+    window.addEventListener('resize', debounce(()=>{
+      if(window._orc7Chart){
+        try { window._orc7Chart.resize(); } catch(_e){}
+      }
+    }, 180));
   });
   // Captura global de erros JS para auxiliar diagnóstico no painel
   window.addEventListener('error', function(ev){
