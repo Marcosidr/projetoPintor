@@ -34,7 +34,7 @@ $features = [
       <p class="lead text-muted mb-4">
         Profissionais especializados com mais de 25 anos de experiência, utilizando materiais de alta qualidade para garantir o melhor acabamento.
       </p>
-      <a href="?param=servicos" class="btn btn-success btn-lg rounded-pill px-4 fw-bold shadow-sm">
+      <a href="<?= BASE_URL ?>/servicos" class="btn btn-success btn-lg rounded-pill px-4 fw-bold shadow-sm">
         Veja nossos serviços
       </a>
     </div>
