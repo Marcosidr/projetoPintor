@@ -45,10 +45,10 @@
           <tr>
             <td><?= (int)$item['id'] ?></td>
             <td><?= htmlspecialchars($item['titulo']) ?></td>
-            <td><a target="_blank" href="<?= BASE_URL . '/uploads/catalogo/' . rawurlencode($item['arquivo']) ?>">Abrir</a></td>
+            <td><a target="_blank" class="text-success fw-semibold" href="<?= BASE_URL . '/uploads/catalogo/' . rawurlencode($item['arquivo']) ?>">Abrir</a></td>
             <td><?= htmlspecialchars($item['created_at']) ?></td>
             <td class="text-end">
-              <button type="button" class="btn btn-sm btn-outline-primary me-1 btn-edit-catalogo"
+        <button type="button" class="btn btn-sm btn-outline-success me-1 btn-edit-catalogo"
                       data-id="<?= (int)$item['id'] ?>"
                       data-titulo="<?= htmlspecialchars($item['titulo'], ENT_QUOTES,'UTF-8') ?>"
                       data-arquivo="<?= htmlspecialchars($item['arquivo'], ENT_QUOTES,'UTF-8') ?>"
