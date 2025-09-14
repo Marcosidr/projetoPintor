@@ -50,6 +50,7 @@ $router->get('/admin/servicos', [\App\Controllers\AdminServicoController::class,
 $router->get('/admin/catalogos', [\App\Controllers\CatalogoAdminController::class, 'index'], [\App\Middleware\AdminMiddleware::class]);
 $router->post('/admin/catalogos', [\App\Controllers\CatalogoAdminController::class, 'store'], [\App\Middleware\AdminMiddleware::class]);
 $router->post('/admin/catalogos/delete/{id}', [\App\Controllers\CatalogoAdminController::class, 'delete'], [\App\Middleware\AdminMiddleware::class]);
+$router->post('/admin/catalogos/update/{id}', [\App\Controllers\CatalogoAdminController::class, 'update'], [\App\Middleware\AdminMiddleware::class]);
 
 // TODO: adicionar rotas admin, orcamento e logs detalhados.
 

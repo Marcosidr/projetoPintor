@@ -30,6 +30,19 @@ class CatalogoRepository {
         $st->execute([$data['titulo'], $data['arquivo']]);
         return (int)$this->db->lastInsertId();
     }
+    
+    /** Atualiza título e opcionalmente arquivo. $data pode conter 'titulo' e/ou 'arquivo'. */
+    public function update(int $id, array $data): bool {
+        $fields = [];$params=[]; 
+        if (isset($data['titulo'])) { $fields[] = 'titulo = ?'; $params[] = $data['titulo']; }
+        if (isset($data['arquivo'])) { $fields[] = 'arquivo = ?'; $params[] = $data['arquivo']; }
+        if (!$fields) return false;
+        $params[] = $id;
+        $sql = 'UPDATE catalogos SET '.implode(',', $fields).' WHERE id = ?';
+        $st = $this->db->prepare($sql);
+        $st->execute($params);
+        return $st->rowCount() > 0;
+    }
 
     public function delete(int $id): bool {
         $st = $this->db->prepare("DELETE FROM catalogos WHERE id=?");
