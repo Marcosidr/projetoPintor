@@ -94,4 +94,41 @@ class CatalogoAdminController extends Controller
         }
         $this->redirect('/admin/catalogos');
     }
+
+    /** Atualiza título e (se enviado) substitui arquivo existente. */
+    public function update(int $id): void
+    {
+        $item = $this->repo->find($id);
+        if (!$item) { $this->redirect('/admin/catalogos'); return; }
+        if (!\App\Core\Csrf::validate($_POST['_csrf'] ?? '')) { http_response_code(419); exit('CSRF'); }
+        $titulo = trim($_POST['titulo'] ?? '');
+        if ($titulo === '' || mb_strlen($titulo) > 160) {
+            $_SESSION['flash_error'] = 'Título inválido';
+            $this->redirect('/admin/catalogos'); return;
+        }
+        $dataUpdate = ['titulo'=>$titulo];
+        // Se um novo arquivo foi enviado, validar e mover
+        if (!empty($_FILES['arquivo']) && $_FILES['arquivo']['error'] === UPLOAD_ERR_OK) {
+            $file = $_FILES['arquivo'];
+            $allowedExt = ['pdf','png','jpg','jpeg'];
+            $maxSize = 5 * 1024 * 1024;
+            $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+            if (!in_array($ext, $allowedExt, true) || $file['size'] > $maxSize) {
+                $_SESSION['flash_error'] = 'Arquivo inválido'; $this->redirect('/admin/catalogos'); return;
+            }
+            $finfo = finfo_open(FILEINFO_MIME_TYPE); $mime = finfo_file($finfo, $file['tmp_name']); finfo_close($finfo);
+            $allowedMime = ['application/pdf','image/png','image/jpeg'];
+            if (!in_array($mime, $allowedMime, true)) { $_SESSION['flash_error']='MIME inválido'; $this->redirect('/admin/catalogos'); return; }
+            $destDir = ROOT_PATH . 'public/uploads/catalogo/'; if(!is_dir($destDir)) mkdir($destDir,0775,true);
+            $safeBase = preg_replace('/[^a-zA-Z0-9-_]/','_', pathinfo($file['name'], PATHINFO_FILENAME));
+            $finalName = $safeBase.'_'.time().'.'.$ext; $destPath=$destDir.$finalName;
+            if (!move_uploaded_file($file['tmp_name'], $destPath)) { $_SESSION['flash_error']='Falha ao mover'; $this->redirect('/admin/catalogos'); return; }
+            // remove antigo
+            $oldPath = ROOT_PATH . 'public/uploads/catalogo/' . $item['arquivo']; if(is_file($oldPath)) @unlink($oldPath);
+            $dataUpdate['arquivo'] = $finalName;
+        }
+        $this->repo->update($id,$dataUpdate);
+        $_SESSION['flash_success'] = 'Catálogo atualizado';
+        $this->redirect('/admin/catalogos');
+    }
 }
