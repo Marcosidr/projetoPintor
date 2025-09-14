@@ -88,7 +88,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-          <button class="btn btn-primary">Salvar Alterações</button>
+          <button class="btn btn-success">Salvar Alterações</button>
         </div>
       </form>
     </div>
