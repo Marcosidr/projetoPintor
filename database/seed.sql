@@ -15,6 +15,7 @@ CREATE TABLE IF NOT EXISTS orcamentos (
   telefone VARCHAR(60) NOT NULL,
   servico VARCHAR(160) NOT NULL,
   mensagem TEXT NULL,
+  extras JSON NULL,
   criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -25,7 +26,8 @@ CREATE TABLE IF NOT EXISTS servicos (
   icone VARCHAR(60) NOT NULL,
   descricao TEXT NOT NULL,
   caracteristicas JSON NOT NULL,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Seed inicial dos serviços atuais
